@@ -9,13 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mirror.jmarket.R;
+import com.mirror.jmarket.databinding.FragmentHomeBinding;
 
 
 public class HomeFragment extends Fragment {
 
     private static final String TAG = "HomeFragment";
 
-    View v;
+    private FragmentHomeBinding homeBinding;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -24,8 +25,7 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        v = inflater.inflate(R.layout.fragment_home, container, false);
-
-        return v;
+        homeBinding = FragmentHomeBinding.inflate(inflater, container, false);
+        return homeBinding.getRoot();
     }
 }
