@@ -71,7 +71,14 @@ public class LoginRepository {
             Toast.makeText(application, "입력사항을 확인해 주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
-        
+
+        int index = email.indexOf("@");
+        String emailCheck = email.substring(index);
+
+        if (!(emailCheck.equals("@jbnu.ac.kr"))) {
+            Toast.makeText(application, "전북대 메일로만 가입할 수 있습니다.", Toast.LENGTH_SHORT).show();
+            return;
+        }
         mAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword())
                 .addOnCompleteListener(application.getMainExecutor(), new OnCompleteListener<AuthResult>() {
                     @Override
