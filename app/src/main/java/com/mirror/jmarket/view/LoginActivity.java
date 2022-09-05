@@ -49,18 +49,15 @@ public class LoginActivity extends AppCompatActivity {
                 String email = loginBinding.userEmail.getText().toString();
                 String password = loginBinding.userPassword.getText().toString();
 
-                if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
-                    Toast.makeText(LoginActivity.this, "입력 사항을 확인해 주세요.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
                 loginViewModel.login(new User(email, password));
             }
         });
 
-        loginBinding.createUserButton.setOnClickListener(new View.OnClickListener() {
+        loginBinding.signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+                startActivity(intent);
             }
         });
 

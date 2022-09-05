@@ -2,14 +2,15 @@ package com.mirror.jmarket.view;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.mirror.jmarket.R;
 import com.mirror.jmarket.databinding.ActivityMainBinding;
+import com.mirror.jmarket.viewmodel.LoginViewModel;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,11 +18,16 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding mainBinding;
 
+    private LoginViewModel loginViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mainBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(mainBinding.getRoot());
+
+        loginViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(LoginViewModel.class);
+        loginViewModel.logout();
         getSupportFragmentManager().beginTransaction().replace(R.id.container, new HomeFragment()).commit();
 
         mainBinding.bottomNavigation.setOnItemSelectedListener(onItemSelectedListener);
@@ -40,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
                     return true;
 
                 case R.id.mypage:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container, new MypageFragment()).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container, new MyPageFragment()).commit();
                     return true;
             }
             return false;

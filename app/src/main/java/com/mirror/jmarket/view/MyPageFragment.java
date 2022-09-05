@@ -11,13 +11,13 @@ import android.view.ViewGroup;
 import com.mirror.jmarket.R;
 import com.mirror.jmarket.databinding.FragmentMypageBinding;
 
-public class MypageFragment extends Fragment {
+public class MyPageFragment extends Fragment {
 
     private static final String TAG = "ChatFragment";
 
     private FragmentMypageBinding mypageBinding;
 
-    public MypageFragment() {
+    public MyPageFragment() {
         // Required empty public constructor
     }
 

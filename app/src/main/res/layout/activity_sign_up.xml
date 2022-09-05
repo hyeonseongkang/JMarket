@@ -4,14 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.LoginActivity"
+    tools:context=".view.SignUpActivity"
     android:background="@color/black">
+
 
     <TextView
         android:id="@+id/loginTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="로그인"
+        android:text="회원가입"
         android:textColor="#FFFFFF"
         android:textSize="20dp"
         android:fontFamily="@font/scd5"
@@ -31,21 +32,21 @@
         android:orientation="vertical"
         android:layout_centerInParent="true">
 
-<!--        <ImageView-->
-<!--            android:layout_width="50dp"-->
-<!--            android:layout_height="50dp"-->
-<!--            android:background="@drawable/app_logo"-->
-<!--            android:backgroundTint="#FFFFFF"-->
-<!--            />-->
+        <!--        <ImageView-->
+        <!--            android:layout_width="50dp"-->
+        <!--            android:layout_height="50dp"-->
+        <!--            android:background="@drawable/app_logo"-->
+        <!--            android:backgroundTint="#FFFFFF"-->
+        <!--            />-->
 
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="로그인"-->
-<!--            android:textColor="#FFFFFF"-->
-<!--            android:textSize="45dp"-->
-<!--            android:fontFamily="@font/scd6"-->
-<!--            android:layout_gravity="center_horizontal"/>-->
+        <!--        <TextView-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:text="로그인"-->
+        <!--            android:textColor="#FFFFFF"-->
+        <!--            android:textSize="45dp"-->
+        <!--            android:fontFamily="@font/scd6"-->
+        <!--            android:layout_gravity="center_horizontal"/>-->
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -117,31 +118,17 @@
         </RelativeLayout>
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/loginButton"
+            android:id="@+id/signupButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/activity_login_edittext"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
             android:layout_marginTop="30dp"
-            android:text="Login"
+            android:text="SignUp"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"
             android:fontFamily="@font/scd5"/>
-
-        <TextView
-            android:id="@+id/signupButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="회원가입"
-            android:textColor="#FFFFFF"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:paddingLeft="30dp"
-            android:paddingRight="30dp"
-            android:fontFamily="@font/scd5"
-            android:layout_marginTop="10dp"/>
     </LinearLayout>
 
 </RelativeLayout>

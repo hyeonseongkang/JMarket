@@ -32,7 +32,7 @@ public class LoginViewModel extends AndroidViewModel {
 
     public void login(User user) { repository.login(user); }
 
-    public void register(User user) { repository.register(user); }
+    public void signUp(User user) { repository.signUp(user); }
 
     public void logout() { repository.logout(); }
 

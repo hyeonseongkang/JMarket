@@ -1,6 +1,7 @@
 package com.mirror.jmarket.model;
 
 import android.app.Application;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -39,6 +40,13 @@ public class LoginRepository {
     public MutableLiveData<Boolean> getLoginValid() { return loginValid; }
 
     public void login(User user) {
+        String email = user.getEmail();
+        String password = user.getPassword();
+
+        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
+            Toast.makeText(application, "입력사항을 확인해 주세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
         mAuth.signInWithEmailAndPassword(user.getEmail(), user.getPassword())
                 .addOnCompleteListener(application.getMainExecutor(), new OnCompleteListener<AuthResult>() {
                     @Override
@@ -55,7 +63,15 @@ public class LoginRepository {
                 });
     }
 
-    public void register(User user) {
+    public void signUp(User user) {
+        String email = user.getEmail();
+        String password = user.getPassword();
+
+        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
+            Toast.makeText(application, "입력사항을 확인해 주세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        
         mAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword())
                 .addOnCompleteListener(application.getMainExecutor(), new OnCompleteListener<AuthResult>() {
                     @Override
@@ -63,9 +79,11 @@ public class LoginRepository {
                         if (task.isSuccessful()) {
                             // 가입 성공
                             mUser = mAuth.getCurrentUser();
+                            loginValid.setValue(true);
                             Log.d(TAG, "회원가입 성공");
                         } else {
                             // 가입 실패
+                            loginValid.setValue(false);
                             Log.d(TAG, "회원가입 실패");
                         }
                     }
