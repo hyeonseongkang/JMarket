@@ -10,7 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.JMarket">
 
-        <activity android:name=".view.MainActivity"
+        <activity android:name=".view.MainActivity"/>
+
+        <activity
+            android:name=".view.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

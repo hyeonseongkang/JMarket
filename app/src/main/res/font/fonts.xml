@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<font-family xmlns:android="http://schemas.android.com/apk/res/android">
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="900"
+        android:font="@font/gmn"/>
+
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="900"
+        android:font="@font/gmm"/>
+
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="900"
+        android:font="@font/gmb"/>
+
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="900"
+        android:font="@font/scdream5"/>
+
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="900"
+        android:font="@font/scd1"/>
+
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="900"
+        android:font="@font/scd2"/>
+
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="900"
+        android:font="@font/scd3"/>
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="900"
+        android:font="@font/scd4"/>
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="900"
+        android:font="@font/scd5"/>
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="900"
+        android:font="@font/scd6"/>
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="900"
+        android:font="@font/scd7"/>
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="900"
+        android:font="@font/scd8"/>
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="900"
+        android:font="@font/scd9"/>
+
+</font-family>
