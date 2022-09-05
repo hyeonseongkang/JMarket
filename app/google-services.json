@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "235835205071",
+    "project_id": "jmarket-28555",
+    "storage_bucket": "jmarket-28555.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:235835205071:android:4b17363873bba94347deba",
+        "android_client_info": {
+          "package_name": "com.mirror.jmarket"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "235835205071-r85aqn54j8urf2v2664aoqg9pm6t9h0d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7PXJKQIhDwy5iHKQlySsXIDinvpIfDMw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "235835205071-r85aqn54j8urf2v2664aoqg9pm6t9h0d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
