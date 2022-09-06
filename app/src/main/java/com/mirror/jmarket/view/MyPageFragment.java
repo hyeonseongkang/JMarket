@@ -13,7 +13,7 @@ import com.mirror.jmarket.databinding.FragmentMypageBinding;
 
 public class MyPageFragment extends Fragment {
 
-    private static final String TAG = "ChatFragment";
+    private static final String TAG = "MyPageFragment";
 
     private FragmentMypageBinding mypageBinding;
 
