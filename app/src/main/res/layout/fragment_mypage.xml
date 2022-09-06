@@ -1,98 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".view.MyPageFragment">
 
-    <LinearLayout
-        android:id="@+id/topLayout"
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_marginTop="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="마이페이지"
-            android:textSize="18dp"
-            android:fontFamily="@font/scd5"
             android:layout_marginLeft="20dp"
+            android:fontFamily="@font/scd5"
+            android:text="마이페이지"
             android:textColor="#000000"
-            android:layout_marginTop="10dp"/>
+            android:textSize="18dp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="#CEBFBFBF"
-            android:layout_below="@+id/loginTextView"
-            android:layout_marginTop="10dp"/>
-    </LinearLayout>
+
+        <TextView
+            android:id="@+id/logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/scd5"
+            android:text="로그아웃"
+            android:textColor="#FF0000"
+            android:textSize="13dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"/>
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="10dp"
+        android:background="#BAE8E8E8" />
 
 
     <LinearLayout
         android:id="@+id/user_info_layout"
-        android:layout_below="@+id/topLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp">
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/user_profile"
+                android:id="@+id/userPhoto"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                android:src="@drawable/profile"
-                android:layout_gravity="center_horizontal"/>
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/profile" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="15dp">
+                android:orientation="vertical">
 
 
                 <TextView
                     android:id="@+id/userNickName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15dp"
+                    android:ellipsize="end"
                     android:fontFamily="@font/scd5"
+                    android:maxLines="1"
                     android:text="WWIT"
                     android:textColor="#000000"
-                    android:maxLines="1"
-                    android:ellipsize="end"/>
+                    android:textSize="15dp" />
 
                 <TextView
                     android:id="@+id/userEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:background="@null"
-                    android:text="test123@jbnu.ac.kr"
-                    android:textSize="15dp"
                     android:fontFamily="@font/scd5"
                     android:singleLine="true"
-                    android:layout_marginTop="5dp"/>
+                    android:text="test"
+                    android:textSize="15dp" />
             </LinearLayout>
         </LinearLayout>
 
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/editProfile"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@drawable/activity_mypage_profile_edit_button"
             android:layout_marginTop="10dp"
+            android:background="@drawable/activity_mypage_profile_edit_button"
+            android:fontFamily="@font/scd6"
             android:text="프로필 수정"
-            android:textColor="#000000"
-            android:fontFamily="@font/scd6" />
+            android:textColor="#000000" />
 
 
         <LinearLayout
@@ -103,34 +116,34 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:orientation="vertical"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:id="@+id/mySellList"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:orientation="vertical"
                     android:layout_centerInParent="true"
+                    android:background="@drawable/activity_mypage_ball"
                     android:gravity="center"
-                    android:background="@drawable/activity_mypage_ball">
+                    android:orientation="vertical">
 
                     <ImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:background="@drawable/sell"
                         android:layout_gravity="center_horizontal"
-                        android:backgroundTint="#FFFFFF"/>
+                        android:background="@drawable/sell"
+                        android:backgroundTint="#FFFFFF" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="12dp"
-                        android:fontFamily="@font/scd5"
                         android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/scd5"
                         android:text="판매내역"
                         android:textColor="#FFFFFF"
-                        android:layout_marginTop="5dp"/>
+                        android:textSize="12dp" />
                 </LinearLayout>
 
             </RelativeLayout>
@@ -138,75 +151,78 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:orientation="vertical"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:id="@+id/myBuyList"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:orientation="vertical"
                     android:layout_centerInParent="true"
+                    android:background="@drawable/activity_mypage_ball"
                     android:gravity="center"
-                    android:background="@drawable/activity_mypage_ball">
+                    android:orientation="vertical">
 
                     <ImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:background="@drawable/buy"
                         android:layout_gravity="center_horizontal"
-                        android:backgroundTint="#FFFFFF"/>
+                        android:background="@drawable/buy"
+                        android:backgroundTint="#FFFFFF" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="12dp"
-                        android:fontFamily="@font/scd5"
                         android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/scd5"
                         android:text="구매내역"
                         android:textColor="#FFFFFF"
-                        android:layout_marginTop="5dp"/>
+                        android:textSize="12dp" />
                 </LinearLayout>
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:orientation="vertical"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:id="@+id/myHeartList"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:orientation="vertical"
                     android:layout_centerInParent="true"
+                    android:background="@drawable/activity_mypage_ball"
                     android:gravity="center"
-                    android:background="@drawable/activity_mypage_ball">
+                    android:orientation="vertical">
 
                     <ImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:background="@drawable/heart"
                         android:layout_gravity="center_horizontal"
-                        android:backgroundTint="#FFFFFF"/>
+                        android:background="@drawable/heart"
+                        android:backgroundTint="#FFFFFF" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="12dp"
-                        android:fontFamily="@font/scd5"
                         android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/scd5"
                         android:text="관심목록"
                         android:textColor="#FFFFFF"
-                        android:layout_marginTop="5dp"/>
+                        android:textSize="12dp" />
                 </LinearLayout>
             </RelativeLayout>
-
-
-
         </LinearLayout>
-
     </LinearLayout>
 
-</RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        android:background="#BAF4F2F2"
+        android:layout_below="@+id/loginTextView"
+        android:layout_marginTop="15dp"/>
+
+</LinearLayout>

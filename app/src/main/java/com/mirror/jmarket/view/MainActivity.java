@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(mainBinding.getRoot());
 
         loginViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(LoginViewModel.class);
-        loginViewModel.logout();
         getSupportFragmentManager().beginTransaction().replace(R.id.container, new HomeFragment()).commit();
 
         mainBinding.bottomNavigation.setOnItemSelectedListener(onItemSelectedListener);

@@ -14,6 +14,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.mirror.jmarket.classes.User;
 
 import org.jetbrains.annotations.NotNull;
@@ -23,16 +25,23 @@ public class LoginRepository {
     public final static String TAG = "LoginRepository";
 
     private Application application;
+
+    private MutableLiveData<Boolean> loginValid;
+
+    // Firebase
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
     private MutableLiveData<FirebaseUser> firebaseUser;
-    private MutableLiveData<Boolean> loginValid;
+
+    // Firebase Database
+    private DatabaseReference myRef;
 
     public LoginRepository(Application application) {
         this.application = application;
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = new MutableLiveData<>();
         loginValid = new MutableLiveData<>();
+        myRef = FirebaseDatabase.getInstance().getReference("users");
     }
 
     public MutableLiveData<FirebaseUser> getFirebaseUser() { return firebaseUser; }
@@ -53,6 +62,7 @@ public class LoginRepository {
                     public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             mUser = mAuth.getCurrentUser();
+                            firebaseUser.setValue(mUser);
                             loginValid.setValue(true);
                             Log.d(TAG, "로그인 성공");
                         } else {
@@ -86,6 +96,18 @@ public class LoginRepository {
                         if (task.isSuccessful()) {
                             // 가입 성공
                             mUser = mAuth.getCurrentUser();
+                            firebaseUser.setValue(mUser);
+                            // String uid, String email, String password, String nickName, String photoUri
+                            myRef.child(mUser.getUid()).setValue(new User(mUser.getUid(), email, password, null, null)).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull @NotNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Log.d(TAG, "user 데이터 저장 성공");
+                                    } else {
+                                        Log.d(TAG, "user 데이터 저장 실패");
+                                    }
+                                }
+                            });
                             loginValid.setValue(true);
                             Log.d(TAG, "회원가입 성공");
                         } else {
