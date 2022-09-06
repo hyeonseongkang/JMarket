@@ -1,6 +1,7 @@
 package com.mirror.jmarket.viewmodel;
 
 import android.app.Application;
+import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -33,7 +34,9 @@ public class UserManagerViewModel extends AndroidViewModel {
 
     public MutableLiveData<Boolean> getUpdateValid() { return updateValid; }
 
-    public void updateUserProfile(String uid, String nickName, String photoUri) {
-        repository.updateUserProfile(uid, nickName, photoUri);
+    public void getUserProfile(String uid) { repository.getUserProfile(uid);}
+
+    public void updateUserProfile(User user) {
+        repository.updateUserProfile(user);
     }
 }

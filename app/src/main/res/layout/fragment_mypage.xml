@@ -79,7 +79,6 @@
                     android:ellipsize="end"
                     android:fontFamily="@font/scd5"
                     android:maxLines="1"
-                    android:text="WWIT"
                     android:textColor="#000000"
                     android:textSize="15dp" />
 
@@ -91,7 +90,6 @@
                     android:background="@null"
                     android:fontFamily="@font/scd5"
                     android:singleLine="true"
-                    android:text="test"
                     android:textSize="15dp" />
             </LinearLayout>
         </LinearLayout>

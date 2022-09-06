@@ -98,7 +98,7 @@ public class LoginRepository {
                             mUser = mAuth.getCurrentUser();
                             firebaseUser.setValue(mUser);
                             // String uid, String email, String password, String nickName, String photoUri
-                            myRef.child(mUser.getUid()).setValue(new User(mUser.getUid(), email, password, null, null)).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            myRef.child(mUser.getUid()).setValue(new User(mUser.getUid(), email, password, "", "")).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull @NotNull Task<Void> task) {
                                     if (task.isSuccessful()) {

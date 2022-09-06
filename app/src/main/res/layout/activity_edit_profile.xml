@@ -1,126 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.EditProfileActivity"
-    android:orientation="vertical">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
-
-        <ImageButton
-            android:id="@+id/backButton"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:background="@drawable/back"
-            android:layout_marginLeft="20dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:fontFamily="@font/scd5"
-            android:text="프로필 수정"
-            android:textColor="#000000"
-            android:textSize="18dp" />
-
-        <TextView
-            android:id="@+id/update"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/scd5"
-            android:text="완료"
-            android:textColor="#FF0000"
-            android:textSize="14dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"/>
-
-    </RelativeLayout>
-
+    tools:context=".view.EditProfileActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_marginTop="10dp"
-        android:background="#BAE8E8E8" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/userPhoto"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/profile"
-        android:layout_marginTop="20dp"/>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="10dp"
-        android:layout_gravity="center_horizontal">
-
-        <TextView
-            android:id="@+id/userEmail"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/scd5"
-            android:singleLine="true"
-            android:text="test123@jbnu.ac.kr"
-            android:textSize="15dp"
-            android:textColor="#000000"
-            android:layout_centerInParent="true" />
+            android:layout_marginTop="10dp">
+
+            <ImageButton
+                android:id="@+id/backButton"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/back" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:fontFamily="@font/scd5"
+                android:text="프로필 수정"
+                android:textColor="#000000"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/update"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                android:fontFamily="@font/scd5"
+                android:text="완료"
+                android:textColor="#FF0000"
+                android:textSize="14dp" />
+
+        </RelativeLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="#BA000000"
             android:layout_marginTop="10dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_below="@+id/userEmail"/>
-    </RelativeLayout>
+            android:background="#BAE8E8E8" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="15dp"
-        android:layout_gravity="center_horizontal">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/userPhoto"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/profile" />
 
-        <EditText
-            android:id="@+id/userNickName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/scd5"
-            android:singleLine="true"
-            android:hint="닉네임"
-            android:textSize="15dp"
-            android:background="@null"
-            android:layout_centerInParent="true"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"/>
-
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="#BA000000"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_below="@+id/userNickName"/>
+            android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="17dp"
-            android:layout_height="17dp"
-            android:src="@drawable/pencil"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="30dp"
-            android:layout_centerVertical="true"/>
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/userEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:fontFamily="@font/scd5"
+                android:singleLine="true"
+                android:text="test123@jbnu.ac.kr"
+                android:textColor="#000000"
+                android:textSize="15dp" />
 
-</LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_below="@+id/userEmail"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:background="#BA000000" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/userNickName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@null"
+                android:fontFamily="@font/scd5"
+                android:hint="닉네임"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:singleLine="true"
+                android:textSize="15dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_below="@+id/userNickName"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:background="#BA000000" />
+
+            <ImageView
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="30dp"
+                android:src="@drawable/pencil" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"/>
+</RelativeLayout>
