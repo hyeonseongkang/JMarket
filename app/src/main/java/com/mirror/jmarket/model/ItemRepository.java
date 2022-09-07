@@ -41,9 +41,10 @@ public class ItemRepository {
         String id = item.getId();
         String title = item.getTitle();
         String price = item.getPrice();
+        boolean priceOffer = item.isPriceOffer();
         String content = item.getContent();
         ArrayList<String> photoKeys = item.getPhotoKeys();
-        String key = item.getKey();
+        String key = myRef.push().getKey();
         String firstPhotoUri = item.getFirstPhotoUri();
 
         if (photoKeys.size() == 0) {
@@ -51,9 +52,14 @@ public class ItemRepository {
             return;
         }
 
+        ArrayList<String> tempPhotokeys = new ArrayList<>();
         for (int i = 0; i < photoKeys.size(); i++) {
             String photoKey = myRef.push().getKey();
-            StorageReference storage = FirebaseStorage.getInstance().getReference().child("items/" + photoKey + ".jpg");
+            tempPhotokeys.add(photoKey);
+        }
+
+        for (int i = 0; i < tempPhotokeys.size(); i++) {
+            StorageReference storage = FirebaseStorage.getInstance().getReference().child("items/" + tempPhotokeys.get(i) + ".jpg");
             UploadTask uploadTask = storage.putFile(Uri.parse(photoKeys.get(i)));
 
             int finalI = i;
@@ -64,7 +70,7 @@ public class ItemRepository {
                         storage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
-                                Item tempItem = new Item(id, title, price, content, photoKeys, key, uri.toString());
+                                Item tempItem = new Item(id, title, price, priceOffer, content, tempPhotokeys, key, uri.toString());
                                 myRef.child(key).setValue(tempItem);
                                 itemSave.setValue(true);
                             }

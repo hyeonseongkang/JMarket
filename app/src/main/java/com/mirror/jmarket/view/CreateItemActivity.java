@@ -104,9 +104,17 @@ public class CreateItemActivity extends AppCompatActivity {
         binding.okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                binding.progress.setVisibility(View.VISIBLE);
-//                Item item = new Item(null, null, null, null, null, null, null);
-//                itemViewModel.createItem(item);
+                String title = binding.title.getText().toString();
+                String price = binding.price.getText().toString();
+                Boolean priceOffer = true;
+                String content = binding.content.getText().toString();
+
+                if (itemPhotos.size() == 0) return;
+
+                binding.progress.setVisibility(View.VISIBLE);
+                //String id, String title, String price, boolean priceOffer, String content, ArrayList<String> photoKeys, String key, String firstPhotoUri
+                Item item = new Item(user.getUid(), title, price, priceOffer, content, itemPhotos, "", itemPhotos.get(0));
+                itemViewModel.createItem(item);
             }
         });
 

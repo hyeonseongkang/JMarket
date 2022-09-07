@@ -7,6 +7,7 @@ public class Item {
     private String id;
     private String title;
     private String price;
+    private boolean priceOffer;
     private String content;
     private ArrayList<String> photoKeys;
     private String key;
@@ -14,10 +15,11 @@ public class Item {
 
     public Item() {}
 
-    public Item(String id, String title, String price, String content, ArrayList<String> photoKeys, String key, String firstPhotoUri) {
+    public Item(String id, String title, String price, boolean priceOffer, String content, ArrayList<String> photoKeys, String key, String firstPhotoUri) {
         this.id = id;
         this.title = title;
         this.price = price;
+        this.priceOffer = priceOffer;
         this.content = content;
         this.photoKeys = photoKeys;
         this.key = key;
@@ -34,6 +36,10 @@ public class Item {
 
     public String getPrice() {
         return price;
+    }
+
+    public boolean isPriceOffer() {
+        return priceOffer;
     }
 
     public String getContent() {
