@@ -6,9 +6,37 @@
     android:layout_height="match_parent"
     tools:context=".view.ChatFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/topLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="ChatFragment"
-        android:layout_centerInParent="true"/>
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="13dp"
+            android:layout_marginRight="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="채팅"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/scd5"
+                android:textColor="#000000"
+                android:textSize="18dp" />
+
+
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/topLayout"
+            android:layout_marginTop="10dp"
+            android:background="#000000" />
+    </LinearLayout>
 </RelativeLayout>

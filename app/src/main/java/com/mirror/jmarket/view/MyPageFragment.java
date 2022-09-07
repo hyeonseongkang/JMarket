@@ -96,8 +96,6 @@ public class MyPageFragment extends Fragment {
             }
         });
 
-
-
         binding.userEmail.setText(user.getEmail());
 
         binding.editProfile.setOnClickListener(new View.OnClickListener() {
