@@ -91,7 +91,7 @@
                     android:background="@drawable/activity_create_item_photo_background">
 
                     <ImageView
-                        android:id="@+id/photoImage"
+                        android:id="@+id/tempPhotoImage"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:scaleType="fitXY" />
@@ -127,7 +127,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="110dp"
                     android:layout_marginLeft="20dp"
-                    android:overScrollMode="never" />
+                    android:overScrollMode="never"
+                    tools:listitem="@layout/home_photo_item"
+                    tools:itemCount="5"/>
 
             </LinearLayout>
 

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.auth.FirebaseUser;
 import com.mirror.jmarket.R;
 import com.mirror.jmarket.databinding.ActivityMainBinding;
 import com.mirror.jmarket.viewmodel.LoginViewModel;
@@ -15,6 +16,8 @@ import com.mirror.jmarket.viewmodel.LoginViewModel;
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = "MainActivity";
+
+    public static FirebaseUser USER;
 
     private ActivityMainBinding mainBinding;
 
@@ -27,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(mainBinding.getRoot());
 
         loginViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(LoginViewModel.class);
+        loginViewModel.loginCheck();
+        USER = loginViewModel.getFirebaseUser().getValue();
         getSupportFragmentManager().beginTransaction().replace(R.id.container, new HomeFragment()).commit();
 
         mainBinding.bottomNavigation.setOnItemSelectedListener(onItemSelectedListener);
