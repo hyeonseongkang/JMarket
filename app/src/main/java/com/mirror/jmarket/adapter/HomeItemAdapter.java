@@ -79,7 +79,7 @@ public class HomeItemAdapter extends RecyclerView.Adapter<HomeItemAdapter.MyView
                 public void onClick(View view) {
                     int position = getAdapterPosition();
                     if (listener != null && position != RecyclerView.NO_POSITION) {
-                        listener.onItemClick(position);
+                        listener.onItemClick(items.get(position));
                     }
                 }
             });
@@ -87,7 +87,7 @@ public class HomeItemAdapter extends RecyclerView.Adapter<HomeItemAdapter.MyView
     }
 
     public interface onItemClickListener {
-        void onItemClick(int position);
+        void onItemClick(Item item);
     }
 
     public void setOnItemClickListener(onItemClickListener listener ) {this.listener= listener;}

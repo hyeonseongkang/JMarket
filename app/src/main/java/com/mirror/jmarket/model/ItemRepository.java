@@ -36,6 +36,8 @@ public class ItemRepository {
 
     private MutableLiveData<List<Item>> items;
 
+    private MutableLiveData<Item> item;
+
     private List<Item> tempItems;
 
 
@@ -45,11 +47,29 @@ public class ItemRepository {
         itemSave = new MutableLiveData<>();
         items = new MutableLiveData<>();
         tempItems = new ArrayList<>();
+        item = new MutableLiveData<>();
     }
 
     public MutableLiveData<Boolean> getItemSave() { return itemSave; }
 
     public MutableLiveData<List<Item>> getItems() { return items; }
+
+    public MutableLiveData<Item> getItem() { return item; }
+
+    public void getItem(String key) {
+        myRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                Item tempItem = snapshot.getValue(Item.class);
+                item.setValue(tempItem);
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
 
     public void getHomeItems() {
         myRef.addValueEventListener(new ValueEventListener() {

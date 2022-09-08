@@ -21,20 +21,27 @@ public class ItemViewModel extends AndroidViewModel {
 
     private MutableLiveData<List<Item>> items;
 
+    private MutableLiveData<Item> item;
+
     public ItemViewModel(@NonNull @NotNull Application application) {
         super(application);
         repository = new ItemRepository(application);
         itemSave = repository.getItemSave();
         items = repository.getItems();
+        item = repository.getItem();
     }
 
     public MutableLiveData<Boolean> getItemSave() { return itemSave; }
 
     public MutableLiveData<List<Item>> getItems() { return items; }
 
+    public MutableLiveData<Item> getItem() { return item; }
+
     public void getHomeItems() { repository.getHomeItems(); }
 
     public void createItem(Item item) {
         repository.createItem(item);
     }
+
+    public void getItem(String key) { repository.getItem(key); }
 }

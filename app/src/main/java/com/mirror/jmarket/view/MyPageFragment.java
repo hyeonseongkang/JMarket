@@ -67,8 +67,6 @@ public class MyPageFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
-//        loginViewModel.loginCheck();
-//        user = loginViewModel.getFirebaseUser().getValue();
         user = MainActivity.USER;
 
 

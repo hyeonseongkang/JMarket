@@ -58,11 +58,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onChanged(List<Item> items) {
                 adapter.setItems(items);
-//                for (Item item: items) {
-//                    Log.d(TAG, item.getId());
-//                    Log.d(TAG, item.getKey());
-//                    Log.d(TAG, item.getTitle());
-//                }
+
             }
         });
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -70,6 +66,15 @@ public class HomeFragment extends Fragment {
 
         adapter = new HomeItemAdapter();
         binding.recyclerView.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(new HomeItemAdapter.onItemClickListener() {
+            @Override
+            public void onItemClick(Item item) {
+                Intent intent = new Intent(getActivity(), DetailItemActivity.class);
+                intent.putExtra("key", item.getKey());
+                startActivity(intent);
+            }
+        });
 
         binding.createItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
