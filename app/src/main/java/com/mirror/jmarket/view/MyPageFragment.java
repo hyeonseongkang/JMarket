@@ -15,6 +15,7 @@ import androidx.core.app.ActivityOptionsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseUser;
 import com.mirror.jmarket.R;
+import com.mirror.jmarket.adapter.HomeItemPhotoAdapter;
 import com.mirror.jmarket.classes.User;
 import com.mirror.jmarket.databinding.FragmentMypageBinding;
 import com.mirror.jmarket.viewmodel.LoginViewModel;
@@ -68,6 +70,7 @@ public class MyPageFragment extends Fragment {
 //        loginViewModel.loginCheck();
 //        user = loginViewModel.getFirebaseUser().getValue();
         user = MainActivity.USER;
+
 
         userManagerViewModel = new ViewModelProvider(requireActivity()).get(UserManagerViewModel.class);
         userManagerViewModel.getUserProfile(user.getUid());
