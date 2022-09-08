@@ -3,6 +3,7 @@ package com.mirror.jmarket.model;
 import android.app.Application;
 import android.net.Uri;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -50,11 +51,17 @@ public class ItemRepository {
         item = new MutableLiveData<>();
     }
 
-    public MutableLiveData<Boolean> getItemSave() { return itemSave; }
+    public MutableLiveData<Boolean> getItemSave() {
+        return itemSave;
+    }
 
-    public MutableLiveData<List<Item>> getItems() { return items; }
+    public MutableLiveData<List<Item>> getItems() {
+        return items;
+    }
 
-    public MutableLiveData<Item> getItem() { return item; }
+    public MutableLiveData<Item> getItem() {
+        return item;
+    }
 
     public void getItem(String key) {
         myRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -76,7 +83,7 @@ public class ItemRepository {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 tempItems.clear();
-                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                     Item item = snapshot1.getValue(Item.class);
                     Log.d(TAG, item.getId());
                     tempItems.add(item);
@@ -90,7 +97,6 @@ public class ItemRepository {
             }
         });
     }
-
 
     // String id, String title, String price, String content, ArrayList<String> photoKeys, String key, String firstPhotoUri
     public void createItem(Item item) {
@@ -111,30 +117,51 @@ public class ItemRepository {
         ArrayList<String> tempPhotokeys = new ArrayList<>();
         for (int i = 0; i < photoKeys.size(); i++) {
             String photoKey = myRef.push().getKey();
-            tempPhotokeys.add(photoKey);
-        }
-
-        for (int i = 0; i < tempPhotokeys.size(); i++) {
-            StorageReference storage = FirebaseStorage.getInstance().getReference().child("items/" + tempPhotokeys.get(i) + ".jpg");
+            StorageReference storage = FirebaseStorage.getInstance().getReference().child("items/" + photoKey + ".jpg");
             UploadTask uploadTask = storage.putFile(Uri.parse(photoKeys.get(i)));
-
             int finalI = i;
             uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    if (finalI == 0) {
-                        storage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
+                    storage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            tempPhotokeys.add(uri.toString());
+
+                            if (finalI == photoKeys.size() - 1) {
                                 Item tempItem = new Item(id, title, price, priceOffer, content, tempPhotokeys, key, uri.toString());
                                 myRef.child(key).setValue(tempItem);
                                 itemSave.setValue(true);
                             }
-                        });
-                    }
+                        }
+                    });
+
                 }
             });
+
         }
+
+//        for (int i = 0; i < tempPhotokeys.size(); i++) {
+//            StorageReference storage = FirebaseStorage.getInstance().getReference().child("items/" + tempPhotokeys.get(i) + ".jpg");
+//            UploadTask uploadTask = storage.putFile(Uri.parse(photoKeys.get(i)));
+//
+//            int finalI = i;
+//            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                @Override
+//                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                    if (finalI == 0) {
+//                        storage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                            @Override
+//                            public void onSuccess(Uri uri) {
+//                                Item tempItem = new Item(id, title, price, priceOffer, content, tempPhotokeys, key, uri.toString());
+//                                myRef.child(key).setValue(tempItem);
+//                                itemSave.setValue(true);
+//                            }
+//                        });
+//                    }
+//                }
+//            });
+//        }
 
 
     }

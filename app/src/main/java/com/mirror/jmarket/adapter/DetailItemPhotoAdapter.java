@@ -11,48 +11,42 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.mirror.jmarket.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
-class DetailItemPhotoAdapter extends RecyclerView.Adapter<DetailItemPhotoAdapter.MyViewHolder>{
+public class DetailItemPhotoAdapter extends RecyclerView.Adapter<DetailItemPhotoAdapter.MyViewHolder> {
 
-    private List<String> dataList;
-
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
-        View rootView;
-        private ImageView photoImage;
-
-        public MyViewHolder(View v) {
-            super(v);
-
-            photoImage = (ImageView) v.findViewById(R.id.photoImage);
-            rootView = v;
-        }
-    }
-
-    public DetailItemPhotoAdapter(List<String> dataList) {
-        this.dataList = dataList;
-    }
+    private List<String> photoUris = new ArrayList<>();
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v;
-        v = (View) LayoutInflater.from(parent.getContext()).inflate(R.layout.home_photo_item, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.detail_photo_item, parent, false);
 
-        MyViewHolder viewHolder = new MyViewHolder(v);
-
-        return viewHolder;
+        return new MyViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        Glide.with(holder.rootView.getContext())
-                .load(Uri.parse(dataList.get(position)))
-                .into(holder.photoImage);
+        Glide.with(holder.itemView.getContext())
+                .load(Uri.parse(photoUris.get(position)))
+                .into(holder.photo);
     }
 
-
     @Override
-    public int getItemCount() {
-        return dataList == null ? 0 : dataList.size();
+    public int getItemCount() { return photoUris == null ? 0 : photoUris.size(); }
+
+    public void setPhotoUris(List<String> photoUris) {
+        this.photoUris = photoUris;
+        notifyDataSetChanged();
+    }
+
+    class MyViewHolder extends RecyclerView.ViewHolder {
+        private ImageView photo;
+
+        public MyViewHolder(View itemView) {
+            super(itemView);
+            photo = itemView.findViewById(R.id.photo);
+        }
     }
 }

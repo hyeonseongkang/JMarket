@@ -52,13 +52,14 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        binding.progress.setVisibility(View.VISIBLE);
         itemViewModel = new ViewModelProvider(requireActivity()).get(ItemViewModel.class);
         itemViewModel.getHomeItems();
         itemViewModel.getItems().observe(getActivity(), new Observer<List<Item>>() {
             @Override
             public void onChanged(List<Item> items) {
                 adapter.setItems(items);
-
+                binding.progress.setVisibility(View.GONE);
             }
         });
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

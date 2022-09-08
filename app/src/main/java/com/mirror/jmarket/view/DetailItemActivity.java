@@ -5,12 +5,18 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.StorageReference;
 import com.mirror.jmarket.R;
+import com.mirror.jmarket.adapter.DetailItemPhotoAdapter;
 import com.mirror.jmarket.classes.Item;
 import com.mirror.jmarket.databinding.ActivityDetailItemBinding;
 import com.mirror.jmarket.viewmodel.ItemViewModel;
@@ -26,6 +32,9 @@ public class DetailItemActivity extends AppCompatActivity {
 
     // viewModel
     private ItemViewModel itemViewModel;
+
+    // adapter
+    DetailItemPhotoAdapter adapter;
 
     String key;
 
@@ -51,13 +60,18 @@ public class DetailItemActivity extends AppCompatActivity {
                 binding.price.setText(item.getPrice());
 
                 ArrayList<String> photoKeys = item.getPhotoKeys();
-
+                adapter.setPhotoUris(photoKeys);
 
             }
         });
 
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        binding.recyclerView.setLayoutManager(linearLayoutManager);
         binding.recyclerView.setHasFixedSize(true);
+
+        adapter = new DetailItemPhotoAdapter();
+        binding.recyclerView.setAdapter(adapter);
 
         binding.backButton.setOnClickListener(new View.OnClickListener() {
             @Override
