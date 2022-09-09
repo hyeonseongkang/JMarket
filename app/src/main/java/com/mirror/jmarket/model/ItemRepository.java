@@ -108,6 +108,9 @@ public class ItemRepository {
         ArrayList<String> photoKeys = item.getPhotoKeys();
         String key = myRef.push().getKey();
         String firstPhotoUri = item.getFirstPhotoUri();
+        String sellerProfileUri = item.getSellerProfileUri();
+        String sellerName = item.getSellerName();
+        ArrayList<String> likes = item.getLikes();
 
         if (photoKeys.size() == 0) {
             Toast.makeText(application, "이미지를 하나 이상 추가해 주세요.", Toast.LENGTH_SHORT).show();
@@ -129,7 +132,7 @@ public class ItemRepository {
                             tempPhotokeys.add(uri.toString());
 
                             if (finalI == photoKeys.size() - 1) {
-                                Item tempItem = new Item(id, title, price, priceOffer, content, tempPhotokeys, key, uri.toString());
+                                Item tempItem = new Item(id, title, price, priceOffer, content, tempPhotokeys, key, tempPhotokeys.get(0), sellerProfileUri, sellerName, likes);
                                 myRef.child(key).setValue(tempItem);
                                 itemSave.setValue(true);
                             }

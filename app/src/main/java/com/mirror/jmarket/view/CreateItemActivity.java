@@ -14,18 +14,25 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseUser;
 import com.mirror.jmarket.R;
 import com.mirror.jmarket.adapter.HomeItemPhotoAdapter;
 import com.mirror.jmarket.classes.Item;
+import com.mirror.jmarket.classes.User;
 import com.mirror.jmarket.databinding.ActivityCreateItemBinding;
 import com.mirror.jmarket.viewmodel.ItemViewModel;
 import com.mirror.jmarket.viewmodel.LoginViewModel;
+import com.mirror.jmarket.viewmodel.UserManagerViewModel;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class CreateItemActivity extends AppCompatActivity {
@@ -37,9 +44,14 @@ public class CreateItemActivity extends AppCompatActivity {
 
     // ViewModel
     private ItemViewModel itemViewModel;
+    private UserManagerViewModel userManagerViewModel;
 
     // Firebase User;
     private FirebaseUser user;
+
+    // User Info
+    private String userName;
+    private String userProfile;
 
     // photo
     private ArrayList<String> itemPhotos;
@@ -47,6 +59,9 @@ public class CreateItemActivity extends AppCompatActivity {
 
     // adpater
     private HomeItemPhotoAdapter adapter;
+
+    private DecimalFormat decimalFormat = new DecimalFormat("#,###");
+    private String priceFormat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +86,27 @@ public class CreateItemActivity extends AppCompatActivity {
             }
         });
 
+        userManagerViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(UserManagerViewModel.class);
+        userManagerViewModel.getUserProfile(user.getUid());
+        userManagerViewModel.getUserProfile().observe(this, new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+                if (user.getNickName() == null || user.getNickName().length() <= 0) {
+                    userName = user.getEmail();
+                } else {
+                    userName = user.getNickName();
+                }
+
+                if (user.getPhotoUri() == null || user.getPhotoUri().length() <= 0) {
+                    userProfile = "null";
+                } else {
+                    userProfile = user.getPhotoUri();
+                }
+
+
+            }
+        });
+
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -90,6 +126,27 @@ public class CreateItemActivity extends AppCompatActivity {
             }
         });
 
+        binding.price.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!TextUtils.isEmpty(s.toString()) && !s.toString().equals(priceFormat)) {
+                    priceFormat = decimalFormat.format(Double.parseDouble(s.toString().replaceAll(",", "")));
+                    binding.price.setText(priceFormat);
+                    binding.price.setSelection(priceFormat.length());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         binding.gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,14 +163,14 @@ public class CreateItemActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String title = binding.title.getText().toString();
                 String price = binding.price.getText().toString();
-                Boolean priceOffer = true;
+                Boolean priceOffer = binding.priceOffer.isChecked();
                 String content = binding.content.getText().toString();
 
                 if (itemPhotos.size() == 0) return;
 
                 binding.progress.setVisibility(View.VISIBLE);
-                //String id, String title, String price, boolean priceOffer, String content, ArrayList<String> photoKeys, String key, String firstPhotoUri
-                Item item = new Item(user.getUid(), title, price, priceOffer, content, itemPhotos, "", itemPhotos.get(0));
+                //String id, String title, String price, boolean priceOffer, String content, ArrayList<String> photoKeys, String key, String firstPhotoUri, String sellerProfileUri, String sellerName, ArrayList<String> likes
+                Item item = new Item(user.getUid(), title, price, priceOffer, content, itemPhotos, "", itemPhotos.get(0), userProfile, userName, new ArrayList<>());
                 itemViewModel.createItem(item);
             }
         });

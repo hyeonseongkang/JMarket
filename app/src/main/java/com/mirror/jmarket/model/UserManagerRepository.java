@@ -56,6 +56,7 @@ public class UserManagerRepository {
                 storage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
+                        user.setPhotoUri(uri.toString());
                         myRef.child(uid).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull @NotNull Task<Void> task) {

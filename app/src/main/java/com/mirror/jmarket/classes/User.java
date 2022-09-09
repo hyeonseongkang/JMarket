@@ -47,4 +47,8 @@ public class User {
     public String getPhotoUri() {
         return photoUri;
     }
+
+    public void setPhotoUri(String uri) {
+        this.photoUri = uri;
+    }
 }

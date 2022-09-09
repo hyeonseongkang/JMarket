@@ -12,10 +12,13 @@ public class Item {
     private ArrayList<String> photoKeys;
     private String key;
     private String firstPhotoUri;
+    private String sellerProfileUri;
+    private String sellerName;
+    private ArrayList<String> likes;
 
     public Item() {}
 
-    public Item(String id, String title, String price, boolean priceOffer, String content, ArrayList<String> photoKeys, String key, String firstPhotoUri) {
+    public Item(String id, String title, String price, boolean priceOffer, String content, ArrayList<String> photoKeys, String key, String firstPhotoUri, String sellerProfileUri, String sellerName, ArrayList<String> likes) {
         this.id = id;
         this.title = title;
         this.price = price;
@@ -24,6 +27,9 @@ public class Item {
         this.photoKeys = photoKeys;
         this.key = key;
         this.firstPhotoUri = firstPhotoUri;
+        this.sellerProfileUri = sellerProfileUri;
+        this.sellerName = sellerName;
+        this.likes = likes;
     }
 
     public String getId() {
@@ -56,5 +62,17 @@ public class Item {
 
     public String getFirstPhotoUri() {
         return firstPhotoUri;
+    }
+
+    public String getSellerProfileUri() {
+        return sellerProfileUri;
+    }
+
+    public String getSellerName() {
+        return sellerName;
+    }
+
+    public ArrayList<String> getLikes() {
+        return likes;
     }
 }

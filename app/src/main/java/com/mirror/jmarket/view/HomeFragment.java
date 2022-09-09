@@ -32,6 +32,8 @@ public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
 
+    // viewModel
+    private LoginViewModel loginViewModel;
     private ItemViewModel itemViewModel;
 
     // Adapter
@@ -52,14 +54,18 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
+
         binding.progress.setVisibility(View.VISIBLE);
         itemViewModel = new ViewModelProvider(requireActivity()).get(ItemViewModel.class);
         itemViewModel.getHomeItems();
         itemViewModel.getItems().observe(getActivity(), new Observer<List<Item>>() {
             @Override
             public void onChanged(List<Item> items) {
-                adapter.setItems(items);
-                binding.progress.setVisibility(View.GONE);
+                if (items != null) {
+                    adapter.setItems(items);
+                    binding.progress.setVisibility(View.GONE);
+                }
             }
         });
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -67,6 +73,13 @@ public class HomeFragment extends Fragment {
 
         adapter = new HomeItemAdapter();
         binding.recyclerView.setAdapter(adapter);
+
+        binding.search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loginViewModel.logout();
+            }
+        });
 
         adapter.setOnItemClickListener(new HomeItemAdapter.onItemClickListener() {
             @Override

@@ -39,7 +39,7 @@ public class HomeItemAdapter extends RecyclerView.Adapter<HomeItemAdapter.MyView
         Item item = items.get(position);
         holder.title.setText(item.getTitle());
         holder.content.setText(item.getContent());
-        holder.price.setText(item.getPrice());
+        holder.price.setText(item.getPrice() + "원");
         Glide.with(holder.itemView.getContext())
                 .load(Uri.parse(items.get(position).getFirstPhotoUri()))
                 .into(holder.photo);
@@ -56,8 +56,6 @@ public class HomeItemAdapter extends RecyclerView.Adapter<HomeItemAdapter.MyView
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
-
-        View rootView;
         private ImageView photo;
         private TextView title, content, price;
 

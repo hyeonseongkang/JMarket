@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.StorageReference;
 import com.mirror.jmarket.R;
@@ -54,10 +55,36 @@ public class DetailItemActivity extends AppCompatActivity {
         itemViewModel.getItem().observe(this, new Observer<Item>() {
             @Override
             public void onChanged(Item item) {
+                /*
+                sellerProfile
+                userName
+                title
+                content
+                like
+                price
+                priceOffer
+                chatButton
+                 */
                 // title, content, price, photoList
                 binding.title.setText(item.getTitle());
                 binding.content.setText(item.getContent());
-                binding.price.setText(item.getPrice());
+                binding.price.setText(item.getPrice() + "원");
+                binding.userName.setText(item.getSellerName());
+
+                String sellerProfielUri = item.getSellerProfileUri();
+
+                if (!(sellerProfielUri.equals("null")))
+                    Glide.with(DetailItemActivity.this)
+                    .load(sellerProfielUri)
+                    .into(binding.sellerProfile);
+
+
+                boolean priceOffer = item.isPriceOffer();
+
+                if (priceOffer)
+                    binding.priceOffer.setText("가격제안가능");
+                else
+                    binding.priceOffer.setText("가격제안불가능");
 
                 ArrayList<String> photoKeys = item.getPhotoKeys();
                 adapter.setPhotoUris(photoKeys);
