@@ -57,6 +57,12 @@ public class HomeFragment extends Fragment {
         loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
 
         binding.progress.setVisibility(View.VISIBLE);
+
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        binding.recyclerView.setHasFixedSize(true);
+        adapter = new HomeItemAdapter();
+        binding.recyclerView.setAdapter(adapter);
+
         itemViewModel = new ViewModelProvider(requireActivity()).get(ItemViewModel.class);
         itemViewModel.getHomeItems();
         itemViewModel.getItems().observe(getActivity(), new Observer<List<Item>>() {
@@ -68,11 +74,9 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        binding.recyclerView.setHasFixedSize(true);
 
-        adapter = new HomeItemAdapter();
-        binding.recyclerView.setAdapter(adapter);
+
+
 
         binding.search.setOnClickListener(new View.OnClickListener() {
             @Override

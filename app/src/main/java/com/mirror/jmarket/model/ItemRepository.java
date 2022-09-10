@@ -84,11 +84,44 @@ public class ItemRepository {
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 tempItems.clear();
                 for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                    System.out.println(snapshot1.getValue());
                     Item item = snapshot1.getValue(Item.class);
-                    Log.d(TAG, item.getId());
+                    System.out.println(item.getLikes() + "!@!@!@");
                     tempItems.add(item);
                 }
                 items.setValue(tempItems);
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void setLike(String key, String uid, String userEmail) {
+        // key = item
+        // uid = 좋아요 누른 사람 uid
+        // userEmail = 좋아요 누른 사람 이메일
+
+        //ArrayList<String> likes = myRef.child(key).child("likes");
+        myRef.child(key).child("likes").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                ArrayList<String> likes = new ArrayList<>();
+                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                    if (snapshot1.getValue() != null) {
+                        Log.d(TAG, snapshot1.getValue().toString());
+                        String userUid = snapshot1.getValue(String.class);
+                        likes.add(userUid);
+                    }
+                }
+
+                if (!(likes.contains(uid)))
+                    likes.add(uid);
+                
+                myRef.child(key).child("likes").setValue(likes);
+                Log.d(TAG, "likes1");
             }
 
             @Override
@@ -132,7 +165,9 @@ public class ItemRepository {
                             tempPhotokeys.add(uri.toString());
 
                             if (finalI == photoKeys.size() - 1) {
+                                // String id, String title, String price, boolean priceOffer, String content, ArrayList<String> photoKeys, String key, String firstPhotoUri, String sellerProfileUri, String sellerName, String likes
                                 Item tempItem = new Item(id, title, price, priceOffer, content, tempPhotokeys, key, tempPhotokeys.get(0), sellerProfileUri, sellerName, likes);
+                               // Item item = new Item(id, title, price, priceOffer, content, tempPhotokeys, key, tempPhotokeys.get(0), sellerProfileUri, sellerName, likes);
                                 myRef.child(key).setValue(tempItem);
                                 itemSave.setValue(true);
                             }
@@ -144,27 +179,8 @@ public class ItemRepository {
 
         }
 
-//        for (int i = 0; i < tempPhotokeys.size(); i++) {
-//            StorageReference storage = FirebaseStorage.getInstance().getReference().child("items/" + tempPhotokeys.get(i) + ".jpg");
-//            UploadTask uploadTask = storage.putFile(Uri.parse(photoKeys.get(i)));
-//
-//            int finalI = i;
-//            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                @Override
-//                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                    if (finalI == 0) {
-//                        storage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-//                            @Override
-//                            public void onSuccess(Uri uri) {
-//                                Item tempItem = new Item(id, title, price, priceOffer, content, tempPhotokeys, key, uri.toString());
-//                                myRef.child(key).setValue(tempItem);
-//                                itemSave.setValue(true);
-//                            }
-//                        });
-//                    }
-//                }
-//            });
-//        }
+
+
 
 
     }

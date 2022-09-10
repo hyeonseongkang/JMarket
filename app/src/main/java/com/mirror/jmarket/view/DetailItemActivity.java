@@ -15,12 +15,14 @@ import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.StorageReference;
 import com.mirror.jmarket.R;
 import com.mirror.jmarket.adapter.DetailItemPhotoAdapter;
 import com.mirror.jmarket.classes.Item;
 import com.mirror.jmarket.databinding.ActivityDetailItemBinding;
 import com.mirror.jmarket.viewmodel.ItemViewModel;
+import com.mirror.jmarket.viewmodel.UserManagerViewModel;
 
 import java.util.ArrayList;
 
@@ -33,9 +35,13 @@ public class DetailItemActivity extends AppCompatActivity {
 
     // viewModel
     private ItemViewModel itemViewModel;
+    private UserManagerViewModel userManagerViewModel;
 
     // adapter
     DetailItemPhotoAdapter adapter;
+
+    // Firebase User
+    private FirebaseUser user;
 
     String key;
 
@@ -49,6 +55,8 @@ public class DetailItemActivity extends AppCompatActivity {
 
         Intent getIntent = getIntent();
         key = getIntent.getStringExtra("key");
+
+        user = MainActivity.USER;
 
         itemViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ItemViewModel.class);
         itemViewModel.getItem(key);
@@ -92,6 +100,9 @@ public class DetailItemActivity extends AppCompatActivity {
             }
         });
 
+//        userManagerViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(UserManagerViewModel.class);
+//        userManagerViewModel.getUserProfile(user.getUid());
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
         binding.recyclerView.setLayoutManager(linearLayoutManager);
@@ -99,6 +110,13 @@ public class DetailItemActivity extends AppCompatActivity {
 
         adapter = new DetailItemPhotoAdapter();
         binding.recyclerView.setAdapter(adapter);
+
+        binding.like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                itemViewModel.setLike(key, user.getUid(), user.getEmail());
+            }
+        });
 
         binding.backButton.setOnClickListener(new View.OnClickListener() {
             @Override

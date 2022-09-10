@@ -170,7 +170,7 @@ public class CreateItemActivity extends AppCompatActivity {
 
                 binding.progress.setVisibility(View.VISIBLE);
                 //String id, String title, String price, boolean priceOffer, String content, ArrayList<String> photoKeys, String key, String firstPhotoUri, String sellerProfileUri, String sellerName, ArrayList<String> likes
-                Item item = new Item(user.getUid(), title, price, priceOffer, content, itemPhotos, "", itemPhotos.get(0), userProfile, userName, new ArrayList<>());
+                Item item = new Item(user.getUid(), title, price, priceOffer, content, itemPhotos, "", itemPhotos.get(0), userProfile, userName, null);
                 itemViewModel.createItem(item);
             }
         });

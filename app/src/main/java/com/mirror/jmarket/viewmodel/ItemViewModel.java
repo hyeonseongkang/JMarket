@@ -44,4 +44,8 @@ public class ItemViewModel extends AndroidViewModel {
     }
 
     public void getItem(String key) { repository.getItem(key); }
+
+    public void setLike(String key, String uid, String userEmail) {
+        repository.setLike(key, uid, userEmail);
+    }
 }
