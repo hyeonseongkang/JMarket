@@ -103,10 +103,9 @@ public class ItemRepository {
         });
     }
 
-    public void setLike(String key, String uid, int type) {
+    public void setLike(String key, String uid) {
         // key = item
         // uid = 좋아요 누른 사람 uid
-        // type == 1이면 추가, 그외 숫자는 삭제
 
         //ArrayList<String> likes = myRef.child(key).child("likes");
         myRef.child(key).child("likes").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -121,6 +120,7 @@ public class ItemRepository {
                     }
                 }
 
+                // 현재 아이템 좋아요 리스트에 uid가 없다면 추가하고 uid가 있다면 삭제 -> toggle
                 if (!(likes.contains(uid))) {
                     likes.add(uid);
                     like.setValue(true);

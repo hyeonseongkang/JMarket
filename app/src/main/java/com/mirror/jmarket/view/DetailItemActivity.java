@@ -131,7 +131,7 @@ public class DetailItemActivity extends AppCompatActivity {
         binding.like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                itemViewModel.setLike(key, user.getUid(), 1);
+                itemViewModel.setLike(key, user.getUid());
             }
         });
 
