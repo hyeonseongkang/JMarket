@@ -139,13 +139,13 @@
             android:layout_marginBottom="25dp"
             android:orientation="horizontal">
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/like"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_centerVertical="true"
-                android:background="@drawable/heart"
-                android:backgroundTint="#D8D8D8" />
+                android:background="@drawable/basic_heart" />
+<!--            <D8D8D8> FF0000-->
 
             <LinearLayout
                 android:id="@+id/line1"

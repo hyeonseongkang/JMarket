@@ -23,12 +23,15 @@ public class ItemViewModel extends AndroidViewModel {
 
     private MutableLiveData<Item> item;
 
+    private MutableLiveData<Boolean> like;
+
     public ItemViewModel(@NonNull @NotNull Application application) {
         super(application);
         repository = new ItemRepository(application);
         itemSave = repository.getItemSave();
         items = repository.getItems();
         item = repository.getItem();
+        like = repository.getLike();
     }
 
     public MutableLiveData<Boolean> getItemSave() { return itemSave; }
@@ -36,6 +39,8 @@ public class ItemViewModel extends AndroidViewModel {
     public MutableLiveData<List<Item>> getItems() { return items; }
 
     public MutableLiveData<Item> getItem() { return item; }
+
+    public MutableLiveData<Boolean> getLike() { return like; }
 
     public void getHomeItems() { repository.getHomeItems(); }
 
@@ -45,7 +50,11 @@ public class ItemViewModel extends AndroidViewModel {
 
     public void getItem(String key) { repository.getItem(key); }
 
-    public void setLike(String key, String uid, String userEmail) {
-        repository.setLike(key, uid, userEmail);
+    public void setLike(String key, String uid, int type) {
+        repository.setLike(key, uid, type);
+    }
+
+    public void getLike(String key, String uid) {
+        repository.getLike(key, uid);
     }
 }

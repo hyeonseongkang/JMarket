@@ -8,8 +8,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -94,11 +96,26 @@ public class DetailItemActivity extends AppCompatActivity {
                 else
                     binding.priceOffer.setText("가격제안불가능");
 
+
                 ArrayList<String> photoKeys = item.getPhotoKeys();
                 adapter.setPhotoUris(photoKeys);
 
             }
         });
+
+        itemViewModel.getLike(key, user.getUid());
+        itemViewModel.getLike().observe(DetailItemActivity.this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                Log.d(TAG, aBoolean.toString());
+                if (aBoolean)
+                    binding.like.setBackgroundResource(R.drawable.red_heart);
+                else
+                    binding.like.setBackgroundResource(R.drawable.basic_heart);
+            }
+        });
+
+
 
 //        userManagerViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(UserManagerViewModel.class);
 //        userManagerViewModel.getUserProfile(user.getUid());
@@ -114,7 +131,7 @@ public class DetailItemActivity extends AppCompatActivity {
         binding.like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                itemViewModel.setLike(key, user.getUid(), user.getEmail());
+                itemViewModel.setLike(key, user.getUid(), 1);
             }
         });
 

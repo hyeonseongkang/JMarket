@@ -39,8 +39,9 @@ public class ItemRepository {
 
     private MutableLiveData<Item> item;
 
-    private List<Item> tempItems;
+    private MutableLiveData<Boolean> like;
 
+    private List<Item> tempItems;
 
     public ItemRepository(Application application) {
         this.application = application;
@@ -49,6 +50,7 @@ public class ItemRepository {
         items = new MutableLiveData<>();
         tempItems = new ArrayList<>();
         item = new MutableLiveData<>();
+        like = new MutableLiveData<>();
     }
 
     public MutableLiveData<Boolean> getItemSave() {
@@ -62,6 +64,8 @@ public class ItemRepository {
     public MutableLiveData<Item> getItem() {
         return item;
     }
+
+    public MutableLiveData<Boolean> getLike() { return like; }
 
     public void getItem(String key) {
         myRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -99,10 +103,10 @@ public class ItemRepository {
         });
     }
 
-    public void setLike(String key, String uid, String userEmail) {
+    public void setLike(String key, String uid, int type) {
         // key = item
         // uid = 좋아요 누른 사람 uid
-        // userEmail = 좋아요 누른 사람 이메일
+        // type == 1이면 추가, 그외 숫자는 삭제
 
         //ArrayList<String> likes = myRef.child(key).child("likes");
         myRef.child(key).child("likes").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -117,11 +121,41 @@ public class ItemRepository {
                     }
                 }
 
-                if (!(likes.contains(uid)))
+                if (!(likes.contains(uid))) {
                     likes.add(uid);
-                
+                    like.setValue(true);
+                } else if (likes.contains(uid)) {
+                    likes.remove(uid);
+                    like.setValue(false);
+                }
+
                 myRef.child(key).child("likes").setValue(likes);
-                Log.d(TAG, "likes1");
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void getLike(String key, String uid) {
+        myRef.child(key).child("likes").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                ArrayList<String> likes = new ArrayList<>();
+                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                    if (snapshot1.getValue() != null) {
+                        String userUid = snapshot1.getValue(String.class);
+                        likes.add(userUid);
+                    }
+                }
+
+                // like list에 uid user가 있다면 true -> 빨간색 하트 표시
+                if (likes.contains(uid))
+                    like.setValue(true);
+                else
+                    like.setValue(false);
             }
 
             @Override
