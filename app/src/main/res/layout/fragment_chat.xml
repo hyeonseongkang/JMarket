@@ -38,5 +38,15 @@
             android:layout_below="@+id/topLayout"
             android:layout_marginTop="10dp"
             android:background="#000000" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/sendMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
     </LinearLayout>
 </RelativeLayout>
