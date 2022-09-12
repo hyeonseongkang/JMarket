@@ -1,6 +1,7 @@
 package com.mirror.jmarket.view;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
@@ -23,6 +24,7 @@ import com.mirror.jmarket.R;
 import com.mirror.jmarket.adapter.DetailItemPhotoAdapter;
 import com.mirror.jmarket.classes.Item;
 import com.mirror.jmarket.databinding.ActivityDetailItemBinding;
+import com.mirror.jmarket.viewmodel.ChatViewModel;
 import com.mirror.jmarket.viewmodel.ItemViewModel;
 import com.mirror.jmarket.viewmodel.UserManagerViewModel;
 
@@ -37,7 +39,7 @@ public class DetailItemActivity extends AppCompatActivity {
 
     // viewModel
     private ItemViewModel itemViewModel;
-    private UserManagerViewModel userManagerViewModel;
+    private ChatViewModel chatViewModel;
 
     // adapter
     DetailItemPhotoAdapter adapter;
@@ -46,6 +48,7 @@ public class DetailItemActivity extends AppCompatActivity {
     private FirebaseUser user;
 
     String key;
+    String sellerUid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +79,7 @@ public class DetailItemActivity extends AppCompatActivity {
                 chatButton
                  */
                 // title, content, price, photoList
+                sellerUid = item.getId();
                 binding.title.setText(item.getTitle());
                 binding.content.setText(item.getContent());
                 binding.price.setText(item.getPrice() + "원");
@@ -115,6 +119,9 @@ public class DetailItemActivity extends AppCompatActivity {
             }
         });
 
+        chatViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ChatViewModel.class);
+        chatViewModel.getChatRoom(user.getUid());
+
 
 
 //        userManagerViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(UserManagerViewModel.class);
@@ -127,6 +134,13 @@ public class DetailItemActivity extends AppCompatActivity {
 
         adapter = new DetailItemPhotoAdapter();
         binding.recyclerView.setAdapter(adapter);
+
+        binding.chatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                chatViewModel.setChatRoom(user.getUid(), sellerUid);
+            }
+        });
 
         binding.like.setOnClickListener(new View.OnClickListener() {
             @Override
