@@ -21,6 +21,9 @@ import com.mirror.jmarket.classes.User;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class UserManagerRepository {
 
     public static final String TAG = "UserManagerRepository";
@@ -28,6 +31,9 @@ public class UserManagerRepository {
     public Application application;
 
     private MutableLiveData<User> userProfile;
+
+    private MutableLiveData<List<User>> usersProfile;
+    private List<User> users;
 
     private MutableLiveData<Boolean> updateValid;
 
@@ -38,13 +44,18 @@ public class UserManagerRepository {
     public UserManagerRepository(Application application) {
         this.application = application;
         userProfile = new MutableLiveData<>();
+        usersProfile = new MutableLiveData<>();
+        users = new ArrayList<>();
         updateValid = new MutableLiveData<>();
         myRef = FirebaseDatabase.getInstance().getReference("users");
     }
 
     public MutableLiveData<User> getUserProfile() { return userProfile; }
 
+    public MutableLiveData<List<User>> getUsersProfile() { return usersProfile; }
+
     public MutableLiveData<Boolean> getUpdateValid() { return updateValid; }
+
 
     public void updateUserProfile(User user) {
         String uid = user.getUid();
@@ -77,7 +88,6 @@ public class UserManagerRepository {
         myRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                System.out.println("!@!!!@ " + snapshot.getValue());
                 User user = snapshot.getValue(User.class);
                 userProfile.setValue(user);
             }
@@ -87,6 +97,24 @@ public class UserManagerRepository {
 
             }
         });
+    }
+
+    public void getUsersProfile(List<String> uids) {
+        users.clear();
+        for (String uid: uids) {
+            myRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                    User user = snapshot.getValue(User.class);
+                    users.add(user);
+                }
+                @Override
+                public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+                }
+            });
+        }
+        usersProfile.setValue(users);
     }
 
 }

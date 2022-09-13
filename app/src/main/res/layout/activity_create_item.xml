@@ -128,7 +128,7 @@
                     android:layout_height="110dp"
                     android:layout_marginLeft="20dp"
                     android:overScrollMode="never"
-                    tools:listitem="@layout/home_photo_item"
+                    tools:listitem="@layout/adapter_home_photo_item"
                     tools:itemCount="5"/>
 
             </LinearLayout>

@@ -8,6 +8,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.mirror.jmarket.classes.Chat;
+import com.mirror.jmarket.classes.User;
 import com.mirror.jmarket.model.ChatRepository;
 
 import java.util.List;
@@ -18,16 +19,25 @@ public class ChatViewModel extends AndroidViewModel {
 
     private MutableLiveData<List<String>> chatUsers;
 
+    private MutableLiveData<List<User>> getUsersProfile;
+
     public ChatViewModel(Application application) {
         super(application);
         repository = new ChatRepository(application);
         chatUsers = repository.getChatUsers();
+        getUsersProfile = repository.getUsersProfile();
     }
 
     public MutableLiveData<List<String>> getChatUsers() { return chatUsers; }
 
+    public MutableLiveData<List<User>> getUsersProfile() { return getUsersProfile; }
+
     public void getChatRoom(String uid) {
         repository.getChatRoom(uid);
+    }
+
+    public void getMyChatUser(String uid) {
+        repository.getMyChatUsers(uid);
     }
 
     public void setChatRoom(String uid, String sellerUid) {

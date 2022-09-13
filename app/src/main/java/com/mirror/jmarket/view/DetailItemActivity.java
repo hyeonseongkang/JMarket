@@ -1,32 +1,24 @@
 package com.mirror.jmarket.view;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.storage.StorageReference;
 import com.mirror.jmarket.R;
-import com.mirror.jmarket.adapter.DetailItemPhotoAdapter;
+import com.mirror.jmarket.adapter.DetailPhotoItemAdapter;
 import com.mirror.jmarket.classes.Item;
 import com.mirror.jmarket.databinding.ActivityDetailItemBinding;
 import com.mirror.jmarket.viewmodel.ChatViewModel;
 import com.mirror.jmarket.viewmodel.ItemViewModel;
-import com.mirror.jmarket.viewmodel.UserManagerViewModel;
 
 import java.util.ArrayList;
 
@@ -42,7 +34,7 @@ public class DetailItemActivity extends AppCompatActivity {
     private ChatViewModel chatViewModel;
 
     // adapter
-    DetailItemPhotoAdapter adapter;
+    DetailPhotoItemAdapter adapter;
 
     // Firebase User
     private FirebaseUser user;
@@ -132,7 +124,7 @@ public class DetailItemActivity extends AppCompatActivity {
         binding.recyclerView.setLayoutManager(linearLayoutManager);
         binding.recyclerView.setHasFixedSize(true);
 
-        adapter = new DetailItemPhotoAdapter();
+        adapter = new DetailPhotoItemAdapter();
         binding.recyclerView.setAdapter(adapter);
 
         binding.chatButton.setOnClickListener(new View.OnClickListener() {

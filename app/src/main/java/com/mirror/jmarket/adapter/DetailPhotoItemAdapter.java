@@ -14,14 +14,14 @@ import com.mirror.jmarket.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DetailItemPhotoAdapter extends RecyclerView.Adapter<DetailItemPhotoAdapter.MyViewHolder> {
+public class DetailPhotoItemAdapter extends RecyclerView.Adapter<DetailPhotoItemAdapter.MyViewHolder> {
 
     private List<String> photoUris = new ArrayList<>();
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.detail_photo_item, parent, false);
+                .inflate(R.layout.adapter_detail_photo_item, parent, false);
 
         return new MyViewHolder(itemView);
     }

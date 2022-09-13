@@ -13,11 +13,16 @@ import com.mirror.jmarket.model.UserManagerRepository;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class UserManagerViewModel extends AndroidViewModel {
 
     private UserManagerRepository repository;
 
     public MutableLiveData<User> userProfile;
+
+    public MutableLiveData<List<User>> usersProfile;
 
     public MutableLiveData<Boolean> updateValid;
 
@@ -25,12 +30,15 @@ public class UserManagerViewModel extends AndroidViewModel {
         super(application);
         repository = new UserManagerRepository(application);
         userProfile = repository.getUserProfile();
+        usersProfile = repository.getUsersProfile();
         updateValid = repository.getUpdateValid();
     }
 
     public MutableLiveData<User> getUserProfile() {
         return userProfile;
     }
+
+    public MutableLiveData<List<User>> getUsersProfile() { return usersProfile; }
 
     public MutableLiveData<Boolean> getUpdateValid() { return updateValid; }
 
@@ -39,4 +47,6 @@ public class UserManagerViewModel extends AndroidViewModel {
     public void updateUserProfile(User user) {
         repository.updateUserProfile(user);
     }
+
+    public void getUsersProfile(List<String> uids) { repository.getUsersProfile(uids);}
 }

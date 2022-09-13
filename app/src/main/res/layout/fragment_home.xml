@@ -57,7 +57,7 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:listitem="@layout/home_item"
+            tools:listitem="@layout/adapter_home_item"
             tools:itemCount="5"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"/>

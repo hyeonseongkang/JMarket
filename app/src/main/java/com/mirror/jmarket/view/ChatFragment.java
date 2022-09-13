@@ -9,6 +9,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,7 +18,9 @@ import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.mirror.jmarket.R;
+import com.mirror.jmarket.adapter.ChatListItemAdapter;
 import com.mirror.jmarket.classes.Chat;
+import com.mirror.jmarket.classes.User;
 import com.mirror.jmarket.databinding.FragmentChatBinding;
 import com.mirror.jmarket.viewmodel.ChatViewModel;
 import com.mirror.jmarket.viewmodel.LoginViewModel;
@@ -40,6 +43,9 @@ public class ChatFragment extends Fragment {
     // Firebase User
     private FirebaseUser user;
 
+    // Adpater
+    private ChatListItemAdapter adapter;
+
 
 
     public ChatFragment() {
@@ -59,16 +65,25 @@ public class ChatFragment extends Fragment {
 
         user = MainActivity.USER;
 
+        chatBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        chatBinding.recyclerView.setHasFixedSize(true);
+        adapter = new ChatListItemAdapter();
+        chatBinding.recyclerView.setAdapter(adapter);
+
         chatViewModel = new ViewModelProvider(requireActivity()).get(ChatViewModel.class);
-        chatViewModel.getChatRoom(user.getUid());
-        chatViewModel.getChatUsers().observe(getActivity(), new Observer<List<String>>() {
+        chatViewModel.getUsersProfile().observe(getActivity(), new Observer<List<User>>() {
             @Override
-            public void onChanged(List<String> users) {
-                for (String uid: users) {
-                    Log.d(TAG, uid);
+            public void onChanged(List<User> users) {
+                Log.d(TAG, "1");
+                adapter.setUsers(users, "Hello!!!");
+                for (User user: users) {
+                    Log.d(TAG, user.getEmail());
                 }
             }
         });
+        chatViewModel.getMyChatUser(user.getUid());
+
+
 
         chatBinding.sendMessage.setOnClickListener(new View.OnClickListener(){
             @RequiresApi(api = Build.VERSION_CODES.O)

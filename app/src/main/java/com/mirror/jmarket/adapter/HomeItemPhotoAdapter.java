@@ -26,7 +26,7 @@ public class HomeItemPhotoAdapter extends RecyclerView.Adapter<HomeItemPhotoAdap
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.home_photo_item, parent,false);
+                .inflate(R.layout.adapter_home_photo_item, parent,false);
 
         return new MyViewHolder(itemView);
     }
