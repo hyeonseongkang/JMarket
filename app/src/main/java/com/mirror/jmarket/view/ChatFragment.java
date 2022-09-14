@@ -17,14 +17,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseUser;
-import com.mirror.jmarket.R;
 import com.mirror.jmarket.adapter.ChatListItemAdapter;
 import com.mirror.jmarket.classes.Chat;
-import com.mirror.jmarket.classes.ChatRoom2;
-import com.mirror.jmarket.classes.User;
+import com.mirror.jmarket.classes.ChatRoom;
 import com.mirror.jmarket.databinding.FragmentChatBinding;
 import com.mirror.jmarket.viewmodel.ChatViewModel;
-import com.mirror.jmarket.viewmodel.LoginViewModel;
 import com.mirror.jmarket.viewmodel.UserManagerViewModel;
 
 import java.util.List;
@@ -81,28 +78,14 @@ public class ChatFragment extends Fragment {
 
          */
         chatViewModel = new ViewModelProvider(requireActivity()).get(ChatViewModel.class);
-        chatViewModel.getMyChatRooms().observe(getActivity(), new Observer<List<ChatRoom2>>() {
+        chatViewModel.getMyChatRooms().observe(getActivity(), new Observer<List<ChatRoom>>() {
             @Override
-            public void onChanged(List<ChatRoom2> chatRoom2s) {
-                for (ChatRoom2 chatRoom2: chatRoom2s) {
-                    Log.d(TAG, chatRoom2.getKey());
+            public void onChanged(List<ChatRoom> chatRooms) {
+                for (ChatRoom chatRoom : chatRooms) {
+                    Log.d(TAG, chatRoom.getKey());
                 }
             }
         });
-        /*
-        chatViewModel.getUsersProfile().observe(getActivity(), new Observer<List<User>>() {
-            @Override
-            public void onChanged(List<User> users) {
-                Log.d(TAG, "1");
-                adapter.setUsers(users, "Hello!!!");
-                for (User user: users) {
-                    Log.d(TAG, user.getEmail());
-                }
-            }
-        });
-         */
-        chatViewModel.getMyChatUser(user.getUid());
-
 
 
         chatBinding.sendMessage.setOnClickListener(new View.OnClickListener(){

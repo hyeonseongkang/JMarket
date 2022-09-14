@@ -1,10 +1,8 @@
 package com.mirror.jmarket.model;
 
 import android.app.Application;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -17,16 +15,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mirror.jmarket.classes.Chat;
 import com.mirror.jmarket.classes.ChatRoom;
-import com.mirror.jmarket.classes.ChatRoom2;
-import com.mirror.jmarket.classes.Item;
-import com.mirror.jmarket.classes.User;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class ChatRepository {
@@ -39,113 +33,28 @@ public class ChatRepository {
     private DatabaseReference chatRoomsRef;
 
 
-
-    private List<ChatRoom> chatRooms;
     private List<Chat> chats;
 
-    private MutableLiveData<List<ChatRoom2>> chatRoom2s;
-    private List<ChatRoom2> chatRoom2List;
+    private MutableLiveData<List<ChatRoom>> chatRooms;
+    private List<ChatRoom> chatRoomList;
 
-    private MutableLiveData<List<String>> chatUsers;
-    private ArrayList<String> users;
-
-    private MutableLiveData<List<User>> getUsersProfile;
-    private ArrayList<User> myChatUsers;
 
     public ChatRepository(Application application) {
         this.application = application;
         chatsRef = FirebaseDatabase.getInstance().getReference("chats");
         usersRef = FirebaseDatabase.getInstance().getReference("users");
         chatRoomsRef = FirebaseDatabase.getInstance().getReference("chatRooms");
-        chatRooms = new ArrayList<>();
         chats = new ArrayList<>();
-        chatUsers = new MutableLiveData<>();
-        users = new ArrayList<>();
 
-        chatRoom2s = new MutableLiveData<>();
-        chatRoom2List = new ArrayList<>();
+        chatRooms = new MutableLiveData<>();
+        chatRoomList = new ArrayList<>();
 
-        getUsersProfile = new MutableLiveData<>();
-        myChatUsers = new ArrayList<>();
     }
 
-    public MutableLiveData<List<String>> getChatUsers() {return chatUsers; }
-
-    public MutableLiveData<List<User>> getUsersProfile() { return getUsersProfile; }
-
-    public MutableLiveData<List<ChatRoom2>> getMyChatRooms() { return chatRoom2s;}
+    public MutableLiveData<List<ChatRoom>> getMyChatRooms() { return chatRooms;}
 
 
-    public void getChatRoom(String uid) {
-        chatsRef.child(uid).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                users.clear();
-                for (DataSnapshot snapshot1: snapshot.getChildren()) {
-                    users.add(snapshot1.getKey());
-                }
-                chatUsers.setValue(users);
-            }
-
-            @Override
-            public void onCancelled(@NonNull @NotNull DatabaseError error) {
-
-            }
-        });
-    }
-
-    public void getMyChatUsers(String uid) {
-        ArrayList<String> userUids = new ArrayList<>();
-
-        chatsRef.child(uid).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                userUids.clear();
-                for (DataSnapshot snapshot1: snapshot.getChildren()) {
-                    userUids.add(snapshot1.getKey());
-                    Log.d("uid", snapshot1.getKey());
-                }
-
-
-                /*
-                myChatUsers.clear();
-                for (int i = 0; i < userUids.size(); i++) {
-                    Log.d("TASK", "1");
-                    GetMyChatUsersTask task = new GetMyChatUsersTask();
-                    task.execute(userUids.get(i));
-                }
-                getUsersProfile.setValue(myChatUsers);
-                 */
-
-                myChatUsers.clear();
-                for (int i = 0; i < userUids.size(); i++) {
-                    usersRef.child(userUids.get(i)).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                            User user = snapshot.getValue(User.class);
-                            myChatUsers.add(user);
-                            if (myChatUsers.size() == userUids.size()) {
-                                getUsersProfile.setValue(myChatUsers);
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull @NotNull DatabaseError error) {
-
-                        }
-                    });
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull @NotNull DatabaseError error) {
-
-            }
-        });
-    }
-
-    public void setChatRoom2(String uid, String sellerUid, ChatRoom2 chatRoom2) {
+    public void setChatRoom(String uid, String sellerUid, ChatRoom chatRoom) {
 
         if (uid.equals(sellerUid))
             return;
@@ -156,16 +65,18 @@ public class ChatRepository {
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 boolean alreadyUser = false;
                 for (DataSnapshot snapshot1: snapshot.getChildren()) {
-                    ChatRoom2 chatRooms = snapshot1.getValue(ChatRoom2.class);
+                    ChatRoom chatRooms = snapshot1.getValue(ChatRoom.class);
                     if (snapshot1.getKey().equals(sellerUid))
                         alreadyUser = true;
                 }
 
                 if (!alreadyUser) {
                     String currentDate = getDate();
-                    chatRoom2.setDate(currentDate);
-                    chatRoomsRef.child(uid).child(sellerUid).setValue(chatRoom2);
-                    chatRoomsRef.child(sellerUid).child(uid).setValue(chatRoom2);
+                    chatRoom.setDate(currentDate);
+                    chatRoomsRef.child(uid).child(sellerUid).setValue(chatRoom);
+                    chatRoomsRef.child(sellerUid).child(uid).setValue(chatRoom);
+//                    chatsRef.child(uid).child(sellerUid).child("createDate").setValue(currentDate);
+//                    chatsRef.child(sellerUid).child(uid).child("createDate").setValue(currentDate);
                 }
             }
 
@@ -177,19 +88,16 @@ public class ChatRepository {
     }
 
     public void getMyChatRooms(String uid) {
-
         chatRoomsRef.child(uid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                chatRoom2List.clear();
+                chatRoomList.clear();
                 for (DataSnapshot snapshot1: snapshot.getChildren()) {
-                    ChatRoom2 chatRoom2 = snapshot1.getValue(ChatRoom2.class);
-                    chatRoom2List.add(chatRoom2);
-                    Log.d(TAG, chatRoom2.getKey() + " GetChatRoom");
-
+                    ChatRoom chatRoom = snapshot1.getValue(ChatRoom.class);
+                    chatRoomList.add(chatRoom);
+                    Log.d(TAG, chatRoom.getKey() + " GetChatRoom");
                 }
-
-                chatRoom2s.setValue(chatRoom2List);
+                chatRooms.setValue(chatRoomList);
             }
 
             @Override
@@ -197,43 +105,6 @@ public class ChatRepository {
 
             }
         });
-    }
-
-    public void setChatRoom(String uid, String sellerUid) {
-
-        if (uid.equals(sellerUid))
-            return;
-
-        chatsRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                chats.clear();
-                boolean alreadyUser = false;
-                for (DataSnapshot snapshot1: snapshot.getChildren()) {
-                    Chat chat = snapshot1.getValue(Chat.class);
-                    chats.add(chat);
-                    if (snapshot1.getKey().equals(sellerUid)) {
-                        alreadyUser = true;
-                    }
-                }
-                Log.d(TAG, String.valueOf(alreadyUser));
-                if (!alreadyUser) {
-                    Log.d(TAG, "Hello!");
-                    String date = getDate();
-                    chatsRef.child(uid).child(sellerUid).child("createDate").setValue(date);
-                    chatsRef.child(sellerUid).child(uid).child("createDate").setValue(date);
-                }
-
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull @NotNull DatabaseError error) {
-
-            }
-        });
-
     }
 
     public void sendMessage(String sender, String receiver, Chat chat) {
@@ -249,6 +120,7 @@ public class ChatRepository {
         return date;
     }
 
+    /*
     private class GetMyChatUsersTask extends AsyncTask<String, Void, Void> {
 
         @Override
@@ -278,4 +150,6 @@ public class ChatRepository {
             Log.d("TASK", "END");
         }
     }
+    */
 }
+

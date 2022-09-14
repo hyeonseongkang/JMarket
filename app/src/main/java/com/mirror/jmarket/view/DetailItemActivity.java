@@ -15,7 +15,7 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseUser;
 import com.mirror.jmarket.R;
 import com.mirror.jmarket.adapter.DetailPhotoItemAdapter;
-import com.mirror.jmarket.classes.ChatRoom2;
+import com.mirror.jmarket.classes.ChatRoom;
 import com.mirror.jmarket.classes.Item;
 import com.mirror.jmarket.databinding.ActivityDetailItemBinding;
 import com.mirror.jmarket.viewmodel.ChatViewModel;
@@ -116,9 +116,6 @@ public class DetailItemActivity extends AppCompatActivity {
         });
 
         chatViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ChatViewModel.class);
-        chatViewModel.getChatRoom(user.getUid());
-
-
 
 //        userManagerViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(UserManagerViewModel.class);
 //        userManagerViewModel.getUserProfile(user.getUid());
@@ -136,8 +133,8 @@ public class DetailItemActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 //chatViewModel.setChatRoom(user.getUid(), sellerUid);
-                ChatRoom2 chatRoom2 = new ChatRoom2(sellerUid, currentItem, "", "");
-                chatViewModel.setChatRoom2(user.getUid(), sellerUid, chatRoom2);
+                ChatRoom chatRoom = new ChatRoom(sellerUid, currentItem, "", "");
+                chatViewModel.setChatRoom(user.getUid(), sellerUid, chatRoom);
             }
         });
 
