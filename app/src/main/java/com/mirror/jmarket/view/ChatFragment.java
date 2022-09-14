@@ -68,6 +68,13 @@ public class ChatFragment extends Fragment {
         adapter = new ChatListItemAdapter();
         chatBinding.recyclerView.setAdapter(adapter);
 
+        adapter.setOnItemClickListener(new ChatListItemAdapter.onItemClickListener() {
+            @Override
+            public void onItemClick(ChatRoom chatRoom) {
+
+            }
+        });
+
         /*
 
         Firebase에 chatItems Reference 만들고 하위 Item으로
@@ -81,19 +88,17 @@ public class ChatFragment extends Fragment {
         chatViewModel.getMyChatRooms().observe(getActivity(), new Observer<List<ChatRoom>>() {
             @Override
             public void onChanged(List<ChatRoom> chatRooms) {
-                for (ChatRoom chatRoom : chatRooms) {
-                    Log.d(TAG, chatRoom.getKey());
-                }
+                adapter.setChatRooms(chatRooms);
             }
         });
 
 
-        chatBinding.sendMessage.setOnClickListener(new View.OnClickListener(){
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public void onClick(View v) {
-                chatViewModel.sendMessage(user.getUid(), "vO3Igea5wFb8SutxiQMVDgTG1iJ2", new Chat(user.getUid(), "안녕!", chatViewModel.getDate()));
-            }
-        });
+//        chatBinding.sendMessage.setOnClickListener(new View.OnClickListener(){
+//            @RequiresApi(api = Build.VERSION_CODES.O)
+//            @Override
+//            public void onClick(View v) {
+//                chatViewModel.sendMessage(user.getUid(), "vO3Igea5wFb8SutxiQMVDgTG1iJ2", new Chat(user.getUid(), "안녕!", chatViewModel.getDate()));
+//            }
+//        });
     }
 }

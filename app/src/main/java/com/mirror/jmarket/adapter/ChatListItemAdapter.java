@@ -1,5 +1,6 @@
 package com.mirror.jmarket.adapter;
 
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +9,11 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.mirror.jmarket.R;
+import com.mirror.jmarket.classes.ChatRoom;
+import com.mirror.jmarket.classes.Item;
+import com.mirror.jmarket.classes.LastMessage;
 import com.mirror.jmarket.classes.User;
 
 import java.util.ArrayList;
@@ -16,8 +21,7 @@ import java.util.List;
 
 public class ChatListItemAdapter extends RecyclerView.Adapter<ChatListItemAdapter.MyViewHolder>{
 
-    private List<User> users = new ArrayList<>();
-    private String lastMessage = new String();
+    private List<ChatRoom> chatRooms = new ArrayList<>();
     private onItemClickListener listener;
 
     @Override
@@ -30,19 +34,22 @@ public class ChatListItemAdapter extends RecyclerView.Adapter<ChatListItemAdapte
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        User user = users.get(position);
-        String userName = user.getNickName() == null ? user.getEmail() : user.getNickName();
-        holder.userNickName.setText(userName);
-        holder.lastMessage.setText(lastMessage);
+        ChatRoom chatRoom = chatRooms.get(position);
+        Item item = chatRoom.getItem();
+        LastMessage lastMessage = chatRoom.getLastMessage();
+        holder.userNickName.setText(item.getSellerName());
+        holder.lastMessage.setText(lastMessage.getMessage());
+        Glide.with(holder.itemView.getContext())
+                .load(Uri.parse(item.getFirstPhotoUri()))
+                .into(holder.photo);
 
     }
 
     @Override
-    public int getItemCount() { return users == null ? 0 : users.size(); }
+    public int getItemCount() { return chatRooms == null ? 0 : chatRooms.size(); }
 
-    public void setUsers(List<User> users, String lastMessage) {
-        this.users = users;
-        this.lastMessage = lastMessage;
+    public void setChatRooms(List<ChatRoom> chatRooms) {
+        this.chatRooms = chatRooms;
         notifyDataSetChanged();
     }
 
@@ -64,7 +71,7 @@ public class ChatListItemAdapter extends RecyclerView.Adapter<ChatListItemAdapte
                 public void onClick(View view) {
                     int position = getAdapterPosition();
                     if (listener != null && position != RecyclerView.NO_POSITION) {
-                        listener.onItemClick(users.get(position));
+                        listener.onItemClick(chatRooms.get(position));
                     }
                 }
             });
@@ -72,7 +79,7 @@ public class ChatListItemAdapter extends RecyclerView.Adapter<ChatListItemAdapte
     }
 
     public interface onItemClickListener {
-        void onItemClick(User user);
+        void onItemClick(ChatRoom chatRoom);
     }
 
     public void setOnItemClickListener(onItemClickListener listener) { this.listener = listener; }

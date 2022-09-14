@@ -95,7 +95,7 @@ public class ChatRepository {
                 for (DataSnapshot snapshot1: snapshot.getChildren()) {
                     ChatRoom chatRoom = snapshot1.getValue(ChatRoom.class);
                     chatRoomList.add(chatRoom);
-                    Log.d(TAG, chatRoom.getKey() + " GetChatRoom");
+                    Log.d(TAG, chatRoom.getDate() + " GetChatRoom");
                 }
                 chatRooms.setValue(chatRoomList);
             }

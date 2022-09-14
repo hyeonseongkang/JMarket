@@ -17,6 +17,7 @@ import com.mirror.jmarket.R;
 import com.mirror.jmarket.adapter.DetailPhotoItemAdapter;
 import com.mirror.jmarket.classes.ChatRoom;
 import com.mirror.jmarket.classes.Item;
+import com.mirror.jmarket.classes.LastMessage;
 import com.mirror.jmarket.databinding.ActivityDetailItemBinding;
 import com.mirror.jmarket.viewmodel.ChatViewModel;
 import com.mirror.jmarket.viewmodel.ItemViewModel;
@@ -133,7 +134,8 @@ public class DetailItemActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 //chatViewModel.setChatRoom(user.getUid(), sellerUid);
-                ChatRoom chatRoom = new ChatRoom(sellerUid, currentItem, "", "");
+                LastMessage lastMessage = new LastMessage("", "");
+                ChatRoom chatRoom = new ChatRoom(currentItem, lastMessage, "");
                 chatViewModel.setChatRoom(user.getUid(), sellerUid, chatRoom);
             }
         });
