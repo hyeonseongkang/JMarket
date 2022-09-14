@@ -17,6 +17,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mirror.jmarket.classes.Chat;
 import com.mirror.jmarket.classes.ChatRoom;
+import com.mirror.jmarket.classes.ChatRoom2;
+import com.mirror.jmarket.classes.Item;
 import com.mirror.jmarket.classes.User;
 
 import org.jetbrains.annotations.NotNull;
@@ -34,9 +36,15 @@ public class ChatRepository {
 
     private DatabaseReference chatsRef;
     private DatabaseReference usersRef;
+    private DatabaseReference chatRoomsRef;
+
+
 
     private List<ChatRoom> chatRooms;
     private List<Chat> chats;
+
+    private MutableLiveData<List<ChatRoom2>> chatRoom2s;
+    private List<ChatRoom2> chatRoom2List;
 
     private MutableLiveData<List<String>> chatUsers;
     private ArrayList<String> users;
@@ -48,10 +56,14 @@ public class ChatRepository {
         this.application = application;
         chatsRef = FirebaseDatabase.getInstance().getReference("chats");
         usersRef = FirebaseDatabase.getInstance().getReference("users");
+        chatRoomsRef = FirebaseDatabase.getInstance().getReference("chatRooms");
         chatRooms = new ArrayList<>();
         chats = new ArrayList<>();
         chatUsers = new MutableLiveData<>();
         users = new ArrayList<>();
+
+        chatRoom2s = new MutableLiveData<>();
+        chatRoom2List = new ArrayList<>();
 
         getUsersProfile = new MutableLiveData<>();
         myChatUsers = new ArrayList<>();
@@ -60,6 +72,8 @@ public class ChatRepository {
     public MutableLiveData<List<String>> getChatUsers() {return chatUsers; }
 
     public MutableLiveData<List<User>> getUsersProfile() { return getUsersProfile; }
+
+    public MutableLiveData<List<ChatRoom2>> getMyChatRooms() { return chatRoom2s;}
 
 
     public void getChatRoom(String uid) {
@@ -131,6 +145,60 @@ public class ChatRepository {
         });
     }
 
+    public void setChatRoom2(String uid, String sellerUid, ChatRoom2 chatRoom2) {
+
+        if (uid.equals(sellerUid))
+            return;
+
+        chatRoomsRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                boolean alreadyUser = false;
+                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                    ChatRoom2 chatRooms = snapshot1.getValue(ChatRoom2.class);
+                    if (snapshot1.getKey().equals(sellerUid))
+                        alreadyUser = true;
+                }
+
+                if (!alreadyUser) {
+                    String currentDate = getDate();
+                    chatRoom2.setDate(currentDate);
+                    chatRoomsRef.child(uid).child(sellerUid).setValue(chatRoom2);
+                    chatRoomsRef.child(sellerUid).child(uid).setValue(chatRoom2);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void getMyChatRooms(String uid) {
+
+        chatRoomsRef.child(uid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                chatRoom2List.clear();
+                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                    ChatRoom2 chatRoom2 = snapshot1.getValue(ChatRoom2.class);
+                    chatRoom2List.add(chatRoom2);
+                    Log.d(TAG, chatRoom2.getKey() + " GetChatRoom");
+
+                }
+
+                chatRoom2s.setValue(chatRoom2List);
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
+
     public void setChatRoom(String uid, String sellerUid) {
 
         if (uid.equals(sellerUid))
@@ -140,10 +208,8 @@ public class ChatRepository {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                chatRooms.clear();
                 chats.clear();
                 boolean alreadyUser = false;
-                Log.d(TAG, String.valueOf(alreadyUser));
                 for (DataSnapshot snapshot1: snapshot.getChildren()) {
                     Chat chat = snapshot1.getValue(Chat.class);
                     chats.add(chat);

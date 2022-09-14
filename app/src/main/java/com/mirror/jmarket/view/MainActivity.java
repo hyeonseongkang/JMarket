@@ -11,6 +11,7 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseUser;
 import com.mirror.jmarket.R;
 import com.mirror.jmarket.databinding.ActivityMainBinding;
+import com.mirror.jmarket.viewmodel.ChatViewModel;
 import com.mirror.jmarket.viewmodel.LoginViewModel;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding mainBinding;
 
     private LoginViewModel loginViewModel;
+    private ChatViewModel chatViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,10 @@ public class MainActivity extends AppCompatActivity {
         loginViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(LoginViewModel.class);
         loginViewModel.loginCheck();
         USER = loginViewModel.getFirebaseUser().getValue();
+
+        chatViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ChatViewModel.class);
+        chatViewModel.getMyChatRooms(USER.getUid());
+
         getSupportFragmentManager().beginTransaction().replace(R.id.container, new HomeFragment()).commit();
 
         mainBinding.bottomNavigation.setOnItemSelectedListener(onItemSelectedListener);

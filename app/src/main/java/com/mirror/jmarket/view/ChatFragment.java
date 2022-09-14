@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.mirror.jmarket.R;
 import com.mirror.jmarket.adapter.ChatListItemAdapter;
 import com.mirror.jmarket.classes.Chat;
+import com.mirror.jmarket.classes.ChatRoom2;
 import com.mirror.jmarket.classes.User;
 import com.mirror.jmarket.databinding.FragmentChatBinding;
 import com.mirror.jmarket.viewmodel.ChatViewModel;
@@ -70,7 +71,25 @@ public class ChatFragment extends Fragment {
         adapter = new ChatListItemAdapter();
         chatBinding.recyclerView.setAdapter(adapter);
 
+        /*
+
+        Firebase에 chatItems Reference 만들고 하위 Item으로
+        Users
+        ItemPhoto -> 판매 사진
+        lastMessage -> 채팅방 리스트에 표시될 메시지
+        추가 하고 chatItems references 가져오기
+
+         */
         chatViewModel = new ViewModelProvider(requireActivity()).get(ChatViewModel.class);
+        chatViewModel.getMyChatRooms().observe(getActivity(), new Observer<List<ChatRoom2>>() {
+            @Override
+            public void onChanged(List<ChatRoom2> chatRoom2s) {
+                for (ChatRoom2 chatRoom2: chatRoom2s) {
+                    Log.d(TAG, chatRoom2.getKey());
+                }
+            }
+        });
+        /*
         chatViewModel.getUsersProfile().observe(getActivity(), new Observer<List<User>>() {
             @Override
             public void onChanged(List<User> users) {
@@ -81,6 +100,7 @@ public class ChatFragment extends Fragment {
                 }
             }
         });
+         */
         chatViewModel.getMyChatUser(user.getUid());
 
 

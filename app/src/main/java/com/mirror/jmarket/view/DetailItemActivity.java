@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseUser;
 import com.mirror.jmarket.R;
 import com.mirror.jmarket.adapter.DetailPhotoItemAdapter;
+import com.mirror.jmarket.classes.ChatRoom2;
 import com.mirror.jmarket.classes.Item;
 import com.mirror.jmarket.databinding.ActivityDetailItemBinding;
 import com.mirror.jmarket.viewmodel.ChatViewModel;
@@ -42,6 +43,8 @@ public class DetailItemActivity extends AppCompatActivity {
     String key;
     String sellerUid;
 
+    private Item currentItem;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +63,7 @@ public class DetailItemActivity extends AppCompatActivity {
         itemViewModel.getItem().observe(this, new Observer<Item>() {
             @Override
             public void onChanged(Item item) {
+                currentItem = item;
                 /*
                 sellerProfile
                 userName
@@ -130,7 +134,10 @@ public class DetailItemActivity extends AppCompatActivity {
         binding.chatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                chatViewModel.setChatRoom(user.getUid(), sellerUid);
+
+                //chatViewModel.setChatRoom(user.getUid(), sellerUid);
+                ChatRoom2 chatRoom2 = new ChatRoom2(sellerUid, currentItem, "", "");
+                chatViewModel.setChatRoom2(user.getUid(), sellerUid, chatRoom2);
             }
         });
 
