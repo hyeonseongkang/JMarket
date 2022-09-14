@@ -1,5 +1,6 @@
 package com.mirror.jmarket.view;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -71,7 +72,10 @@ public class ChatFragment extends Fragment {
         adapter.setOnItemClickListener(new ChatListItemAdapter.onItemClickListener() {
             @Override
             public void onItemClick(ChatRoom chatRoom) {
-
+                Intent intent = new Intent(getActivity(), ChatActivity.class);
+                intent.putExtra("uid", chatRoom.getUid()); // 상대방 uid
+                intent.putExtra("itemTitle", chatRoom.getItem().getTitle());
+                startActivity(intent);
             }
         });
 

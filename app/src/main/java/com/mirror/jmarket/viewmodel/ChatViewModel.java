@@ -27,8 +27,8 @@ public class ChatViewModel extends AndroidViewModel {
 
     public MutableLiveData<List<ChatRoom>> getMyChatRooms() { return chatRooms; }
 
-    public void sendMessage(String sender, String receiver, Chat chat) {
-        repository.sendMessage(sender, receiver, chat);
+    public void sendMessage(String sender, String receiver, Chat chat, String lastSendUser) {
+        repository.sendMessage(sender, receiver, chat, lastSendUser);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

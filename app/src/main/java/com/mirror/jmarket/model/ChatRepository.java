@@ -65,16 +65,25 @@ public class ChatRepository {
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 boolean alreadyUser = false;
                 for (DataSnapshot snapshot1: snapshot.getChildren()) {
-                    ChatRoom chatRooms = snapshot1.getValue(ChatRoom.class);
                     if (snapshot1.getKey().equals(sellerUid))
                         alreadyUser = true;
                 }
 
                 if (!alreadyUser) {
+                    ChatRoom chatRoom1 = new ChatRoom();
+                    chatRoom1.setItem(chatRoom.getItem());
+                    chatRoom1.setDate(chatRoom.getDate());
+                    chatRoom1.setLastMessage(chatRoom.getLastMessage());
+                    chatRoom1.setUid(sellerUid);
+                    ChatRoom chatRoom2 = new ChatRoom();
+                    chatRoom2.setItem(chatRoom.getItem());
+                    chatRoom2.setDate(chatRoom.getDate());
+                    chatRoom2.setLastMessage(chatRoom.getLastMessage());
+                    chatRoom2.setUid(uid);
                     String currentDate = getDate();
                     chatRoom.setDate(currentDate);
-                    chatRoomsRef.child(uid).child(sellerUid).setValue(chatRoom);
-                    chatRoomsRef.child(sellerUid).child(uid).setValue(chatRoom);
+                    chatRoomsRef.child(uid).child(sellerUid).setValue(chatRoom1);
+                    chatRoomsRef.child(sellerUid).child(uid).setValue(chatRoom2);
 //                    chatsRef.child(uid).child(sellerUid).child("createDate").setValue(currentDate);
 //                    chatsRef.child(sellerUid).child(uid).child("createDate").setValue(currentDate);
                 }
@@ -107,9 +116,13 @@ public class ChatRepository {
         });
     }
 
-    public void sendMessage(String sender, String receiver, Chat chat) {
+    public void sendMessage(String sender, String receiver, Chat chat, String lastSendUser) {
         chatsRef.child(sender).child(receiver).child("chats").push().setValue(chat);
         chatsRef.child(receiver).child(sender).child("chats").push().setValue(chat);
+    }
+
+    public void getMyChats(String uid) {
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

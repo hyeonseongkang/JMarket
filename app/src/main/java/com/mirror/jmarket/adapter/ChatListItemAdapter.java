@@ -37,7 +37,7 @@ public class ChatListItemAdapter extends RecyclerView.Adapter<ChatListItemAdapte
         ChatRoom chatRoom = chatRooms.get(position);
         Item item = chatRoom.getItem();
         LastMessage lastMessage = chatRoom.getLastMessage();
-        holder.userNickName.setText(item.getSellerName());
+        holder.itemTitle.setText(item.getTitle());
         holder.lastMessage.setText(lastMessage.getMessage());
         Glide.with(holder.itemView.getContext())
                 .load(Uri.parse(item.getFirstPhotoUri()))
@@ -56,14 +56,14 @@ public class ChatListItemAdapter extends RecyclerView.Adapter<ChatListItemAdapte
     class MyViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView photo;
-        private TextView userNickName;
+        private TextView itemTitle;
         private TextView lastMessage;
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
             photo = itemView.findViewById(R.id.photo);
-            userNickName = itemView.findViewById(R.id.userNickName);
+            itemTitle = itemView.findViewById(R.id.itemTitle);
             lastMessage = itemView.findViewById(R.id.lastMessage);
 
             itemView.setOnClickListener(new View.OnClickListener() {
