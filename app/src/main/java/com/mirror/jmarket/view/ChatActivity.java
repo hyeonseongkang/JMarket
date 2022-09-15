@@ -67,24 +67,13 @@ public class ChatActivity extends AppCompatActivity {
         binding.itemTitle.setText(itemTitle);
 
         chatViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ChatViewModel.class);
-        chatViewModel.getMyChats(user.getUid());
-
-        chatViewModel.getMyChats().observe(this, new Observer<List<List<Chat>>>() {
+        chatViewModel.getMyChats(user.getUid(), uid);
+        chatViewModel.getMyChats().observe(this, new Observer<List<Chat>>() {
             @Override
-            public void onChanged(List<List<Chat>> lists) {
-                for (List<Chat> chats : lists) {
-                    for (Chat chat: chats) {
-                        if (chat.getReceiver().contains(uid)) {
-                            // setChats(chats)
-                            adapter.setChats(chats, user.getUid());
-                            break;
-                        }
-                        chat.printChatData("ChatActivity - Chat: ");
-                    }
-                }
+            public void onChanged(List<Chat> chats) {
+                adapter.setChats(chats, user.getUid());
             }
         });
-
 
         // button
         binding.sendMessageButton.setOnClickListener(new View.OnClickListener() {

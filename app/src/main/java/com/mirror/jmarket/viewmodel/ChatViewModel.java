@@ -17,7 +17,7 @@ public class ChatViewModel extends AndroidViewModel {
 
     private ChatRepository repository;
 
-    private MutableLiveData<List<List<Chat>>> myChats;
+    private MutableLiveData<List<Chat>> myChats;
 
     private MutableLiveData<List<ChatRoom>> chatRooms;
 
@@ -28,7 +28,7 @@ public class ChatViewModel extends AndroidViewModel {
         chatRooms = repository.getMyChatRooms();
     }
 
-    public MutableLiveData<List<List<Chat>>> getMyChats() { return myChats; }
+    public MutableLiveData<List<Chat>> getMyChats() { return myChats; }
 
     public MutableLiveData<List<ChatRoom>> getMyChatRooms() { return chatRooms; }
 
@@ -49,6 +49,6 @@ public class ChatViewModel extends AndroidViewModel {
         repository.getMyChatRooms(uid);
     }
 
-    public void getMyChats(String uid) { repository.getMyChats(uid); }
+    public void getMyChats(String myUid, String uid) { repository.getMyChats(myUid, uid); }
 
 }

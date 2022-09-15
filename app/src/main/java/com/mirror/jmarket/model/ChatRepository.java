@@ -34,8 +34,8 @@ public class ChatRepository {
     private DatabaseReference chatRoomsRef;
 
 
-    private MutableLiveData<List<List<Chat>>> myChats;
-    private List<List<Chat>> myChatList;
+    private MutableLiveData<List<Chat>> myChats;
+    private List<Chat> myChatList;
 
     private MutableLiveData<List<ChatRoom>> chatRooms;
     private List<ChatRoom> chatRoomList;
@@ -55,7 +55,7 @@ public class ChatRepository {
 
     }
 
-    public MutableLiveData<List<List<Chat>>> getMyChats() { return myChats; }
+    public MutableLiveData<List<Chat>> getMyChats() { return myChats; }
 
     public MutableLiveData<List<ChatRoom>> getMyChatRooms() { return chatRooms;}
 
@@ -136,8 +136,7 @@ public class ChatRepository {
          */
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public void getMyChats(String uid) {
+    public void getMyChats(String myUid, String uid) {
         /*
         // Database Test
         // String user, String message, String date, boolean checked
@@ -153,19 +152,23 @@ public class ChatRepository {
         chatsRef.child("vO3Igea5wFb8SutxiQMVDgTG1iJ2").child("TkzEZBw8iTdQGU7ppquiaS4ZOR73").push().setValue(chat3);
          */
 
-        chatsRef.child(uid).addValueEventListener(new ValueEventListener() {
+        chatsRef.child(myUid).child(uid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 myChatList.clear();
                 for (DataSnapshot snapshot1: snapshot.getChildren()) {
                     Log.d(TAG, snapshot1.getKey());
-                    List<Chat> temp = new ArrayList<>();
+                    Chat chat = snapshot1.getValue(Chat.class);
 
+                    /*
                     for (DataSnapshot snapshot2: snapshot1.getChildren()) {
                         Chat chat = snapshot2.getValue(Chat.class);
                         temp.add(chat);
                     }
                     myChatList.add(temp);
+
+                     */
+                    myChatList.add(chat);
                 }
 
                 myChats.setValue(myChatList);
