@@ -32,6 +32,9 @@ public class UserManagerRepository {
 
     private MutableLiveData<User> userProfile;
 
+    private MutableLiveData<User> chatUserProfile;
+    private MutableLiveData<User> chatMyProfile;
+
     private MutableLiveData<List<User>> usersProfile;
     private List<User> users;
 

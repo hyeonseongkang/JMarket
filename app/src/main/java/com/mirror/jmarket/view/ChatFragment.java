@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.mirror.jmarket.adapter.ChatListItemAdapter;
 import com.mirror.jmarket.classes.Chat;
 import com.mirror.jmarket.classes.ChatRoom;
+import com.mirror.jmarket.classes.User;
 import com.mirror.jmarket.databinding.FragmentChatBinding;
 import com.mirror.jmarket.viewmodel.ChatViewModel;
 import com.mirror.jmarket.viewmodel.UserManagerViewModel;
@@ -44,6 +45,9 @@ public class ChatFragment extends Fragment {
 
     // Adpater
     private ChatListItemAdapter adapter;
+
+    // myNickName
+    private String myNickName;
 
 
 
@@ -75,6 +79,7 @@ public class ChatFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), ChatActivity.class);
                 intent.putExtra("uid", chatRoom.getUid()); // 상대방 uid
                 intent.putExtra("itemTitle", chatRoom.getItem().getTitle());
+                intent.putExtra("myNickName", myNickName);
                 startActivity(intent);
             }
         });
@@ -93,6 +98,15 @@ public class ChatFragment extends Fragment {
             @Override
             public void onChanged(List<ChatRoom> chatRooms) {
                 adapter.setChatRooms(chatRooms);
+            }
+        });
+
+        userManagerViewModel = new ViewModelProvider(requireActivity()).get(UserManagerViewModel.class);
+        userManagerViewModel.getUserProfile(user.getUid());
+        userManagerViewModel.getUserProfile().observe(getActivity(), new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+                myNickName = user.getNickName().equals("") ? user.getEmail() : user.getNickName() ;
             }
         });
 

@@ -3,7 +3,9 @@ package com.mirror.jmarket.classes;
 import android.util.Log;
 
 public class Chat {
-    private String user;
+    private String myNickName;
+    private String sender;
+    private String receiver;
     private String message;
     private String date;
     private String time;
@@ -11,16 +13,24 @@ public class Chat {
 
     public Chat() {}
 
-    public Chat(String user, String message, String date, String time, boolean checked) {
-        this.user = user;
+    public Chat(String myNickName, String sender, String receiver, String message, String date, String time, boolean checked) {
+        this.myNickName = myNickName;
+        this.sender = sender;
+        this.receiver = receiver;
         this.message = message;
         this.date = date;
         this.time = time;
         this.checked = checked;
     }
 
-    public String getUser() {
-        return user;
+    public String getMyNickName() { return myNickName; }
+
+    public String getSender() {
+        return sender;
+    }
+
+    public String getReceiver() {
+        return receiver;
     }
 
     public String getMessage() {
@@ -46,6 +56,6 @@ public class Chat {
     }
 
     public void printChatData(String TAG) {
-        Log.d(TAG, getUser() + " " + getMessage() + " " + getDate() + " " + getTime() + " " + getChecked());
+        Log.d(TAG, getSender() + " " + getReceiver() + " " + getMessage() + " " + getDate() + " " + getTime() + " " + getChecked());
     }
 }

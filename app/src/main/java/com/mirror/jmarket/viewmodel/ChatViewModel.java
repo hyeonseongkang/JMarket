@@ -17,13 +17,18 @@ public class ChatViewModel extends AndroidViewModel {
 
     private ChatRepository repository;
 
+    private MutableLiveData<List<List<Chat>>> myChats;
+
     private MutableLiveData<List<ChatRoom>> chatRooms;
 
     public ChatViewModel(Application application) {
         super(application);
         repository = new ChatRepository(application);
+        myChats = repository.getMyChats();
         chatRooms = repository.getMyChatRooms();
     }
+
+    public MutableLiveData<List<List<Chat>>> getMyChats() { return myChats; }
 
     public MutableLiveData<List<ChatRoom>> getMyChatRooms() { return chatRooms; }
 

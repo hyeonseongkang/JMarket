@@ -6,6 +6,7 @@
     android:orientation="vertical"
     android:layout_marginTop="20dp">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,6 +24,7 @@
                 android:id="@+id/photo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:src="@drawable/send"
                 android:scaleType="fitXY"/>
         </androidx.cardview.widget.CardView>
 
@@ -68,14 +70,9 @@
 
         </LinearLayout>
 
+
+
     </LinearLayout>
 
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#CFCECE"
-        android:layout_marginTop="20dp"/>
 
 </LinearLayout>

@@ -1,7 +1,9 @@
 package com.mirror.jmarket.view;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,10 +13,14 @@ import android.view.View;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.mirror.jmarket.R;
+import com.mirror.jmarket.adapter.ChatItemAdapter;
+import com.mirror.jmarket.adapter.ChatListItemAdapter;
 import com.mirror.jmarket.classes.Chat;
 import com.mirror.jmarket.classes.ChatRoom;
 import com.mirror.jmarket.databinding.ActivityChatBinding;
 import com.mirror.jmarket.viewmodel.ChatViewModel;
+
+import java.util.List;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -29,9 +35,14 @@ public class ChatActivity extends AppCompatActivity {
     // FirebaseUser
     private FirebaseUser user;
 
+    // adapter
+    private ChatItemAdapter adapter;
+
     // ChatRoom Info
     private String uid; // 상대 uid
     private String itemTitle;
+
+    private String myNickName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,13 +57,33 @@ public class ChatActivity extends AppCompatActivity {
         Intent getIntent = getIntent();
         uid = getIntent.getStringExtra("uid");
         itemTitle = getIntent.getStringExtra("itemTitle");
+        myNickName = getIntent.getStringExtra("myNickName");
 
-        Log.d("ChatActivity 내 uid", user.getUid());
-        Log.d("ChatActivity 상대방 uid", uid);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerView.setHasFixedSize(true);
+        adapter = new ChatItemAdapter();
+        binding.recyclerView.setAdapter(adapter);
+
         binding.itemTitle.setText(itemTitle);
 
         chatViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ChatViewModel.class);
         chatViewModel.getMyChats(user.getUid());
+
+        chatViewModel.getMyChats().observe(this, new Observer<List<List<Chat>>>() {
+            @Override
+            public void onChanged(List<List<Chat>> lists) {
+                for (List<Chat> chats : lists) {
+                    for (Chat chat: chats) {
+                        if (chat.getReceiver().contains(uid)) {
+                            // setChats(chats)
+                            adapter.setChats(chats, user.getUid());
+                            break;
+                        }
+                        chat.printChatData("ChatActivity - Chat: ");
+                    }
+                }
+            }
+        });
 
 
         // button
@@ -60,13 +91,14 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String message = binding.message.getText().toString();
+                Log.d("내 UID", user.getUid());
 
                 if (TextUtils.isEmpty(message))
                     return;
 
-                // String user, String message, String date, String time, boolean checked
-                Chat chat = new Chat(uid, message, "", "", false);
-                chatViewModel.sendMessage(user.getUid(), uid, chat, uid);
+                // String userNickName, String sender, String receiver, String message, String date, String time, boolean checked
+                Chat chat = new Chat(myNickName, user.getUid(), uid, message, "", "", false);
+                chatViewModel.sendMessage(user.getUid(), uid, chat, user.getUid());
                 binding.message.setText("");
             }
         });

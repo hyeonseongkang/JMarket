@@ -21,6 +21,7 @@ import com.mirror.jmarket.classes.LastMessage;
 import com.mirror.jmarket.databinding.ActivityDetailItemBinding;
 import com.mirror.jmarket.viewmodel.ChatViewModel;
 import com.mirror.jmarket.viewmodel.ItemViewModel;
+import com.mirror.jmarket.viewmodel.UserManagerViewModel;
 
 import java.util.ArrayList;
 

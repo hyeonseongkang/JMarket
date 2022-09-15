@@ -34,7 +34,8 @@ public class ChatRepository {
     private DatabaseReference chatRoomsRef;
 
 
-    private List<List<Chat>> myChats;
+    private MutableLiveData<List<List<Chat>>> myChats;
+    private List<List<Chat>> myChatList;
 
     private MutableLiveData<List<ChatRoom>> chatRooms;
     private List<ChatRoom> chatRoomList;
@@ -45,12 +46,16 @@ public class ChatRepository {
         chatsRef = FirebaseDatabase.getInstance().getReference("chats");
         usersRef = FirebaseDatabase.getInstance().getReference("users");
         chatRoomsRef = FirebaseDatabase.getInstance().getReference("chatRooms");
-        myChats = new ArrayList<>();
+
+        myChats = new MutableLiveData<>();
+        myChatList = new ArrayList<>();
 
         chatRooms = new MutableLiveData<>();
         chatRoomList = new ArrayList<>();
 
     }
+
+    public MutableLiveData<List<List<Chat>>> getMyChats() { return myChats; }
 
     public MutableLiveData<List<ChatRoom>> getMyChatRooms() { return chatRooms;}
 
@@ -123,7 +128,7 @@ public class ChatRepository {
         chatRoomsRef.child(sender).child(receiver).child("lastMessage").setValue(lastMessage);
         chatRoomsRef.child(receiver).child(sender).child("lastMessage").setValue(lastMessage);
 
-        
+
         /*
                 chatsRef.child("vO3Igea5wFb8SutxiQMVDgTG1iJ2").child("TkzEZBw8iTdQGU7ppquiaS4ZOR73").push().setValue(chat1);
         chatsRef.child("vO3Igea5wFb8SutxiQMVDgTG1iJ2").child("TkzEZBw8iTdQGU7ppquiaS4ZOR73").push().setValue(chat2);
@@ -133,8 +138,6 @@ public class ChatRepository {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void getMyChats(String uid) {
-        List<List<Chat>> chatList = new ArrayList<>();
-
         /*
         // Database Test
         // String user, String message, String date, boolean checked
@@ -153,26 +156,20 @@ public class ChatRepository {
         chatsRef.child(uid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                Log.d("1", String.valueOf(snapshot.getValue()));
-                myChats.clear();
+                myChatList.clear();
                 for (DataSnapshot snapshot1: snapshot.getChildren()) {
                     Log.d(TAG, snapshot1.getKey());
                     List<Chat> temp = new ArrayList<>();
-                    Log.d("ChatValue", snapshot1.getValue().toString());
 
                     for (DataSnapshot snapshot2: snapshot1.getChildren()) {
                         Chat chat = snapshot2.getValue(Chat.class);
-                        chat.printChatData("HELLO!!");
                         temp.add(chat);
                     }
-                    myChats.add(temp);
+                    myChatList.add(temp);
                 }
 
-                for (List<Chat> chats: myChats) {
-                    for (Chat chat: chats) {
-                        chat.printChatData("END");
-                    }
-                }
+                myChats.setValue(myChatList);
+
             }
 
             @Override
