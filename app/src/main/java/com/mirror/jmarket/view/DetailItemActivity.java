@@ -134,8 +134,8 @@ public class DetailItemActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 //chatViewModel.setChatRoom(user.getUid(), sellerUid);
-                LastMessage lastMessage = new LastMessage("", "");
-                ChatRoom chatRoom = new ChatRoom("", currentItem, lastMessage, "");
+                LastMessage lastMessage = new LastMessage("", "", "");
+                ChatRoom chatRoom = new ChatRoom("", currentItem, lastMessage);
                 chatViewModel.setChatRoom(user.getUid(), sellerUid, chatRoom);
             }
         });

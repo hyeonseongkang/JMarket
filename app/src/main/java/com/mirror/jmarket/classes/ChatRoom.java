@@ -4,15 +4,13 @@ public class ChatRoom {
     private String uid;
     private Item item;
     private LastMessage lastMessage;
-    private String date;
 
     public ChatRoom() {}
 
-    public ChatRoom(String uid, Item item, LastMessage lastMessage, String date) {
+    public ChatRoom(String uid, Item item, LastMessage lastMessage) {
         this.uid = uid;
         this.item = item;
         this.lastMessage = lastMessage;
-        this.date = date;
     }
 
     public String getUid() {
@@ -39,11 +37,4 @@ public class ChatRoom {
         this.lastMessage = lastMessage;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
 }

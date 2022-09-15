@@ -15,13 +15,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mirror.jmarket.classes.Chat;
 import com.mirror.jmarket.classes.ChatRoom;
-import com.mirror.jmarket.classes.ChatTemp;
+import com.mirror.jmarket.classes.LastMessage;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -63,7 +61,6 @@ public class ChatRepository {
             return;
 
         chatRoomsRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 boolean alreadyUser = false;
@@ -75,16 +72,12 @@ public class ChatRepository {
                 if (!alreadyUser) {
                     ChatRoom chatRoom1 = new ChatRoom();
                     chatRoom1.setItem(chatRoom.getItem());
-                    chatRoom1.setDate(chatRoom.getDate());
                     chatRoom1.setLastMessage(chatRoom.getLastMessage());
                     chatRoom1.setUid(sellerUid);
                     ChatRoom chatRoom2 = new ChatRoom();
                     chatRoom2.setItem(chatRoom.getItem());
-                    chatRoom2.setDate(chatRoom.getDate());
                     chatRoom2.setLastMessage(chatRoom.getLastMessage());
                     chatRoom2.setUid(uid);
-                    String currentDate = getDate();
-                    chatRoom.setDate(currentDate);
                     chatRoomsRef.child(uid).child(sellerUid).setValue(chatRoom1);
                     chatRoomsRef.child(sellerUid).child(uid).setValue(chatRoom2);
 //                    chatsRef.child(uid).child(sellerUid).child("createDate").setValue(currentDate);
@@ -105,10 +98,8 @@ public class ChatRepository {
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 chatRoomList.clear();
                 for (DataSnapshot snapshot1: snapshot.getChildren()) {
-                    System.out.println("1212112" + " " + snapshot1.getValue(ChatRoom.class));
                     ChatRoom chatRoom = snapshot1.getValue(ChatRoom.class);
                     chatRoomList.add(chatRoom);
-                    Log.d(TAG, chatRoom.getDate() + " GetChatRoom");
                 }
                 chatRooms.setValue(chatRoomList);
             }
@@ -127,6 +118,12 @@ public class ChatRepository {
         chatsRef.child(sender).child(receiver).push().setValue(chat);
         chatsRef.child(receiver).child(sender).push().setValue(chat);
 
+        // String message, String user, String time
+        LastMessage lastMessage = new LastMessage(chat.getMessage(), lastSendUser, dateTime[1]);
+        chatRoomsRef.child(sender).child(receiver).child("lastMessage").setValue(lastMessage);
+        chatRoomsRef.child(receiver).child(sender).child("lastMessage").setValue(lastMessage);
+
+        
         /*
                 chatsRef.child("vO3Igea5wFb8SutxiQMVDgTG1iJ2").child("TkzEZBw8iTdQGU7ppquiaS4ZOR73").push().setValue(chat1);
         chatsRef.child("vO3Igea5wFb8SutxiQMVDgTG1iJ2").child("TkzEZBw8iTdQGU7ppquiaS4ZOR73").push().setValue(chat2);
