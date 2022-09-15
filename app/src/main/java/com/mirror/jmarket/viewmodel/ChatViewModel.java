@@ -44,4 +44,6 @@ public class ChatViewModel extends AndroidViewModel {
         repository.getMyChatRooms(uid);
     }
 
+    public void getMyChats(String uid) { repository.getMyChats(uid); }
+
 }

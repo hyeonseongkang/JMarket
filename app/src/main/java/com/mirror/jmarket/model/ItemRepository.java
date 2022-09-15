@@ -88,9 +88,7 @@ public class ItemRepository {
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 tempItems.clear();
                 for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-                    System.out.println(snapshot1.getValue());
                     Item item = snapshot1.getValue(Item.class);
-                    System.out.println(item.getLikes() + "!@!@!@");
                     tempItems.add(item);
                 }
                 items.setValue(tempItems);
