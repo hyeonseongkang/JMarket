@@ -54,7 +54,8 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_below="@+id/topLayout"
-        android:layout_above="@+id/bottomLayout"/>
+        android:layout_above="@+id/bottomLayout"
+        android:layout_marginTop="5dp"/>
 
     <RelativeLayout
         android:id="@+id/bottomLayout"

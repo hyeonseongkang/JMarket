@@ -22,6 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class ChatRepository {
@@ -34,8 +35,12 @@ public class ChatRepository {
     private DatabaseReference chatRoomsRef;
 
 
-    private MutableLiveData<List<Chat>> myChats;
-    private List<Chat> myChatList;
+    private MutableLiveData<List<HashMap<String, List<Chat>>>> myChats;
+    private List<HashMap<String, List<Chat>>> myChatList;
+    /*
+     private MutableLiveData<List<List<Chat>>> myChats;
+    private List<List<Chat>> myChatList;
+     */
 
     private MutableLiveData<List<ChatRoom>> chatRooms;
     private List<ChatRoom> chatRoomList;
@@ -55,7 +60,9 @@ public class ChatRepository {
 
     }
 
-    public MutableLiveData<List<Chat>> getMyChats() { return myChats; }
+    public MutableLiveData<List<HashMap<String, List<Chat>>>> getMyChats() { return myChats; }
+
+    // public MutableLiveData<List<List<Chat>>> getMyChats() { return myChats; }
 
     public MutableLiveData<List<ChatRoom>> getMyChatRooms() { return chatRooms;}
 
@@ -136,7 +143,7 @@ public class ChatRepository {
          */
     }
 
-    public void getMyChats(String myUid, String uid) {
+    public void getMyChats(String myUid) {
         /*
         // Database Test
         // String user, String message, String date, boolean checked
@@ -152,23 +159,26 @@ public class ChatRepository {
         chatsRef.child("vO3Igea5wFb8SutxiQMVDgTG1iJ2").child("TkzEZBw8iTdQGU7ppquiaS4ZOR73").push().setValue(chat3);
          */
 
-        chatsRef.child(myUid).child(uid).addValueEventListener(new ValueEventListener() {
+        /*
+        Service 부분으로 넘어가서 백그라운드에서 계속 동작돼야 하는 메서드임
+        내 uid 하위 변경사항을 체크해야 되기 때문에 상대 uid는 빼야함
+        List<List<Chat>>을 LiveData에 넣고 ChatAcitivity에서 상대 uid와 LiveData에 있는 uid를 비교해서 List<Chat> 하나만을 adpater에 넘겨야함
+         */
+        chatsRef.child(myUid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 myChatList.clear();
                 for (DataSnapshot snapshot1: snapshot.getChildren()) {
                     Log.d(TAG, snapshot1.getKey());
-                    Chat chat = snapshot1.getValue(Chat.class);
-
-                    /*
+                    List<Chat> chats = new ArrayList<>();
                     for (DataSnapshot snapshot2: snapshot1.getChildren()) {
                         Chat chat = snapshot2.getValue(Chat.class);
-                        temp.add(chat);
+                        chats.add(chat);
                     }
-                    myChatList.add(temp);
+                    HashMap<String, List<Chat>> hashMap = new HashMap<>();
+                    hashMap.put(snapshot1.getKey(), chats);
 
-                     */
-                    myChatList.add(chat);
+                    myChatList.add(hashMap);
                 }
 
                 myChats.setValue(myChatList);

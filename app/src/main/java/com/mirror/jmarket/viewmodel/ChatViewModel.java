@@ -11,13 +11,16 @@ import com.mirror.jmarket.classes.Chat;
 import com.mirror.jmarket.classes.ChatRoom;
 import com.mirror.jmarket.model.ChatRepository;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class ChatViewModel extends AndroidViewModel {
 
     private ChatRepository repository;
 
-    private MutableLiveData<List<Chat>> myChats;
+    private MutableLiveData<List<HashMap<String, List<Chat>>>> myChats;
+
+    // private MutableLiveData<List<List<Chat>>> myChats;
 
     private MutableLiveData<List<ChatRoom>> chatRooms;
 
@@ -28,7 +31,9 @@ public class ChatViewModel extends AndroidViewModel {
         chatRooms = repository.getMyChatRooms();
     }
 
-    public MutableLiveData<List<Chat>> getMyChats() { return myChats; }
+    public MutableLiveData<List<HashMap<String, List<Chat>>>> getMyChats() { return myChats; }
+
+    // public MutableLiveData<List<List<Chat>>> getMyChats() { return myChats; }
 
     public MutableLiveData<List<ChatRoom>> getMyChatRooms() { return chatRooms; }
 
@@ -49,6 +54,6 @@ public class ChatViewModel extends AndroidViewModel {
         repository.getMyChatRooms(uid);
     }
 
-    public void getMyChats(String myUid, String uid) { repository.getMyChats(myUid, uid); }
+    public void getMyChats(String myUid) { repository.getMyChats(myUid); }
 
 }

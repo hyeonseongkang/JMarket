@@ -20,6 +20,7 @@ import com.mirror.jmarket.classes.ChatRoom;
 import com.mirror.jmarket.databinding.ActivityChatBinding;
 import com.mirror.jmarket.viewmodel.ChatViewModel;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class ChatActivity extends AppCompatActivity {
@@ -67,13 +68,30 @@ public class ChatActivity extends AppCompatActivity {
         binding.itemTitle.setText(itemTitle);
 
         chatViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ChatViewModel.class);
-        chatViewModel.getMyChats(user.getUid(), uid);
-        chatViewModel.getMyChats().observe(this, new Observer<List<Chat>>() {
+        chatViewModel.getMyChats(user.getUid());
+        chatViewModel.getMyChats().observe(this, new Observer<List<HashMap<String, List<Chat>>>>() {
             @Override
-            public void onChanged(List<Chat> chats) {
+            public void onChanged(List<HashMap<String, List<Chat>>> hashMaps) {
+                for (HashMap<String, List<Chat>> map : hashMaps) {
+                    if (map.containsKey(uid)) {
+                        List<Chat> chat = map.get(uid);
+                        adapter.setChats(chat, user.getUid());
+                        binding.recyclerView.scrollToPosition(chat.size() - 1);
+                        break;
+                    }
+                }
+            }
+        });
+
+        /*
+        chatViewModel.getMyChats().observe(this, new Observer<List<List<Chat>>>() {
+            @Override
+            public void onChanged(List<List<Chat>> chats) {
+                // chats에서 상대 uid에 해당하는 chats만 adapter에 넘겨야함
                 adapter.setChats(chats, user.getUid());
             }
         });
+         */
 
         // button
         binding.sendMessageButton.setOnClickListener(new View.OnClickListener() {
