@@ -37,11 +37,20 @@ public class ChatListItemAdapter extends RecyclerView.Adapter<ChatListItemAdapte
         ChatRoom chatRoom = chatRooms.get(position);
         Item item = chatRoom.getItem();
         LastMessage lastMessage = chatRoom.getLastMessage();
-        holder.itemTitle.setText(item.getTitle());
+        User user = chatRoom.getUser();
+
+        holder.userNickName.setText(user.getNickName().length() <= 0 ? user.getEmail() : user.getNickName());
         holder.lastMessage.setText(lastMessage.getMessage());
+
         Glide.with(holder.itemView.getContext())
                 .load(Uri.parse(item.getFirstPhotoUri()))
                 .into(holder.photo);
+
+        String userPhoto = user.getPhotoUri();
+
+        Glide.with(holder.itemView.getContext())
+                .load(userPhoto.length() > 0 ? Uri.parse(user.getPhotoUri()) : R.drawable.basic_profile_photo)
+                .into(holder.userPhoto);
 
     }
 
@@ -56,14 +65,16 @@ public class ChatListItemAdapter extends RecyclerView.Adapter<ChatListItemAdapte
     class MyViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView photo;
-        private TextView itemTitle;
+        private ImageView userPhoto;
+        private TextView userNickName;
         private TextView lastMessage;
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
             photo = itemView.findViewById(R.id.photo);
-            itemTitle = itemView.findViewById(R.id.itemTitle);
+            userPhoto = itemView.findViewById(R.id.userPhoto);
+            userNickName = itemView.findViewById(R.id.userNickName);
             lastMessage = itemView.findViewById(R.id.lastMessage);
 
             itemView.setOnClickListener(new View.OnClickListener() {

@@ -22,6 +22,8 @@ public class UserManagerViewModel extends AndroidViewModel {
 
     public MutableLiveData<User> userProfile;
 
+    private MutableLiveData<User> otherUserProfile;
+
     public MutableLiveData<List<User>> usersProfile;
 
     public MutableLiveData<Boolean> updateValid;
@@ -30,19 +32,25 @@ public class UserManagerViewModel extends AndroidViewModel {
         super(application);
         repository = new UserManagerRepository(application);
         userProfile = repository.getUserProfile();
+        otherUserProfile = repository.getOtherUserProfile();
         usersProfile = repository.getUsersProfile();
         updateValid = repository.getUpdateValid();
+
     }
 
     public MutableLiveData<User> getUserProfile() {
         return userProfile;
     }
 
+    public MutableLiveData<User> getOtherUserProfile() { return otherUserProfile; }
+
     public MutableLiveData<List<User>> getUsersProfile() { return usersProfile; }
 
     public MutableLiveData<Boolean> getUpdateValid() { return updateValid; }
 
     public void getUserProfile(String uid) { repository.getUserProfile(uid);}
+
+    public void getOtherUserProfile(String uid) { repository.getOtherUserProfile(uid);}
 
     public void updateUserProfile(User user) {
         repository.updateUserProfile(user);

@@ -31,6 +31,7 @@ public class UserManagerRepository {
     public Application application;
 
     private MutableLiveData<User> userProfile;
+    private MutableLiveData<User> otherUserProfile;
 
     private MutableLiveData<User> chatUserProfile;
     private MutableLiveData<User> chatMyProfile;
@@ -50,10 +51,13 @@ public class UserManagerRepository {
         usersProfile = new MutableLiveData<>();
         users = new ArrayList<>();
         updateValid = new MutableLiveData<>();
+        otherUserProfile = new MutableLiveData<>();
         myRef = FirebaseDatabase.getInstance().getReference("users");
     }
 
     public MutableLiveData<User> getUserProfile() { return userProfile; }
+
+    public MutableLiveData<User> getOtherUserProfile() { return otherUserProfile;}
 
     public MutableLiveData<List<User>> getUsersProfile() { return usersProfile; }
 
@@ -93,6 +97,21 @@ public class UserManagerRepository {
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
                 userProfile.setValue(user);
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void getOtherUserProfile(String uid) {
+        myRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                otherUserProfile.setValue(user);
             }
 
             @Override

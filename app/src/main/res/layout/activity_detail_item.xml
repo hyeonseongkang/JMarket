@@ -70,7 +70,7 @@
                     android:id="@+id/sellerProfile"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/profile" />
+                    android:src="@drawable/basic_profile_photo" />
 
                 <TextView
                     android:id="@+id/userName"

@@ -18,6 +18,7 @@ import com.mirror.jmarket.adapter.DetailPhotoItemAdapter;
 import com.mirror.jmarket.classes.ChatRoom;
 import com.mirror.jmarket.classes.Item;
 import com.mirror.jmarket.classes.LastMessage;
+import com.mirror.jmarket.classes.User;
 import com.mirror.jmarket.databinding.ActivityDetailItemBinding;
 import com.mirror.jmarket.viewmodel.ChatViewModel;
 import com.mirror.jmarket.viewmodel.ItemViewModel;
@@ -35,6 +36,7 @@ public class DetailItemActivity extends AppCompatActivity {
     // viewModel
     private ItemViewModel itemViewModel;
     private ChatViewModel chatViewModel;
+    private UserManagerViewModel userManagerViewModel;
 
     // adapter
     DetailPhotoItemAdapter adapter;
@@ -46,6 +48,9 @@ public class DetailItemActivity extends AppCompatActivity {
     String sellerUid;
 
     private Item currentItem;
+
+    private User myUser;
+    private User otherUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +64,23 @@ public class DetailItemActivity extends AppCompatActivity {
         key = getIntent.getStringExtra("key");
 
         user = MainActivity.USER;
+
+        userManagerViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(UserManagerViewModel.class);
+        userManagerViewModel.getUserProfile(user.getUid());
+        userManagerViewModel.getUserProfile().observe(this, new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+                myUser = user;
+            }
+        });
+
+
+        userManagerViewModel.getOtherUserProfile().observe(this, new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+                otherUser = user;
+            }
+        });
 
         itemViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ItemViewModel.class);
         itemViewModel.getItem(key);
@@ -82,6 +104,8 @@ public class DetailItemActivity extends AppCompatActivity {
                 binding.content.setText(item.getContent());
                 binding.price.setText(item.getPrice() + "원");
                 binding.userName.setText(item.getSellerName());
+
+                userManagerViewModel.getOtherUserProfile(sellerUid);
 
                 String sellerProfielUri = item.getSellerProfileUri();
 
@@ -119,8 +143,6 @@ public class DetailItemActivity extends AppCompatActivity {
 
         chatViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ChatViewModel.class);
 
-//        userManagerViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(UserManagerViewModel.class);
-//        userManagerViewModel.getUserProfile(user.getUid());
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
@@ -136,8 +158,8 @@ public class DetailItemActivity extends AppCompatActivity {
 
                 //chatViewModel.setChatRoom(user.getUid(), sellerUid);
                 LastMessage lastMessage = new LastMessage("", "", "");
-                ChatRoom chatRoom = new ChatRoom("", currentItem, lastMessage);
-                chatViewModel.setChatRoom(user.getUid(), sellerUid, chatRoom);
+                ChatRoom chatRoom = new ChatRoom(null, currentItem, lastMessage);
+                chatViewModel.setChatRoom(user.getUid(), sellerUid, chatRoom, myUser, otherUser);
             }
         });
 

@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.mirror.jmarket.classes.Chat;
 import com.mirror.jmarket.classes.ChatRoom;
+import com.mirror.jmarket.classes.User;
 import com.mirror.jmarket.model.ChatRepository;
 
 import java.util.HashMap;
@@ -46,8 +47,8 @@ public class ChatViewModel extends AndroidViewModel {
         return repository.getDate();
     }
 
-    public void setChatRoom(String uid, String sellerUid, ChatRoom chatRoom) {
-        repository.setChatRoom(uid, sellerUid, chatRoom);
+    public void setChatRoom(String uid, String sellerUid, ChatRoom chatRoom, User myUser, User otherUser) {
+        repository.setChatRoom(uid, sellerUid, chatRoom, myUser, otherUser);
     }
 
     public void getMyChatRooms(String uid) {

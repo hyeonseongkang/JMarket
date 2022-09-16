@@ -16,6 +16,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.mirror.jmarket.classes.Chat;
 import com.mirror.jmarket.classes.ChatRoom;
 import com.mirror.jmarket.classes.LastMessage;
+import com.mirror.jmarket.classes.User;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -67,7 +68,7 @@ public class ChatRepository {
     public MutableLiveData<List<ChatRoom>> getMyChatRooms() { return chatRooms;}
 
 
-    public void setChatRoom(String uid, String sellerUid, ChatRoom chatRoom) {
+    public void setChatRoom(String uid, String sellerUid, ChatRoom chatRoom, User myUser, User otherUser) {
 
         if (uid.equals(sellerUid))
             return;
@@ -85,11 +86,11 @@ public class ChatRepository {
                     ChatRoom chatRoom1 = new ChatRoom();
                     chatRoom1.setItem(chatRoom.getItem());
                     chatRoom1.setLastMessage(chatRoom.getLastMessage());
-                    chatRoom1.setUid(sellerUid);
+                    chatRoom1.setUser(otherUser);
                     ChatRoom chatRoom2 = new ChatRoom();
                     chatRoom2.setItem(chatRoom.getItem());
                     chatRoom2.setLastMessage(chatRoom.getLastMessage());
-                    chatRoom2.setUid(uid);
+                    chatRoom2.setUser(myUser);
                     chatRoomsRef.child(uid).child(sellerUid).setValue(chatRoom1);
                     chatRoomsRef.child(sellerUid).child(uid).setValue(chatRoom2);
 //                    chatsRef.child(uid).child(sellerUid).child("createDate").setValue(currentDate);
@@ -111,6 +112,7 @@ public class ChatRepository {
                 chatRoomList.clear();
                 for (DataSnapshot snapshot1: snapshot.getChildren()) {
                     ChatRoom chatRoom = snapshot1.getValue(ChatRoom.class);
+                    Log.d("ChatRooms", "modification");
                     chatRoomList.add(chatRoom);
                 }
                 chatRooms.setValue(chatRoomList);

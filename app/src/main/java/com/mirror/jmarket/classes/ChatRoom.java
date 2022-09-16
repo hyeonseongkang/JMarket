@@ -2,16 +2,22 @@ package com.mirror.jmarket.classes;
 
 public class ChatRoom {
     private String uid;
+    private User user;
     private Item item;
     private LastMessage lastMessage;
 
     public ChatRoom() {}
 
-    public ChatRoom(String uid, Item item, LastMessage lastMessage) {
-        this.uid = uid;
+    public ChatRoom(User user, Item item, LastMessage lastMessage) {
+        this.user = user;
         this.item = item;
         this.lastMessage = lastMessage;
     }
+
+
+    public User getUser() { return user; }
+
+    public void setUser(User user) { this.user = user;}
 
     public String getUid() {
         return uid;

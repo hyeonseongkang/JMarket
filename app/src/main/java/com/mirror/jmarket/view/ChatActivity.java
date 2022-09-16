@@ -83,15 +83,6 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        /*
-        chatViewModel.getMyChats().observe(this, new Observer<List<List<Chat>>>() {
-            @Override
-            public void onChanged(List<List<Chat>> chats) {
-                // chats에서 상대 uid에 해당하는 chats만 adapter에 넘겨야함
-                adapter.setChats(chats, user.getUid());
-            }
-        });
-         */
 
         // button
         binding.sendMessageButton.setOnClickListener(new View.OnClickListener() {
