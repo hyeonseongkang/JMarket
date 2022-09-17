@@ -81,6 +81,7 @@ public class ChatFragment extends Fragment {
                 intent.putExtra("uid", user.getUid()); // 상대방 uid
                 intent.putExtra("itemTitle", chatRoom.getItem().getTitle());
                 intent.putExtra("myNickName", myNickName);
+                intent.putExtra("userPhoto", user.getPhotoUri());
                 startActivity(intent);
             }
         });

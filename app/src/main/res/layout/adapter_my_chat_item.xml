@@ -4,6 +4,12 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="5dp">
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/userPhoto"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/basic_profile_photo"
+        android:visibility="gone"/>
 
     <RelativeLayout
         android:layout_width="wrap_content"

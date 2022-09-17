@@ -150,25 +150,6 @@ public class ChatRepository {
 
         });
 
-        /*
-        chatRoomsRef.child(uid).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                chatRoomList.clear();
-                for (DataSnapshot snapshot1: snapshot.getChildren()) {
-                    ChatRoom chatRoom = snapshot1.getValue(ChatRoom.class);
-                    Log.d("ChatRooms", "modification");
-                    chatRoomList.add(chatRoom);
-                }
-                chatRooms.setValue(chatRoomList);
-            }
-
-            @Override
-            public void onCancelled(@NonNull @NotNull DatabaseError error) {
-
-            }
-        });
-         */
     }
 
     public void sendMessage(String sender, String receiver, Chat chat, String lastSendUser) {
@@ -176,7 +157,6 @@ public class ChatRepository {
         chat.setDate(dateTime[0]);
         chat.setTime(dateTime[1]);
 
-        Log.d("야야야야", sender + " " + receiver);
         chatsRef.child(sender).child(receiver).push().setValue(chat);
         chatsRef.child(receiver).child(sender).push().setValue(chat);
 

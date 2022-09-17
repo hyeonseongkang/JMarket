@@ -42,8 +42,8 @@ public class ChatActivity extends AppCompatActivity {
     // ChatRoom Info
     private String uid; // 상대 uid
     private String itemTitle;
-
     private String myNickName;
+    private String userPhoto; // 상대 Profile Photo
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +59,8 @@ public class ChatActivity extends AppCompatActivity {
         uid = getIntent.getStringExtra("uid");
         itemTitle = getIntent.getStringExtra("itemTitle");
         myNickName = getIntent.getStringExtra("myNickName");
+        userPhoto = getIntent.getStringExtra("userPhoto");
+
 
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setHasFixedSize(true);
@@ -75,7 +77,7 @@ public class ChatActivity extends AppCompatActivity {
                 for (HashMap<String, List<Chat>> map : hashMaps) {
                     if (map.containsKey(uid)) {
                         List<Chat> chat = map.get(uid);
-                        adapter.setChats(chat, user.getUid());
+                        adapter.setChats(chat, user.getUid(), userPhoto);
                         binding.recyclerView.scrollToPosition(chat.size() - 1);
                         break;
                     }
