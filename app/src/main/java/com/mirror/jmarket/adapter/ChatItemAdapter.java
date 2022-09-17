@@ -21,6 +21,7 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.MyView
 
     private List<Chat> chats = new ArrayList<>();
     private String myUid = new String();
+    private String userUid = new String(); // 상대방 uid
     private String userPhoto = new String(); // 상대방 profile photo
 
     @Override
@@ -36,7 +37,7 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.MyView
                     .inflate(R.layout.adapter_user_chat_item, parent, false);
         }
 
-        return new MyViewHolder(itemView);
+        return new MyViewHolder(itemView, viewType);
     }
 
     @Override
@@ -51,21 +52,40 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.MyView
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Chat chat = chats.get(position);
-        Chat beforeChat;
+        Chat prevChat;
+        Chat nextChat;
 
         holder.userNickName.setVisibility(View.VISIBLE);
+        holder.time.setVisibility(View.VISIBLE);
+        holder.userPhoto.setVisibility(View.VISIBLE);
         holder.userNickName.setText("");
 
-        if (userPhoto.length() > 0) {
+        if (userPhoto.length() > 0 && !(myUid.equals(chat.getSender()))) {
             Glide.with(holder.itemView.getContext())
                     .load(Uri.parse(userPhoto))
                     .into(holder.userPhoto);
         }
 
+        // 채팅 데이터가 1개 이상일때
         if (position > 0) {
-            beforeChat = chats.get(position - 1);
-            if (chat.getSender().equals(beforeChat.getSender()) || chat.getReceiver().equals(beforeChat.getReceiver()) )
+            // (position - 1)번째 채팅 데이터와 position번째 채팅 데이터를 비교해 같은 유저가 보낸 채팅일 경우
+            prevChat = chats.get(position - 1);
+            if (chat.getSender().equals(prevChat.getSender()) || chat.getReceiver().equals(prevChat.getReceiver())) {
                 holder.userNickName.setVisibility(View.GONE);
+                holder.userPhoto.setVisibility(View.GONE);
+
+            }
+
+        }
+
+        // 현재 position + 1가 전체 채팅 사이즈 보다 크다면 nextChat을 가져옴
+        if (chats.size() > position + 1) {
+            nextChat = chats.get(position + 1);
+            // 현재 position의 chat time과 다음 position의 chat time이 같으면서 보낸 사람이 같을 경우 현재 view에는 시간 표시 안함 -> 마지막 chat data의 시간만 표시
+            if (chat.getTime().equals(nextChat.getTime()) && chat.getSender().equals(nextChat.getSender())) {
+                holder.time.setVisibility(View.GONE);
+            }
+
         }
 
         if (chat.getSender().equals(myUid))
@@ -81,9 +101,10 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.MyView
     @Override
     public int getItemCount() { return chats == null ? 0 : chats.size(); }
 
-    public void setChats(List<Chat> chats, String myUid, String userPhoto) {
+    public void setChats(List<Chat> chats, String myUid, String userUid, String userPhoto) {
         this.chats = chats;
         this.myUid = myUid;
+        this.userUid = userUid;
         this.userPhoto = userPhoto;
         notifyDataSetChanged();
     }
@@ -96,8 +117,9 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.MyView
         private TextView time;
         private TextView messageChecked;
 
-        public MyViewHolder(View itemView) {
+        public MyViewHolder(View itemView, int viewType) {
             super(itemView);
+
 
             userPhoto = itemView.findViewById(R.id.userPhoto);
             userNickName = itemView.findViewById(R.id.userNickName);

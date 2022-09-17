@@ -77,7 +77,7 @@ public class ChatActivity extends AppCompatActivity {
                 for (HashMap<String, List<Chat>> map : hashMaps) {
                     if (map.containsKey(uid)) {
                         List<Chat> chat = map.get(uid);
-                        adapter.setChats(chat, user.getUid(), userPhoto);
+                        adapter.setChats(chat, user.getUid(), uid, userPhoto);
                         binding.recyclerView.scrollToPosition(chat.size() - 1);
                         break;
                     }

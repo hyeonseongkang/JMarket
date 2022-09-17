@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp">
+    android:layout_marginBottom="3dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/userPhoto"
@@ -15,8 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_toRightOf="@+id/userPhoto"
-        android:layout_marginLeft="5dp">
+        android:layout_marginLeft="55dp">
 
         <TextView
             android:id="@+id/userNickName"
@@ -30,24 +29,24 @@
             android:layout_marginBottom="2dp"/>
 
         <LinearLayout
-            android:layout_below="@+id/userNickName"
             android:id="@+id/one"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/userNickName"
+            android:background="@drawable/adapter_user_chat_layout"
             android:orientation="vertical"
-            android:padding="5dp"
-            android:background="@drawable/adapter_user_chat_layout">
+            android:padding="5dp">
 
             <TextView
                 android:id="@+id/message"
-                android:layout_gravity="center_horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="message"
-                android:textColor="#000000"
+                android:layout_gravity="center_horizontal"
                 android:fontFamily="@font/gmm"
                 android:padding="5dp"
-                android:textSize="16dp"/>
+                android:text="message"
+                android:textColor="#000000"
+                android:textSize="16dp" />
         </LinearLayout>
 
         <View

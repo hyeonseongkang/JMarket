@@ -2,14 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="5dp">
+    android:layout_marginBottom="3dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/userPhoto"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/basic_profile_photo"
-        android:visibility="gone"/>
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@null" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
