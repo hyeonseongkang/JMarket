@@ -5,9 +5,11 @@ import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -106,6 +108,49 @@ public class ChatRepository {
     }
 
     public void getMyChatRooms(String uid) {
+
+        chatRoomsRef.child(uid).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
+                Log.d("MyChatRooms Added:", snapshot.getValue().toString());
+                ChatRoom chatRoom = snapshot.getValue(ChatRoom.class);
+                chatRoomList.add(0, chatRoom);
+                chatRooms.setValue(chatRoomList);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
+                Log.d("MyChatRooms Changed:", snapshot.getValue().toString());
+                ChatRoom chatRoom = snapshot.getValue(ChatRoom.class);
+                for (int i = 0; i < chatRoomList.size(); i++) {
+                    if (chatRoomList.get(i).getUser().getUid().equals(chatRoom.getUser().getUid())) {
+                        chatRoomList.remove(i);
+                        break;
+                    }
+                }
+                chatRoomList.add(0, chatRoom);
+                chatRooms.setValue(chatRoomList);
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull @NotNull DataSnapshot snapshot) {
+                Log.d("MyChatRooms Removed:", snapshot.getValue().toString());
+            }
+
+            @Override
+            public void onChildMoved(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
+                Log.d("MyChatRooms Moved:", snapshot.getValue().toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                Log.d("MyChatRooms Added:", error.getMessage());
+            }
+
+
+        });
+
+        /*
         chatRoomsRef.child(uid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
@@ -123,12 +168,15 @@ public class ChatRepository {
 
             }
         });
+         */
     }
 
     public void sendMessage(String sender, String receiver, Chat chat, String lastSendUser) {
         String[] dateTime = getDate().split(" ");
         chat.setDate(dateTime[0]);
         chat.setTime(dateTime[1]);
+
+        Log.d("야야야야", sender + " " + receiver);
         chatsRef.child(sender).child(receiver).push().setValue(chat);
         chatsRef.child(receiver).child(sender).push().setValue(chat);
 
