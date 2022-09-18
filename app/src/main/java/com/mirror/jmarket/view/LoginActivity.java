@@ -31,16 +31,16 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(loginBinding.getRoot());
 
         loginViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(LoginViewModel.class);
-        loginViewModel.getLoginValid().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                if (aBoolean) {
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-            }
-        });
+//        loginViewModel.getLoginValid().observe(this, new Observer<Boolean>() {
+//            @Override
+//            public void onChanged(Boolean aBoolean) {
+//                if (aBoolean) {
+//                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                    startActivity(intent);
+//                    finish();
+//                }
+//            }
+//        });
 
 
         loginBinding.loginButton.setOnClickListener(new View.OnClickListener() {
@@ -63,9 +63,9 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        loginViewModel.loginCheck();
-    }
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        loginViewModel.loginCheck();
+//    }
 }
