@@ -60,7 +60,9 @@
             tools:listitem="@layout/adapter_home_item"
             tools:itemCount="5"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"/>
+            android:layout_marginRight="20dp"
+            android:paddingBottom="30dp"
+            android:clipToPadding="false"/>
     </LinearLayout>
 
     <RelativeLayout

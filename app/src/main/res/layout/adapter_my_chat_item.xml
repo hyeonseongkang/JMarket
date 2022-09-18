@@ -4,6 +4,41 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="3dp">
 
+    <RelativeLayout
+        android:id="@+id/dateLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:visibility="gone">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/date"
+            android:background="#000000" />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:fontFamily="@font/scd5"
+            android:text="2020/09/18"
+            android:textColor="#000000" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/date"
+            android:background="#000000" />
+
+    </RelativeLayout>
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/userPhoto"
         android:layout_width="0dp"
@@ -13,7 +48,8 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true">
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/dateLayout">
 
         <LinearLayout
             android:id="@+id/view1"
@@ -89,8 +125,6 @@
             android:layout_height="0dp"
             android:layout_below="@+id/one"/>
 
-
-
-
     </RelativeLayout>
+
 </RelativeLayout>

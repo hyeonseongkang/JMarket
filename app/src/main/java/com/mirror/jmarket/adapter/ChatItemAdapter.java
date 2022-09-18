@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -55,12 +56,15 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.MyView
         Chat prevChat;
         Chat nextChat;
 
+        holder.dateLayout.setVisibility(View.VISIBLE);
+        holder.date.setVisibility(View.VISIBLE);
+        holder.date.setText(chat.getDate());
+
         holder.userNickName.setVisibility(View.VISIBLE);
         holder.time.setVisibility(View.VISIBLE);
         holder.userPhoto.setVisibility(View.VISIBLE);
-        holder.userNickName.setText("");
 
-        if (userPhoto.length() > 0 && !(myUid.equals(chat.getSender()))) {
+        if (userPhoto.length() > 0) {
             Glide.with(holder.itemView.getContext())
                     .load(Uri.parse(userPhoto))
                     .into(holder.userPhoto);
@@ -73,8 +77,13 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.MyView
             if (chat.getSender().equals(prevChat.getSender()) || chat.getReceiver().equals(prevChat.getReceiver())) {
                 holder.userNickName.setVisibility(View.GONE);
                 holder.userPhoto.setVisibility(View.GONE);
-
             }
+
+            // position 채팅 데이터의 날짜와 이전 채팅 데이터의 날짜가 같다면 현재 position에 해당하는 view의 date는 숨김
+            if (chat.getDate().equals(prevChat.getDate())) {
+                holder.dateLayout.setVisibility(View.GONE);
+            }
+
 
         }
 
@@ -85,11 +94,11 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.MyView
             if (chat.getTime().equals(nextChat.getTime()) && chat.getSender().equals(nextChat.getSender())) {
                 holder.time.setVisibility(View.GONE);
             }
-
         }
 
         if (chat.getSender().equals(myUid))
             holder.userNickName.setVisibility(View.GONE);
+
         holder.userNickName.setText(chat.getMyNickName());
         holder.message.setText(chat.getMessage());
         holder.time.setText(chat.getTime());
@@ -117,6 +126,9 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.MyView
         private TextView time;
         private TextView messageChecked;
 
+        private RelativeLayout dateLayout;
+        private TextView date;
+
         public MyViewHolder(View itemView, int viewType) {
             super(itemView);
 
@@ -126,6 +138,10 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.MyView
             message = itemView.findViewById(R.id.message);
             time = itemView.findViewById(R.id.time);
             messageChecked = itemView.findViewById(R.id.messageChecked);
+
+            dateLayout = itemView.findViewById(R.id.dateLayout);
+            date = itemView.findViewById(R.id.date);
+
         }
     }
 }

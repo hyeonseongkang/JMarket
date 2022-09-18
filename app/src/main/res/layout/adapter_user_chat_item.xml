@@ -4,84 +4,124 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="3dp">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/userPhoto"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/basic_profile_photo"
-        android:layout_marginTop="2dp"/>
+    <RelativeLayout
+        android:id="@+id/dateLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:visibility="gone">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/date"
+            android:background="#000000" />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:fontFamily="@font/scd5"
+            android:text="2020/09/18"
+            android:textColor="#000000" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/date"
+            android:background="#000000" />
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginLeft="55dp">
+        android:layout_below="@+id/dateLayout">
 
-        <TextView
-            android:id="@+id/userNickName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="userNickName"
-            android:fontFamily="@font/scd5"
-            android:textColor="#000000"
-            android:textSize="13dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginBottom="2dp"/>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/userPhoto"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/basic_profile_photo"
+            android:layout_marginTop="2dp"/>
 
-        <LinearLayout
-            android:id="@+id/one"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/userNickName"
-            android:background="@drawable/adapter_user_chat_layout"
-            android:orientation="vertical"
-            android:padding="5dp">
-
-            <TextView
-                android:id="@+id/message"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:fontFamily="@font/gmm"
-                android:padding="5dp"
-                android:text="message"
-                android:textColor="#000000"
-                android:textSize="16dp" />
-        </LinearLayout>
-
-        <View
-            android:id="@+id/bottomView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_below="@+id/one"/>
-
-
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_toRightOf="@+id/one"
-            android:layout_marginLeft="3dp"
-            android:layout_above="@+id/bottomView">
+            android:layout_marginLeft="55dp">
 
             <TextView
-                android:id="@+id/messageChecked"
+                android:id="@+id/userNickName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="12dp"
-                android:textColor="#FBE62A"
-                android:text="1"/>
-
-            <TextView
-                android:id="@+id/time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="11:11"
+                android:text="userNickName"
                 android:fontFamily="@font/scd5"
-                android:textSize="8dp" />
-        </LinearLayout>
+                android:textColor="#000000"
+                android:textSize="13dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginBottom="2dp"/>
+
+            <LinearLayout
+                android:id="@+id/one"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/userNickName"
+                android:background="@drawable/adapter_user_chat_layout"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:fontFamily="@font/gmm"
+                    android:padding="5dp"
+                    android:text="message"
+                    android:textColor="#000000"
+                    android:textSize="16dp" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/bottomView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_below="@+id/one"/>
 
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_toRightOf="@+id/one"
+                android:layout_marginLeft="3dp"
+                android:layout_above="@+id/bottomView">
+
+                <TextView
+                    android:id="@+id/messageChecked"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12dp"
+                    android:textColor="#FBE62A"
+                    android:text="1"/>
+
+                <TextView
+                    android:id="@+id/time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="11:11"
+                    android:fontFamily="@font/scd5"
+                    android:textSize="8dp" />
+            </LinearLayout>
+        </RelativeLayout>
 
     </RelativeLayout>
+
 </RelativeLayout>

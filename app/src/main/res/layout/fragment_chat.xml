@@ -47,6 +47,8 @@
             android:layout_marginTop="5dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            tools:listitem="@layout/adapter_chat_list_item"/>
+            tools:listitem="@layout/adapter_chat_list_item"
+            android:paddingBottom="10dp"
+            android:clipToPadding="false"/>
     </LinearLayout>
 </RelativeLayout>
