@@ -2,9 +2,11 @@ package com.mirror.jmarket.view;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationBarView;
@@ -13,6 +15,8 @@ import com.mirror.jmarket.R;
 import com.mirror.jmarket.databinding.ActivityMainBinding;
 import com.mirror.jmarket.viewmodel.ChatViewModel;
 import com.mirror.jmarket.viewmodel.LoginViewModel;
+
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,6 +41,15 @@ public class MainActivity extends AppCompatActivity {
 
         chatViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ChatViewModel.class);
         chatViewModel.getMyChatRooms(USER.getUid());
+        chatViewModel.unReadChatCount(USER.getUid());
+        chatViewModel.getUnReadChatCount().observe(this, new Observer<HashMap<String, Integer>>() {
+            @Override
+            public void onChanged(HashMap<String, Integer> hashMap) {
+                for (String key : hashMap.keySet()) {
+                    System.out.println("확인하지 않은 채팅 개수: " + key + " " + hashMap.get(key));
+                }
+            }
+        });
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container, new HomeFragment()).commit();
 

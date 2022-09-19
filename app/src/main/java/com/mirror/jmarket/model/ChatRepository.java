@@ -28,6 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class ChatRepository {
@@ -54,6 +55,8 @@ public class ChatRepository {
 
     private MutableLiveData<Boolean> createChatRoom;
 
+    private MutableLiveData<HashMap<String, Integer>> unReadChatCount;
+    private int count;
 
     public ChatRepository(Application application) {
         this.application = application;
@@ -70,6 +73,8 @@ public class ChatRepository {
         visited = new MutableLiveData<>();
 
         createChatRoom = new MutableLiveData<>();
+
+        unReadChatCount = new MutableLiveData<>();
     }
 
     public MutableLiveData<List<HashMap<String, List<Chat>>>> getMyChats() { return myChats; }
@@ -81,6 +86,8 @@ public class ChatRepository {
     public MutableLiveData<Boolean> getCreateChatRoom() { return createChatRoom; }
 
     public MutableLiveData<Boolean> getVisited() { return visited; }
+
+    public MutableLiveData<HashMap<String, Integer>> getUnReadChatCount() { return unReadChatCount; }
 
     public void setVisited(String myUid, String userUid, boolean visit) {
         chatRoomsRef.child(myUid).child(userUid).child("visited").setValue(visit);
@@ -135,6 +142,44 @@ public class ChatRepository {
                     }
                 }
             }
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    // 읽지 않은 채팅 수
+    public void unReadChatCount(String myUid) {
+        HashMap<String, Integer> hashMap = new LinkedHashMap<>();
+        chatsRef.child(myUid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+
+
+                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                    int count = 0;
+                    for (DataSnapshot snapshot2: snapshot1.getChildren()) {
+                        Chat chat = snapshot2.getValue(Chat.class);
+                        //System.out.println(snapshot1.getKey() + "차례 ");
+                        // 내가 보낸 메시지가 아니라면
+                        //System.out.println(chat.getSender() + " " + myUid);
+                        if (!(chat.getSender().equals(myUid))) {
+                            if (!(chat.getChecked())) {
+                                count++;
+                                //System.out.println("확인하지 않은 채팅 수: " + count);
+                            }
+
+                        }
+
+                        hashMap.put(snapshot1.getKey(), count);
+                    }
+                }
+
+                unReadChatCount.setValue(hashMap);
+
+            }
+
             @Override
             public void onCancelled(@NonNull @NotNull DatabaseError error) {
 
