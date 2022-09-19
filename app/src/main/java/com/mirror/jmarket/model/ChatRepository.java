@@ -52,6 +52,8 @@ public class ChatRepository {
 
     private MutableLiveData<Boolean> visited;
 
+    private MutableLiveData<Boolean> createChatRoom;
+
 
     public ChatRepository(Application application) {
         this.application = application;
@@ -67,6 +69,7 @@ public class ChatRepository {
 
         visited = new MutableLiveData<>();
 
+        createChatRoom = new MutableLiveData<>();
     }
 
     public MutableLiveData<List<HashMap<String, List<Chat>>>> getMyChats() { return myChats; }
@@ -75,6 +78,8 @@ public class ChatRepository {
 
     public MutableLiveData<List<ChatRoom>> getMyChatRooms() { return chatRooms;}
 
+    public MutableLiveData<Boolean> getCreateChatRoom() { return createChatRoom; }
+
     public MutableLiveData<Boolean> getVisited() { return visited; }
 
     public void setVisited(String myUid, String userUid, boolean visit) {
@@ -82,14 +87,54 @@ public class ChatRepository {
     }
 
     // 상대방이 채팅방에 들어와 있는지 확인
-    public void getVisited(String myUid, String userUid) {
-        chatRoomsRef.child(myUid).child(userUid).child("visited").addValueEventListener(new ValueEventListener() {
+    public void getVisited(String userUid, String myUid) {
+        chatRoomsRef.child(userUid).child(myUid).child("visited").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                boolean visit = snapshot.getValue(boolean.class);
-                visited.setValue(visit);
+                 boolean visit = snapshot.getValue(Boolean.class);
+                 visited.setValue(visit);
             }
 
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    /*
+    채팅방에 입장하면 상대가 내게 보낸 모든 메시지의 checked 값을 true로 변경,
+    채팅 데이터는 myUid/userUid/ChatData && userUid/myUid/ChatData 양쪽 uid 하위 모두에 저장되니 myUid 와 userUid(상대) 하위의 값을 모두 바꿔줘야함
+     */
+    public void allMessageChecked(String myUid, String userUid) {
+        chatsRef.child(myUid).child(userUid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                    Chat chat = snapshot1.getValue(Chat.class);
+
+                    if (chat.getSender().equals(userUid)) {
+                        snapshot1.getRef().child("checked").setValue(true);
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+
+        chatsRef.child(userUid).child(myUid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                    Chat chat = snapshot1.getValue(Chat.class);
+
+                    if (chat.getSender().equals(userUid)) {
+                        snapshot1.getRef().child("checked").setValue(true);
+                    }
+                }
+            }
             @Override
             public void onCancelled(@NonNull @NotNull DatabaseError error) {
 
@@ -123,7 +168,15 @@ public class ChatRepository {
                     chatRoom2.setLastMessage(chatRoom.getLastMessage());
                     chatRoom2.setUser(myUser);
                     chatRoomsRef.child(uid).child(sellerUid).setValue(chatRoom1);
-                    chatRoomsRef.child(sellerUid).child(uid).setValue(chatRoom2);
+                    chatRoomsRef.child(sellerUid).child(uid).setValue(chatRoom2).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull @NotNull Task<Void> task) {
+                            if (task.isSuccessful())
+                                createChatRoom.setValue(true);
+                            else
+                                createChatRoom.setValue(false);
+                        }
+                    });
 //                    chatsRef.child(uid).child(sellerUid).child("createDate").setValue(currentDate);
 //                    chatsRef.child(sellerUid).child(uid).child("createDate").setValue(currentDate);
                 }
@@ -141,7 +194,7 @@ public class ChatRepository {
         chatRoomsRef.child(uid).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
-                Log.d("MyChatRooms Added:", snapshot.getValue().toString());
+                //Log.d("MyChatRooms Added:", snapshot.getValue().toString());
                 ChatRoom chatRoom = snapshot.getValue(ChatRoom.class);
                 chatRoomList.add(0, chatRoom);
                 chatRooms.setValue(chatRoomList);
@@ -149,7 +202,7 @@ public class ChatRepository {
 
             @Override
             public void onChildChanged(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
-                Log.d("MyChatRooms Changed:", snapshot.getValue().toString());
+                //Log.d("MyChatRooms Changed:", snapshot.getValue().toString());
                 ChatRoom chatRoom = snapshot.getValue(ChatRoom.class);
                 for (int i = 0; i < chatRoomList.size(); i++) {
                     if (chatRoomList.get(i).getUser().getUid().equals(chatRoom.getUser().getUid())) {

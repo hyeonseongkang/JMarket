@@ -27,12 +27,16 @@ public class ChatViewModel extends AndroidViewModel {
 
     private MutableLiveData<Boolean> visited;
 
+    private MutableLiveData<Boolean> createChatRoom;
+
+
     public ChatViewModel(Application application) {
         super(application);
         repository = new ChatRepository(application);
         myChats = repository.getMyChats();
         chatRooms = repository.getMyChatRooms();
         visited = repository.getVisited();
+        createChatRoom = repository.getCreateChatRoom();
     }
 
     public MutableLiveData<List<HashMap<String, List<Chat>>>> getMyChats() { return myChats; }
@@ -43,11 +47,19 @@ public class ChatViewModel extends AndroidViewModel {
 
     public MutableLiveData<Boolean> getVisited() { return visited; }
 
-    public void setVisited(String myUid, String userUid, boolean visited) {
-        repository.setVisited(myUid, userUid, visited);
+    public MutableLiveData<Boolean> getCreateChatRoom() { return createChatRoom; }
+
+    public void setVisited(String myUid, String userUid, boolean visit) {
+        repository.setVisited(myUid, userUid, visit);
     }
 
-    public void getVisited(String myUid, String userUid) { repository.getVisited(myUid, userUid);}
+    public void getVisited( String userUid, String myUid) {
+        repository.getVisited(userUid, myUid);
+    }
+
+    public void allMessageChecked(String myUid, String userUid) {
+        repository.allMessageChecked(myUid, userUid);
+    }
 
     public void sendMessage(String sender, String receiver, Chat chat, String lastSendUser) {
         repository.sendMessage(sender, receiver, chat, lastSendUser);

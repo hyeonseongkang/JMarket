@@ -102,9 +102,8 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.MyView
         holder.userNickName.setText(chat.getMyNickName());
         holder.message.setText(chat.getMessage());
         holder.time.setText(chat.getTime());
-        /*
+
         holder.messageChecked.setText(chat.getChecked() == true ? "" : "1");
-         */
     }
 
     @Override

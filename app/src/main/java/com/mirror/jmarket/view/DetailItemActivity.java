@@ -142,7 +142,21 @@ public class DetailItemActivity extends AppCompatActivity {
         });
 
         chatViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ChatViewModel.class);
+        chatViewModel.getCreateChatRoom().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean) {
+                    Intent intent = new Intent(DetailItemActivity.this, ChatActivity.class);
+                    intent.putExtra("uid", sellerUid);
+                    intent.putExtra("itemTitle", currentItem.getTitle());
+                    intent.putExtra("myNickName",  myUser.getNickName().length() <= 0 ? user.getEmail() : myUser.getNickName());
+                    intent.putExtra("userPhoto", currentItem.getSellerProfileUri());
+                    startActivity(intent);
+                    finish();
+                }
 
+            }
+        });
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
@@ -160,6 +174,12 @@ public class DetailItemActivity extends AppCompatActivity {
                 LastMessage lastMessage = new LastMessage("", "", "");
                 ChatRoom chatRoom = new ChatRoom(null, currentItem, lastMessage, true);
                 chatViewModel.setChatRoom(user.getUid(), sellerUid, chatRoom, myUser, otherUser);
+                /*
+                        uid = getIntent.getStringExtra("uid");
+        itemTitle = getIntent.getStringExtra("itemTitle");
+        myNickName = getIntent.getStringExtra("myNickName");
+        userPhoto = getIntent.getStringExtra("userPhoto");
+                 */
             }
         });
 

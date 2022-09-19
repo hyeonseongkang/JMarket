@@ -89,19 +89,18 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        // 채팅방에 입장하면 상대가 내게 보낸 모든 메시지의 checked를 true로 변경
+        chatViewModel.allMessageChecked(user.getUid(), uid);
+
         chatViewModel.setVisited(user.getUid(), uid, true);
         chatViewModel.getVisited(uid, user.getUid());
         chatViewModel.getVisited().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
                 visited = aBoolean;
-                if (aBoolean) {
-                    Log.d(TAG, aBoolean.toString());
-                } else {
-                    Log.d(TAG, aBoolean.toString());
-                }
             }
         });
+
 
 
         // button
@@ -113,13 +112,13 @@ public class ChatActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(message))
                     return;
 
-                // String userNickName, String sender, String receiver, String message, String date, String time, boolean checked
                 if (visited) {
                     Log.d(TAG, "상대가 채팅방에 있습니다.");
                 } else {
                     Log.d(TAG, "상대가 채팅방에 없습니다.");
                 }
 
+                // String userNickName, String sender, String receiver, String message, String date, String time, boolean checked
                 Chat chat = new Chat(myNickName, user.getUid(), uid, message, "", "", visited);
                 chatViewModel.sendMessage(user.getUid(), uid, chat, user.getUid());
                 binding.message.setText("");

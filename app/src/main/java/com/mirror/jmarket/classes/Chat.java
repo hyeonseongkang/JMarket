@@ -55,6 +55,10 @@ public class Chat {
         return checked;
     }
 
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
+
     public void printChatData(String TAG) {
         Log.d(TAG, getSender() + " " + getReceiver() + " " + getMessage() + " " + getDate() + " " + getTime() + " " + getChecked());
     }
