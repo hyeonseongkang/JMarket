@@ -150,34 +150,27 @@ public class ChatRepository {
     }
 
     // 읽지 않은 채팅 수
-    public void unReadChatCount(String myUid) {
+    public void getUnReadChatCount(String myUid) {
         HashMap<String, Integer> hashMap = new LinkedHashMap<>();
         chatsRef.child(myUid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
 
-
                 for (DataSnapshot snapshot1: snapshot.getChildren()) {
                     int count = 0;
                     for (DataSnapshot snapshot2: snapshot1.getChildren()) {
                         Chat chat = snapshot2.getValue(Chat.class);
-                        //System.out.println(snapshot1.getKey() + "차례 ");
                         // 내가 보낸 메시지가 아니라면
-                        //System.out.println(chat.getSender() + " " + myUid);
                         if (!(chat.getSender().equals(myUid))) {
                             if (!(chat.getChecked())) {
                                 count++;
-                                //System.out.println("확인하지 않은 채팅 수: " + count);
                             }
-
                         }
 
                         hashMap.put(snapshot1.getKey(), count);
                     }
                 }
-
                 unReadChatCount.setValue(hashMap);
-
             }
 
             @Override
@@ -185,6 +178,10 @@ public class ChatRepository {
 
             }
         });
+    }
+
+    public void setUnReadChatCount(String myUid, String userUid, int unReadChatCount) {
+        chatRoomsRef.child(myUid).child(userUid).child("unReadChatCount").setValue(unReadChatCount);
     }
 
 
@@ -288,7 +285,7 @@ public class ChatRepository {
         chatsRef.child(receiver).child(sender).push().setValue(chat);
 
         // String message, String user, String time
-        LastMessage lastMessage = new LastMessage(chat.getMessage(), lastSendUser, dateTime[1]);
+        LastMessage lastMessage = new LastMessage(chat.getMessage(), lastSendUser, dateTime[0], dateTime[1]);
         chatRoomsRef.child(sender).child(receiver).child("lastMessage").setValue(lastMessage);
         chatRoomsRef.child(receiver).child(sender).child("lastMessage").setValue(lastMessage);
 

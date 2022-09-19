@@ -56,8 +56,12 @@ public class ChatViewModel extends AndroidViewModel {
         return unReadChatCount;
     }
 
-    public void unReadChatCount(String myUid) {
-        repository.unReadChatCount(myUid);
+    public void getUnReadChatCount(String myUid) {
+        repository.getUnReadChatCount(myUid);
+    }
+
+    public void setUnReadChatCount(String myUid, String userUid, int unReadChatCount) {
+        repository.setUnReadChatCount(myUid, userUid, unReadChatCount);
     }
 
     public void setVisited(String myUid, String userUid, boolean visit) {

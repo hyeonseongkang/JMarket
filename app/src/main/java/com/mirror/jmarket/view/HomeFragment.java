@@ -56,6 +56,9 @@ public class HomeFragment extends Fragment {
 
         loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
 
+
+
+
         binding.progress.setVisibility(View.VISIBLE);
 
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -75,7 +78,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-
+        binding.tempUserUid.setText(MainActivity.USER.getUid());
 
 
         binding.search.setOnClickListener(new View.OnClickListener() {

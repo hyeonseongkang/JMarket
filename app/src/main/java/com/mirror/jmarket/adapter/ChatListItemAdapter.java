@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,6 +43,19 @@ public class ChatListItemAdapter extends RecyclerView.Adapter<ChatListItemAdapte
         holder.userNickName.setText(user.getNickName().length() <= 0 ? user.getEmail() : user.getNickName());
         holder.lastMessage.setText(lastMessage.getMessage());
 
+        String[] lastMessageDate = lastMessage.getDate().split("-");
+        String month = Integer.parseInt(lastMessageDate[1]) >= 10 ? lastMessageDate[1] : lastMessageDate[1].substring(1);
+        String day = lastMessageDate[2];
+
+        holder.unReadChatCountLayout.setVisibility(View.GONE);
+
+        if (chatRoom.getUnReadChatCount() > 0) {
+            holder.unReadChatCountLayout.setVisibility(View.VISIBLE);
+            holder.unReadChatCount.setText(String.valueOf(chatRoom.getUnReadChatCount()));
+        }
+
+        holder.lastMessageDate.setText(month + "월" + day + "일");
+
         Glide.with(holder.itemView.getContext())
                 .load(Uri.parse(item.getFirstPhotoUri()))
                 .into(holder.photo);
@@ -69,6 +83,10 @@ public class ChatListItemAdapter extends RecyclerView.Adapter<ChatListItemAdapte
         private TextView userNickName;
         private TextView lastMessage;
 
+        private TextView lastMessageDate;
+        private TextView unReadChatCount;
+        private RelativeLayout unReadChatCountLayout;
+
         public MyViewHolder(View itemView) {
             super(itemView);
 
@@ -76,6 +94,10 @@ public class ChatListItemAdapter extends RecyclerView.Adapter<ChatListItemAdapte
             userPhoto = itemView.findViewById(R.id.userPhoto);
             userNickName = itemView.findViewById(R.id.userNickName);
             lastMessage = itemView.findViewById(R.id.lastMessage);
+
+            lastMessageDate = itemView.findViewById(R.id.lastMessageDate);
+            unReadChatCount = itemView.findViewById(R.id.unReadChatCount);
+            unReadChatCountLayout = itemView.findViewById(R.id.unReadChatCountLayout);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

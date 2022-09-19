@@ -41,11 +41,12 @@ public class MainActivity extends AppCompatActivity {
 
         chatViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ChatViewModel.class);
         chatViewModel.getMyChatRooms(USER.getUid());
-        chatViewModel.unReadChatCount(USER.getUid());
+        chatViewModel.getUnReadChatCount(USER.getUid());
         chatViewModel.getUnReadChatCount().observe(this, new Observer<HashMap<String, Integer>>() {
             @Override
             public void onChanged(HashMap<String, Integer> hashMap) {
                 for (String key : hashMap.keySet()) {
+                    chatViewModel.setUnReadChatCount(USER.getUid(), key, hashMap.get(key));
                     System.out.println("확인하지 않은 채팅 개수: " + key + " " + hashMap.get(key));
                 }
             }
