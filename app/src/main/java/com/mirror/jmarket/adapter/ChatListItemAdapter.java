@@ -43,9 +43,12 @@ public class ChatListItemAdapter extends RecyclerView.Adapter<ChatListItemAdapte
         holder.userNickName.setText(user.getNickName().length() <= 0 ? user.getEmail() : user.getNickName());
         holder.lastMessage.setText(lastMessage.getMessage());
 
-        String[] lastMessageDate = lastMessage.getDate().split("-");
-        String month = Integer.parseInt(lastMessageDate[1]) >= 10 ? lastMessageDate[1] : lastMessageDate[1].substring(1);
-        String day = lastMessageDate[2];
+        if (lastMessage.getDate().length() > 0) {
+            String[] lastMessageDate = lastMessage.getDate().split("-");
+            String month = Integer.parseInt(lastMessageDate[1]) >= 10 ? lastMessageDate[1] : lastMessageDate[1].substring(1);
+            String day = lastMessageDate[2];
+            holder.lastMessageDate.setText(month + "월" + day + "일");
+        }
 
         holder.unReadChatCountLayout.setVisibility(View.GONE);
 
@@ -54,7 +57,6 @@ public class ChatListItemAdapter extends RecyclerView.Adapter<ChatListItemAdapte
             holder.unReadChatCount.setText(String.valueOf(chatRoom.getUnReadChatCount()));
         }
 
-        holder.lastMessageDate.setText(month + "월" + day + "일");
 
         Glide.with(holder.itemView.getContext())
                 .load(Uri.parse(item.getFirstPhotoUri()))

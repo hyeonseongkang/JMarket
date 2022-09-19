@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseUser;
 import com.mirror.jmarket.R;
@@ -39,18 +41,40 @@ public class MainActivity extends AppCompatActivity {
         loginViewModel.loginCheck();
         USER = loginViewModel.getFirebaseUser().getValue();
 
+
+        BadgeDrawable badgeDrawable = mainBinding.bottomNavigation.getOrCreateBadge(R.id.chat);
+        badgeDrawable.setBackgroundColor(Color.RED);
+        badgeDrawable.setBadgeTextColor(Color.WHITE);
+        badgeDrawable.setMaxCharacterCount(4);
+
         chatViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ChatViewModel.class);
         chatViewModel.getMyChatRooms(USER.getUid());
         chatViewModel.getUnReadChatCount(USER.getUid());
         chatViewModel.getUnReadChatCount().observe(this, new Observer<HashMap<String, Integer>>() {
             @Override
             public void onChanged(HashMap<String, Integer> hashMap) {
+                int count = 0;
                 for (String key : hashMap.keySet()) {
                     chatViewModel.setUnReadChatCount(USER.getUid(), key, hashMap.get(key));
                     System.out.println("확인하지 않은 채팅 개수: " + key + " " + hashMap.get(key));
+                    count += hashMap.get(key);
                 }
+
+                System.out.println("total Count: " + count);
+                if (count > 0) {
+                    badgeDrawable.setNumber(count);
+                    badgeDrawable.setVisible(true);
+                } else {
+                    badgeDrawable.clearNumber();
+                    badgeDrawable.setVisible(false);
+                }
+
             }
         });
+
+
+
+
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container, new HomeFragment()).commit();
 
