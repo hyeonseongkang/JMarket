@@ -45,6 +45,8 @@ public class ChatActivity extends AppCompatActivity {
     private String myNickName;
     private String userPhoto; // 상대 Profile Photo
 
+    private boolean visited;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +71,8 @@ public class ChatActivity extends AppCompatActivity {
 
         binding.itemTitle.setText(itemTitle);
 
+        //
+
         chatViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ChatViewModel.class);
         chatViewModel.getMyChats(user.getUid());
         chatViewModel.getMyChats().observe(this, new Observer<List<HashMap<String, List<Chat>>>>() {
@@ -85,19 +89,38 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        chatViewModel.setVisited(user.getUid(), uid, true);
+        chatViewModel.getVisited(uid, user.getUid());
+        chatViewModel.getVisited().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                visited = aBoolean;
+                if (aBoolean) {
+                    Log.d(TAG, aBoolean.toString());
+                } else {
+                    Log.d(TAG, aBoolean.toString());
+                }
+            }
+        });
+
 
         // button
         binding.sendMessageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String message = binding.message.getText().toString();
-                Log.d("내 UID", user.getUid());
 
                 if (TextUtils.isEmpty(message))
                     return;
 
                 // String userNickName, String sender, String receiver, String message, String date, String time, boolean checked
-                Chat chat = new Chat(myNickName, user.getUid(), uid, message, "", "", false);
+                if (visited) {
+                    Log.d(TAG, "상대가 채팅방에 있습니다.");
+                } else {
+                    Log.d(TAG, "상대가 채팅방에 없습니다.");
+                }
+
+                Chat chat = new Chat(myNickName, user.getUid(), uid, message, "", "", visited);
                 chatViewModel.sendMessage(user.getUid(), uid, chat, user.getUid());
                 binding.message.setText("");
             }
@@ -110,5 +133,24 @@ public class ChatActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.none, R.anim.fadeout_left);
             }
         });
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop");
+        chatViewModel.setVisited(user.getUid(), uid, false);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy");
     }
 }

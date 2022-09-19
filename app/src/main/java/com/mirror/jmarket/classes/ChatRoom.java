@@ -5,10 +5,11 @@ public class ChatRoom {
     private User user;
     private Item item;
     private LastMessage lastMessage;
+    private boolean visited;
 
     public ChatRoom() {}
 
-    public ChatRoom(User user, Item item, LastMessage lastMessage) {
+    public ChatRoom(User user, Item item, LastMessage lastMessage, boolean visited) {
         this.user = user;
         this.item = item;
         this.lastMessage = lastMessage;
@@ -41,6 +42,14 @@ public class ChatRoom {
 
     public void setLastMessage(LastMessage lastMessage) {
         this.lastMessage = lastMessage;
+    }
+
+    public void setVisited(boolean visited) {
+        this.visited = visited;
+    }
+
+    public boolean getVisited() {
+        return visited;
     }
 
 }

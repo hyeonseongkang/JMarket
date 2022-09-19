@@ -9,6 +9,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -48,6 +50,8 @@ public class ChatRepository {
     private MutableLiveData<List<ChatRoom>> chatRooms;
     private List<ChatRoom> chatRoomList;
 
+    private MutableLiveData<Boolean> visited;
+
 
     public ChatRepository(Application application) {
         this.application = application;
@@ -61,6 +65,8 @@ public class ChatRepository {
         chatRooms = new MutableLiveData<>();
         chatRoomList = new ArrayList<>();
 
+        visited = new MutableLiveData<>();
+
     }
 
     public MutableLiveData<List<HashMap<String, List<Chat>>>> getMyChats() { return myChats; }
@@ -68,6 +74,28 @@ public class ChatRepository {
     // public MutableLiveData<List<List<Chat>>> getMyChats() { return myChats; }
 
     public MutableLiveData<List<ChatRoom>> getMyChatRooms() { return chatRooms;}
+
+    public MutableLiveData<Boolean> getVisited() { return visited; }
+
+    public void setVisited(String myUid, String userUid, boolean visit) {
+        chatRoomsRef.child(myUid).child(userUid).child("visited").setValue(visit);
+    }
+
+    // 상대방이 채팅방에 들어와 있는지 확인
+    public void getVisited(String myUid, String userUid) {
+        chatRoomsRef.child(myUid).child(userUid).child("visited").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                boolean visit = snapshot.getValue(boolean.class);
+                visited.setValue(visit);
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
 
 
     public void setChatRoom(String uid, String sellerUid, ChatRoom chatRoom, User myUser, User otherUser) {
@@ -89,6 +117,7 @@ public class ChatRepository {
                     chatRoom1.setItem(chatRoom.getItem());
                     chatRoom1.setLastMessage(chatRoom.getLastMessage());
                     chatRoom1.setUser(otherUser);
+                    chatRoom1.setVisited(true);
                     ChatRoom chatRoom2 = new ChatRoom();
                     chatRoom2.setItem(chatRoom.getItem());
                     chatRoom2.setLastMessage(chatRoom.getLastMessage());
