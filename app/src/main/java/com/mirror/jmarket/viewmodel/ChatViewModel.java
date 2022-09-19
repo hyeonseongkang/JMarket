@@ -21,8 +21,6 @@ public class ChatViewModel extends AndroidViewModel {
 
     private MutableLiveData<List<HashMap<String, List<Chat>>>> myChats;
 
-    // private MutableLiveData<List<List<Chat>>> myChats;
-
     private MutableLiveData<List<ChatRoom>> chatRooms;
 
     private MutableLiveData<Boolean> visited;
@@ -30,7 +28,6 @@ public class ChatViewModel extends AndroidViewModel {
     private MutableLiveData<Boolean> createChatRoom;
 
     private MutableLiveData<HashMap<String, Integer>> unReadChatCount;
-
 
     public ChatViewModel(Application application) {
         super(application);

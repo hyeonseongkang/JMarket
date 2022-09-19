@@ -11,15 +11,22 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseUser;
 import com.mirror.jmarket.R;
 import com.mirror.jmarket.adapter.ChatItemAdapter;
 import com.mirror.jmarket.adapter.ChatListItemAdapter;
 import com.mirror.jmarket.classes.Chat;
 import com.mirror.jmarket.classes.ChatRoom;
+import com.mirror.jmarket.classes.Item;
+import com.mirror.jmarket.classes.LastMessage;
+import com.mirror.jmarket.classes.User;
 import com.mirror.jmarket.databinding.ActivityChatBinding;
 import com.mirror.jmarket.viewmodel.ChatViewModel;
+import com.mirror.jmarket.viewmodel.ItemViewModel;
+import com.mirror.jmarket.viewmodel.UserManagerViewModel;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -38,6 +45,7 @@ public class ChatActivity extends AppCompatActivity {
 
     // adapter
     private ChatItemAdapter adapter;
+
 
     // ChatRoom Info
     private String uid; // 상대 uid
@@ -62,7 +70,6 @@ public class ChatActivity extends AppCompatActivity {
         itemTitle = getIntent.getStringExtra("itemTitle");
         myNickName = getIntent.getStringExtra("myNickName");
         userPhoto = getIntent.getStringExtra("userPhoto");
-
 
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setHasFixedSize(true);
@@ -89,9 +96,8 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        // 채팅방에 입장하면 상대가 내게 보낸 모든 메시지의 checked를 true로 변경
-        chatViewModel.allMessageChecked(user.getUid(), uid);
 
+        chatViewModel.allMessageChecked(user.getUid(), uid);
         chatViewModel.setVisited(user.getUid(), uid, true);
         chatViewModel.getVisited(uid, user.getUid());
         chatViewModel.getVisited().observe(this, new Observer<Boolean>() {
@@ -100,7 +106,6 @@ public class ChatActivity extends AppCompatActivity {
                 visited = aBoolean;
             }
         });
-
 
 
         // button

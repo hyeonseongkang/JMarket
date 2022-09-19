@@ -40,13 +40,8 @@ public class ChatRepository {
     private DatabaseReference usersRef;
     private DatabaseReference chatRoomsRef;
 
-
     private MutableLiveData<List<HashMap<String, List<Chat>>>> myChats;
     private List<HashMap<String, List<Chat>>> myChatList;
-    /*
-     private MutableLiveData<List<List<Chat>>> myChats;
-    private List<List<Chat>> myChatList;
-     */
 
     private MutableLiveData<List<ChatRoom>> chatRooms;
     private List<ChatRoom> chatRoomList;
@@ -56,7 +51,6 @@ public class ChatRepository {
     private MutableLiveData<Boolean> createChatRoom;
 
     private MutableLiveData<HashMap<String, Integer>> unReadChatCount;
-    private int count;
 
     public ChatRepository(Application application) {
         this.application = application;
@@ -75,11 +69,10 @@ public class ChatRepository {
         createChatRoom = new MutableLiveData<>();
 
         unReadChatCount = new MutableLiveData<>();
+
     }
 
     public MutableLiveData<List<HashMap<String, List<Chat>>>> getMyChats() { return myChats; }
-
-    // public MutableLiveData<List<List<Chat>>> getMyChats() { return myChats; }
 
     public MutableLiveData<List<ChatRoom>> getMyChatRooms() { return chatRooms;}
 
@@ -88,6 +81,7 @@ public class ChatRepository {
     public MutableLiveData<Boolean> getVisited() { return visited; }
 
     public MutableLiveData<HashMap<String, Integer>> getUnReadChatCount() { return unReadChatCount; }
+
 
     public void setVisited(String myUid, String userUid, boolean visit) {
         chatRoomsRef.child(myUid).child(userUid).child("visited").setValue(visit);
@@ -98,8 +92,11 @@ public class ChatRepository {
         chatRoomsRef.child(userUid).child(myUid).child("visited").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                 boolean visit = snapshot.getValue(Boolean.class);
-                 visited.setValue(visit);
+                if (snapshot.getValue(Boolean.class) != null) {
+                    boolean visit = snapshot.getValue(Boolean.class);
+                    visited.setValue(visit);
+                }
+
             }
 
             @Override
@@ -213,14 +210,12 @@ public class ChatRepository {
                     chatRoomsRef.child(sellerUid).child(uid).setValue(chatRoom2).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull @NotNull Task<Void> task) {
-                            if (task.isSuccessful())
-                                createChatRoom.setValue(true);
-                            else
-                                createChatRoom.setValue(false);
+                            if (task.isSuccessful()) createChatRoom.setValue(true);
+                            else createChatRoom.setValue(false);
                         }
                     });
-//                    chatsRef.child(uid).child(sellerUid).child("createDate").setValue(currentDate);
-//                    chatsRef.child(sellerUid).child(uid).child("createDate").setValue(currentDate);
+                } else {
+                    createChatRoom.setValue(false);
                 }
             }
 
@@ -237,9 +232,10 @@ public class ChatRepository {
             @Override
             public void onChildAdded(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
                 //Log.d("MyChatRooms Added:", snapshot.getValue().toString());
-                ChatRoom chatRoom = snapshot.getValue(ChatRoom.class);
-                chatRoomList.add(0, chatRoom);
-                chatRooms.setValue(chatRoomList);
+
+//                ChatRoom chatRoom = snapshot.getValue(ChatRoom.class);
+//                chatRoomList.add(0, chatRoom);
+//                chatRooms.setValue(chatRoomList);
             }
 
             @Override

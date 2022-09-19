@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.mirror.jmarket.adapter.ChatListItemAdapter;
 import com.mirror.jmarket.classes.Chat;
 import com.mirror.jmarket.classes.ChatRoom;
+import com.mirror.jmarket.classes.Item;
 import com.mirror.jmarket.classes.User;
 import com.mirror.jmarket.databinding.FragmentChatBinding;
 import com.mirror.jmarket.viewmodel.ChatViewModel;
@@ -113,13 +114,5 @@ public class ChatFragment extends Fragment {
             }
         });
 
-
-//        chatBinding.sendMessage.setOnClickListener(new View.OnClickListener(){
-//            @RequiresApi(api = Build.VERSION_CODES.O)
-//            @Override
-//            public void onClick(View v) {
-//                chatViewModel.sendMessage(user.getUid(), "vO3Igea5wFb8SutxiQMVDgTG1iJ2", new Chat(user.getUid(), "안녕!", chatViewModel.getDate()));
-//            }
-//        });
     }
 }
