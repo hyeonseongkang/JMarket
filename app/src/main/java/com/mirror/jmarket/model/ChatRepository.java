@@ -251,11 +251,11 @@ public class ChatRepository {
         chatRoomsRef.child(uid).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
-                //Log.d("MyChatRooms Added:", snapshot.getValue().toString());
+                Log.d("MyChatRooms Added:", snapshot.getValue().toString());
 
-//                ChatRoom chatRoom = snapshot.getValue(ChatRoom.class);
-//                chatRoomList.add(0, chatRoom);
-//                chatRooms.setValue(chatRoomList);
+                ChatRoom chatRoom = snapshot.getValue(ChatRoom.class);
+                chatRoomList.add(0, chatRoom);
+                chatRooms.setValue(chatRoomList);
             }
 
             @Override

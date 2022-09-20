@@ -7,3 +7,11 @@
 1. 확인하지 않은 채팅 수 표시 O
 
 2. DetailItem화면에서 채팅하기 버튼 누르면 바로 채팅방 생기는데 메시지 보내면 채팅방 생기도록 변경하기 O
+
+2022.09.21
+
+1. 채팅 알림 O
+    - 버그: 채팅 읽고 나오면 알림 또 옴 -> 채팅방을 나오면
+    chatRooms.child(myUid).child(userUid).child("visited").setValue(|true or false|); 로 값이 바뀌게 되고
+    ChatRepository -> getMyChatRooms() 메서드의  addChildEventListener() 변경을 감지함.
+    visited 값이 false이면 lastMessage를 알림으로 보내도록 했으므로 변경이 일어남과 동시에 알림을 다시 보냄

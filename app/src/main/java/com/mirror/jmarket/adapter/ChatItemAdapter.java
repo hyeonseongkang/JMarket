@@ -1,18 +1,22 @@
 package com.mirror.jmarket.adapter;
 
 import android.net.Uri;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.mirror.jmarket.R;
 import com.mirror.jmarket.classes.Chat;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +28,8 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.MyView
     private String myUid = new String();
     private String userUid = new String(); // 상대방 uid
     private String userPhoto = new String(); // 상대방 profile photo
+
+    private String[] days = {"월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"};
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -50,6 +56,7 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.MyView
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Chat chat = chats.get(position);
@@ -58,7 +65,12 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.MyView
 
         holder.dateLayout.setVisibility(View.VISIBLE);
         holder.date.setVisibility(View.VISIBLE);
-        holder.date.setText(chat.getDate());
+        String[] date = chat.getDate().split("-");
+
+        LocalDate localDate = LocalDate.of(Integer.parseInt(date[0]), Integer.parseInt(date[1]), Integer.parseInt(date[2]));
+        DayOfWeek dayOfWeek = localDate.getDayOfWeek();
+        int dayOfWeekNum = dayOfWeek.getValue();
+        holder.date.setText(date[0] + "년 " + date[1] + "월 " + date[2] + "일 " + days[dayOfWeekNum - 1]);
 
         holder.userNickName.setVisibility(View.VISIBLE);
         holder.time.setVisibility(View.VISIBLE);
