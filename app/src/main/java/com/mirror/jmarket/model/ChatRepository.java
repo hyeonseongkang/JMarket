@@ -1,12 +1,19 @@
 package com.mirror.jmarket.model;
 
 import android.app.Application;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -17,6 +24,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mirror.jmarket.R;
 import com.mirror.jmarket.classes.Chat;
 import com.mirror.jmarket.classes.ChatRoom;
 import com.mirror.jmarket.classes.LastMessage;
@@ -72,15 +80,25 @@ public class ChatRepository {
 
     }
 
-    public MutableLiveData<List<HashMap<String, List<Chat>>>> getMyChats() { return myChats; }
+    public MutableLiveData<List<HashMap<String, List<Chat>>>> getMyChats() {
+        return myChats;
+    }
 
-    public MutableLiveData<List<ChatRoom>> getMyChatRooms() { return chatRooms;}
+    public MutableLiveData<List<ChatRoom>> getMyChatRooms() {
+        return chatRooms;
+    }
 
-    public MutableLiveData<Boolean> getCreateChatRoom() { return createChatRoom; }
+    public MutableLiveData<Boolean> getCreateChatRoom() {
+        return createChatRoom;
+    }
 
-    public MutableLiveData<Boolean> getVisited() { return visited; }
+    public MutableLiveData<Boolean> getVisited() {
+        return visited;
+    }
 
-    public MutableLiveData<HashMap<String, Integer>> getUnReadChatCount() { return unReadChatCount; }
+    public MutableLiveData<HashMap<String, Integer>> getUnReadChatCount() {
+        return unReadChatCount;
+    }
 
 
     public void setVisited(String myUid, String userUid, boolean visit) {
@@ -114,7 +132,7 @@ public class ChatRepository {
         chatsRef.child(myUid).child(userUid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                     Chat chat = snapshot1.getValue(Chat.class);
 
                     if (chat.getSender().equals(userUid)) {
@@ -122,6 +140,7 @@ public class ChatRepository {
                     }
                 }
             }
+
             @Override
             public void onCancelled(@NonNull @NotNull DatabaseError error) {
 
@@ -131,7 +150,7 @@ public class ChatRepository {
         chatsRef.child(userUid).child(myUid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                     Chat chat = snapshot1.getValue(Chat.class);
 
                     if (chat.getSender().equals(userUid)) {
@@ -139,6 +158,7 @@ public class ChatRepository {
                     }
                 }
             }
+
             @Override
             public void onCancelled(@NonNull @NotNull DatabaseError error) {
 
@@ -153,9 +173,9 @@ public class ChatRepository {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
 
-                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                     int count = 0;
-                    for (DataSnapshot snapshot2: snapshot1.getChildren()) {
+                    for (DataSnapshot snapshot2 : snapshot1.getChildren()) {
                         Chat chat = snapshot2.getValue(Chat.class);
                         // 내가 보낸 메시지가 아니라면
                         if (!(chat.getSender().equals(myUid))) {
@@ -191,7 +211,7 @@ public class ChatRepository {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 boolean alreadyUser = false;
-                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                     if (snapshot1.getKey().equals(sellerUid))
                         alreadyUser = true;
                 }
@@ -249,6 +269,13 @@ public class ChatRepository {
                     }
                 }
                 chatRoomList.add(0, chatRoom);
+
+                // 내가 채팅방을 열고 있지 않다면
+                if (!chatRoom.getVisited()) {
+                    // 마지막 메시지를 알림으로 보낸다.
+                    String userName = chatRoom.getUser().getNickName().length() > 0 ? chatRoom.getUser().getNickName() : chatRoom.getUser().getEmail();
+                    showChatNoti(userName, chatRoom.getLastMessage().getMessage());
+                }
                 chatRooms.setValue(chatRoomList);
             }
 
@@ -285,41 +312,20 @@ public class ChatRepository {
         chatRoomsRef.child(sender).child(receiver).child("lastMessage").setValue(lastMessage);
         chatRoomsRef.child(receiver).child(sender).child("lastMessage").setValue(lastMessage);
 
-
-        /*
-                chatsRef.child("vO3Igea5wFb8SutxiQMVDgTG1iJ2").child("TkzEZBw8iTdQGU7ppquiaS4ZOR73").push().setValue(chat1);
-        chatsRef.child("vO3Igea5wFb8SutxiQMVDgTG1iJ2").child("TkzEZBw8iTdQGU7ppquiaS4ZOR73").push().setValue(chat2);
-        chatsRef.child("vO3Igea5wFb8SutxiQMVDgTG1iJ2").child("TkzEZBw8iTdQGU7ppquiaS4ZOR73").push().setValue(chat3);
-         */
     }
 
-    public void getMyChats(String myUid) {
-        /*
-        // Database Test
-        // String user, String message, String date, boolean checked
-        String[] c1 = getDate().split(" ");
-        String[] c2 = getDate().split(" ");
-        String[] c3 = getDate().split(" ");
-
-        Chat chat1 = new Chat("vO3Igea5wFb8SutxiQMVDgTG1iJ2", "테스트1", c1[0], c1[1], false);
-        Chat chat2 = new Chat("TkzEZBw8iTdQGU7ppquiaS4ZOR73", "테스트2", c2[0], c2[1], false);
-        Chat chat3 = new Chat("vO3Igea5wFb8SutxiQMVDgTG1iJ2", "테스트3", c3[0], c3[1], false);
-        chatsRef.child("vO3Igea5wFb8SutxiQMVDgTG1iJ2").child("TkzEZBw8iTdQGU7ppquiaS4ZOR73").push().setValue(chat1);
-        chatsRef.child("vO3Igea5wFb8SutxiQMVDgTG1iJ2").child("TkzEZBw8iTdQGU7ppquiaS4ZOR73").push().setValue(chat2);
-        chatsRef.child("vO3Igea5wFb8SutxiQMVDgTG1iJ2").child("TkzEZBw8iTdQGU7ppquiaS4ZOR73").push().setValue(chat3);
-         */
-
-        /*
+          /*
         Service 부분으로 넘어가서 백그라운드에서 계속 동작돼야 하는 메서드임
         내 uid 하위 변경사항을 체크해야 되기 때문에 상대 uid는 빼야함
         List<List<Chat>>을 LiveData에 넣고 ChatAcitivity에서 상대 uid와 LiveData에 있는 uid를 비교해서 List<Chat> 하나만을 adpater에 넘겨야함
          */
+
+    public void getMyChats(String myUid) {
         chatsRef.child(myUid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 myChatList.clear();
                 for (DataSnapshot snapshot1: snapshot.getChildren()) {
-                    Log.d(TAG, snapshot1.getKey());
                     List<Chat> chats = new ArrayList<>();
                     for (DataSnapshot snapshot2: snapshot1.getChildren()) {
                         Chat chat = snapshot2.getValue(Chat.class);
@@ -327,7 +333,6 @@ public class ChatRepository {
                     }
                     HashMap<String, List<Chat>> hashMap = new HashMap<>();
                     hashMap.put(snapshot1.getKey(), chats);
-
                     myChatList.add(hashMap);
                 }
 
@@ -343,16 +348,43 @@ public class ChatRepository {
 
     }
 
+
     public String getDate() {
-        /*
-        LocalDate now = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        String date = now.format(formatter);
-         */
         Date now = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String date = formatter.format(now);
         return date;
+    }
+
+    public void showChatNoti(String senderUser, String message) {
+        try {
+            NotificationManager notificationManager = (NotificationManager) application.getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationCompat.Builder builder = null;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+                String channelID = "channel_01";
+                String channelName = "MyChannel01";
+
+                NotificationChannel channel = new NotificationChannel(channelID, channelName, NotificationManager.IMPORTANCE_DEFAULT);
+
+                notificationManager.createNotificationChannel(channel);
+
+                builder = new NotificationCompat.Builder(application, channelID);
+            }
+
+            builder.setSmallIcon(android.R.drawable.ic_menu_view);
+
+            builder.setContentTitle(senderUser);
+            builder.setContentText(message);
+            Bitmap bm = BitmapFactory.decodeResource(application.getResources(), R.drawable.chat);
+            builder.setLargeIcon(bm);
+
+            Notification notification = builder.build();
+            notificationManager.notify(1, notification);
+        } catch (Exception e) {
+
+        }
+
     }
 
     /*

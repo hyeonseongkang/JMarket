@@ -11,22 +11,13 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
-import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseUser;
 import com.mirror.jmarket.R;
 import com.mirror.jmarket.adapter.ChatItemAdapter;
-import com.mirror.jmarket.adapter.ChatListItemAdapter;
 import com.mirror.jmarket.classes.Chat;
-import com.mirror.jmarket.classes.ChatRoom;
-import com.mirror.jmarket.classes.Item;
-import com.mirror.jmarket.classes.LastMessage;
-import com.mirror.jmarket.classes.User;
 import com.mirror.jmarket.databinding.ActivityChatBinding;
 import com.mirror.jmarket.viewmodel.ChatViewModel;
-import com.mirror.jmarket.viewmodel.ItemViewModel;
-import com.mirror.jmarket.viewmodel.UserManagerViewModel;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
