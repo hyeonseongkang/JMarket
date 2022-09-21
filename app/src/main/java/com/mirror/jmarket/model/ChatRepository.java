@@ -60,6 +60,8 @@ public class ChatRepository {
 
     private MutableLiveData<HashMap<String, Integer>> unReadChatCount;
 
+    private ChatRoom showLastChatNoti;
+
     public ChatRepository(Application application) {
         this.application = application;
         chatsRef = FirebaseDatabase.getInstance().getReference("chats");
@@ -246,18 +248,37 @@ public class ChatRepository {
         });
     }
 
-    public void getMyChatRooms(String uid) {
+    public void getMyChatRoomsInit(String myUid) {
+        chatRoomsRef.child(myUid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                    ChatRoom chatRoom = snapshot1.getValue(ChatRoom.class);
+                    chatRoomList.add(chatRoom);
+                    chatRooms.setValue(chatRoomList);
+                }
+            }
 
-        chatRoomsRef.child(uid).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void getMyChatRooms(String myUid) {
+        chatRoomsRef.child(myUid).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
                 Log.d("MyChatRooms Added:", snapshot.getValue().toString());
 
+                // 마지막으로 보낸 메시지가 있는 채팅방만 추가
                 ChatRoom chatRoom = snapshot.getValue(ChatRoom.class);
-                chatRoomList.add(0, chatRoom);
-                chatRooms.setValue(chatRoomList);
+                if (chatRoom.getLastMessage().getMessage().length() > 0) {
+                    chatRoomList.add(0, chatRoom);
+                    chatRooms.setValue(chatRoomList);
+                }
             }
-
             @Override
             public void onChildChanged(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
                 //Log.d("MyChatRooms Changed:", snapshot.getValue().toString());
@@ -272,13 +293,15 @@ public class ChatRepository {
 
                 // 내가 채팅방을 열고 있지 않다면
                 if (!chatRoom.getVisited()) {
-                    // 마지막 메시지를 알림으로 보낸다.
-                    String userName = chatRoom.getUser().getNickName().length() > 0 ? chatRoom.getUser().getNickName() : chatRoom.getUser().getEmail();
-                    showChatNoti(userName, chatRoom.getLastMessage().getMessage());
+                    if (showLastChatNoti != chatRoom) {
+                        // 마지막 메시지를 알림으로 보낸다.
+                        String userName = chatRoom.getUser().getNickName().length() > 0 ? chatRoom.getUser().getNickName() : chatRoom.getUser().getEmail();
+                        showChatNoti(userName, chatRoom.getLastMessage().getMessage());
+                        showLastChatNoti = chatRoom;
+                    }
                 }
                 chatRooms.setValue(chatRoomList);
             }
-
             @Override
             public void onChildRemoved(@NonNull @NotNull DataSnapshot snapshot) {
                 Log.d("MyChatRooms Removed:", snapshot.getValue().toString());
@@ -293,10 +316,7 @@ public class ChatRepository {
             public void onCancelled(@NonNull @NotNull DatabaseError error) {
                 Log.d("MyChatRooms Added:", error.getMessage());
             }
-
-
         });
-
     }
 
     public void sendMessage(String sender, String receiver, Chat chat, String lastSendUser) {
@@ -334,6 +354,18 @@ public class ChatRepository {
                     HashMap<String, List<Chat>> hashMap = new HashMap<>();
                     hashMap.put(snapshot1.getKey(), chats);
                     myChatList.add(hashMap);
+
+                    /*
+                    Chat chat = chats.get(chats.size() - 1);
+                    // 메시지를 받는 사람이 나라면
+                    if (chat.getReceiver().equals(myUid)) {
+                        showChatNoti(chat.getMyNickName(), chat.getMessage());
+                        System.out.println(chat.getMyNickName() + "님이 " + chat.getReceiver() + "님에게 " + chat.getMessage() + "라고 메시지를 보냈습니다.");
+                    }
+
+                     */
+
+
                 }
 
                 myChats.setValue(myChatList);

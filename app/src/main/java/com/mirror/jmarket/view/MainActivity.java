@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         badgeDrawable.setMaxCharacterCount(4);
 
         chatViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ChatViewModel.class);
+        chatViewModel.getMyChats(USER.getUid());
         chatViewModel.getMyChatRooms(USER.getUid());
         chatViewModel.getUnReadChatCount(USER.getUid());
         chatViewModel.getUnReadChatCount().observe(this, new Observer<HashMap<String, Integer>>() {
@@ -71,9 +72,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
-
 
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container, new HomeFragment()).commit();
