@@ -146,6 +146,7 @@ public class DetailItemActivity extends AppCompatActivity {
             @Override
             public void onChanged(Boolean aBoolean) {
                 Intent intent = new Intent(DetailItemActivity.this, ChatActivity.class);
+                intent.putExtra("itemKey", key);
                 intent.putExtra("uid", sellerUid);
                 intent.putExtra("itemTitle", currentItem.getTitle());
                 intent.putExtra("myNickName",  myUser.getNickName().length() <= 0 ? user.getEmail() : myUser.getNickName());

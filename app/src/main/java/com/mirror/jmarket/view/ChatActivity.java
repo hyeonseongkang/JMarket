@@ -39,6 +39,7 @@ public class ChatActivity extends AppCompatActivity {
 
 
     // ChatRoom Info
+    private String itemKey;
     private String uid; // 상대 uid
     private String itemTitle;
     private String myNickName;
@@ -57,6 +58,7 @@ public class ChatActivity extends AppCompatActivity {
         user = MainActivity.USER;
 
         Intent getIntent = getIntent();
+        itemKey = getIntent.getStringExtra("itemKey");
         uid = getIntent.getStringExtra("uid");
         itemTitle = getIntent.getStringExtra("itemTitle");
         myNickName = getIntent.getStringExtra("myNickName");
@@ -67,7 +69,7 @@ public class ChatActivity extends AppCompatActivity {
         adapter = new ChatItemAdapter();
         binding.recyclerView.setAdapter(adapter);
 
-        binding.itemTitle.setText(itemTitle);
+        binding.userNickName.setText(itemTitle);
 
         //
 
@@ -118,6 +120,15 @@ public class ChatActivity extends AppCompatActivity {
                 Chat chat = new Chat(myNickName, user.getUid(), uid, message, "", "", visited);
                 chatViewModel.sendMessage(user.getUid(), uid, chat, user.getUid());
                 binding.message.setText("");
+            }
+        });
+
+        binding.menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ChatActivity.this, ChatMenuActivity.class);
+                intent.putExtra("itemKey", itemKey);
+                startActivity(intent);
             }
         });
 

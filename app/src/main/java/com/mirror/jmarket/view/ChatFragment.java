@@ -79,6 +79,7 @@ public class ChatFragment extends Fragment {
             public void onItemClick(ChatRoom chatRoom) {
                 Intent intent = new Intent(getActivity(), ChatActivity.class);
                 User user = chatRoom.getUser();
+                intent.putExtra("itemKey", chatRoom.getItem().getKey());
                 intent.putExtra("uid", user.getUid()); // 상대방 uid
                 intent.putExtra("itemTitle", chatRoom.getItem().getTitle());
                 intent.putExtra("myNickName", myNickName);
