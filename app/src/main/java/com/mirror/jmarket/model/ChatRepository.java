@@ -274,20 +274,12 @@ public class ChatRepository {
                 }
                 chatRoomList.add(0, chatRoom);
 
-                // 내가 채팅방을 열고 있지 않다면 -> 추가 될 때 마다 계속 알림옴
+                // 내가 채팅방을 열고 있지 않다면
                 if (!chatRoom.getVisited()) {
                     String userName = chatRoom.getUser().getNickName().length() > 0 ? chatRoom.getUser().getNickName() : chatRoom.getUser().getEmail();
-
-
-                    if (showLastChatNoti == null) {
-                        showLastChatNoti = chatRoom;
+                    if (!(chatRoom.getLastMessage().getChecked())) {
+                        snapshot.getRef().child("lastMessage").child("checked").setValue(true);
                         showChatNoti(userName, chatRoom.getLastMessage().getMessage());
-                    } else {
-                        if (chatRoom != showLastChatNoti) {
-                            // 마지막 메시지를 알림으로 보낸다.
-                            showChatNoti(userName, chatRoom.getLastMessage().getMessage());
-                            showLastChatNoti = chatRoom;
-                        }
                     }
                 }
                 chatRooms.setValue(chatRoomList);
@@ -318,9 +310,13 @@ public class ChatRepository {
         chatsRef.child(receiver).child(sender).push().setValue(chat);
 
         // String message, String user, String time
-        LastMessage lastMessage = new LastMessage(chat.getMessage(), lastSendUser, dateTime[0], dateTime[1]);
-        chatRoomsRef.child(sender).child(receiver).child("lastMessage").setValue(lastMessage);
+        boolean checked = chat.getChecked();
+        LastMessage lastMessage = new LastMessage(chat.getMessage(), lastSendUser, dateTime[0], dateTime[1], checked);
         chatRoomsRef.child(receiver).child(sender).child("lastMessage").setValue(lastMessage);
+
+        // 보내는 사람은 lastMessage checked -> true
+        lastMessage.setChecked(true);
+        chatRoomsRef.child(sender).child(receiver).child("lastMessage").setValue(lastMessage);
 
     }
 

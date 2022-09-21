@@ -16,4 +16,11 @@
     ChatRepository -> getMyChatRooms() 메서드의  addChildEventListener() 변경을 감지함.
     visited 값이 false이면 lastMessage를 알림으로 보내도록 했으므로 변경이 일어남과 동시에 알림을 다시 보냄
 
+2022.09.22
+
+1. 채팅 알림 버그 해결 O
+    - 버그 내용: 채팅 읽고 채팅방 나오면 알림 중복 발생
+        해결
+        1. LastMessage class에 checked 필드 추가
+        2. ChatRepository getMyChatRooms() 메서드에서 내 채팅방에 변경이 일어날때 알림을 보내는데 이때 조건으로 내가 채팅방에 들어가 있지 않을때 && lastMessage class의 checked가 false일때만 채팅 알림 발생 시킴
 
