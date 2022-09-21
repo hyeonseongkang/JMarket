@@ -15,3 +15,5 @@
     chatRooms.child(myUid).child(userUid).child("visited").setValue(|true or false|); 로 값이 바뀌게 되고
     ChatRepository -> getMyChatRooms() 메서드의  addChildEventListener() 변경을 감지함.
     visited 값이 false이면 lastMessage를 알림으로 보내도록 했으므로 변경이 일어남과 동시에 알림을 다시 보냄
+
+

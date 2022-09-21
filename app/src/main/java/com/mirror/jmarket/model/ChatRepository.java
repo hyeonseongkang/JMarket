@@ -248,23 +248,6 @@ public class ChatRepository {
         });
     }
 
-    public void getMyChatRoomsInit(String myUid) {
-        chatRoomsRef.child(myUid).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                for (DataSnapshot snapshot1: snapshot.getChildren()) {
-                    ChatRoom chatRoom = snapshot1.getValue(ChatRoom.class);
-                    chatRoomList.add(chatRoom);
-                    chatRooms.setValue(chatRoomList);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull @NotNull DatabaseError error) {
-
-            }
-        });
-    }
 
     public void getMyChatRooms(String myUid) {
         chatRoomsRef.child(myUid).addChildEventListener(new ChildEventListener() {
@@ -291,13 +274,20 @@ public class ChatRepository {
                 }
                 chatRoomList.add(0, chatRoom);
 
-                // 내가 채팅방을 열고 있지 않다면
+                // 내가 채팅방을 열고 있지 않다면 -> 추가 될 때 마다 계속 알림옴
                 if (!chatRoom.getVisited()) {
-                    if (showLastChatNoti != chatRoom) {
-                        // 마지막 메시지를 알림으로 보낸다.
-                        String userName = chatRoom.getUser().getNickName().length() > 0 ? chatRoom.getUser().getNickName() : chatRoom.getUser().getEmail();
-                        showChatNoti(userName, chatRoom.getLastMessage().getMessage());
+                    String userName = chatRoom.getUser().getNickName().length() > 0 ? chatRoom.getUser().getNickName() : chatRoom.getUser().getEmail();
+
+
+                    if (showLastChatNoti == null) {
                         showLastChatNoti = chatRoom;
+                        showChatNoti(userName, chatRoom.getLastMessage().getMessage());
+                    } else {
+                        if (chatRoom != showLastChatNoti) {
+                            // 마지막 메시지를 알림으로 보낸다.
+                            showChatNoti(userName, chatRoom.getLastMessage().getMessage());
+                            showLastChatNoti = chatRoom;
+                        }
                     }
                 }
                 chatRooms.setValue(chatRoomList);
