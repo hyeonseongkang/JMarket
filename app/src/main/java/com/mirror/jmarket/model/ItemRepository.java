@@ -9,7 +9,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -18,6 +20,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.mirror.jmarket.classes.CompleteUser;
 import com.mirror.jmarket.classes.Item;
 
 import org.jetbrains.annotations.NotNull;
@@ -32,6 +35,7 @@ public class ItemRepository {
     private Application application;
 
     private DatabaseReference myRef;
+    private DatabaseReference completeRef;
 
     private MutableLiveData<Boolean> itemSave;
 
@@ -41,16 +45,20 @@ public class ItemRepository {
 
     private MutableLiveData<Boolean> like;
 
+    private MutableLiveData<Boolean> complete;
+
     private List<Item> tempItems;
 
     public ItemRepository(Application application) {
         this.application = application;
         myRef = FirebaseDatabase.getInstance().getReference("items");
+        completeRef = FirebaseDatabase.getInstance().getReference("completeItems");
         itemSave = new MutableLiveData<>();
         items = new MutableLiveData<>();
         tempItems = new ArrayList<>();
         item = new MutableLiveData<>();
         like = new MutableLiveData<>();
+        complete = new MutableLiveData<>();
     }
 
     public MutableLiveData<Boolean> getItemSave() {
@@ -66,6 +74,8 @@ public class ItemRepository {
     }
 
     public MutableLiveData<Boolean> getLike() { return like; }
+
+    public MutableLiveData<Boolean> getComplete() { return complete; }
 
     public void getItem(String key) {
         myRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -210,10 +220,35 @@ public class ItemRepository {
             });
 
         }
+    }
 
+    // 거래 완료 요청
+    public void setComplete(String myUid, String userUid, String itemKey, CompleteUser completeUser) {
+        completeRef.child(myUid).child(userUid).child(itemKey).setValue(completeUser);
+        completeRef.child(userUid).child(myUid).child(itemKey).setValue(completeUser);
+    }
 
+    // 상대가 거래 완료를 요청했는지 확인
+    public void getComplete(String userUid, String myUid, String itemKey) {
+        completeRef.child(userUid).child(myUid).child(itemKey).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                if (snapshot.getValue() != null) {
+                    Log.d(TAG, snapshot.getValue().toString());
+                    CompleteUser completeUser = snapshot.getValue(CompleteUser.class);
 
+                    if (completeUser.getSender().length() > 0 && completeUser.getReceiver().length() > 0) {
+                        complete.setValue(true);
+                    } else if (!(completeUser.getSender().equals(myUid))) {
+                        complete.setValue(false);
+                    }
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
 
+            }
+        });
     }
 }

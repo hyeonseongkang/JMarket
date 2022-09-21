@@ -17,7 +17,7 @@
             android:id="@+id/completeDeal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="거래 완료"
+            android:text="거래 완료 요청"
             android:textColor="#00FF71"
             android:fontFamily="@font/scd5"
             android:background="@null"/>

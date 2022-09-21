@@ -56,75 +56,134 @@
     </LinearLayout>
 
     <RelativeLayout
-        android:id="@+id/itemInfo"
+        android:id="@+id/completeLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/topLayout"
-        android:layout_marginTop="5dp"
+        android:layout_height="40dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp">
+        android:layout_marginRight="20dp"
+        android:layout_below="@+id/topLayout"
+        android:visibility="gone"
+        android:layout_marginTop="5dp">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/itemCardView"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            app:cardCornerRadius="5dp"
-            android:layout_centerVertical="true">
-
-            <ImageView
-                android:id="@+id/itemPhoto"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="fitXY"
-                android:src="@drawable/calendar"/>
-        </androidx.cardview.widget.CardView>
-
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/completeDealLayout"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_toRightOf="@+id/itemCardView"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="5dp">
+            android:background="@drawable/activity_chat_menu_deal_complete_button">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/completeDeal"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@null"
+                android:textColor="#E203C75A"
+                android:text="거래 완료"
+                android:textSize="12dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:fontFamily="@font/scd5" />
 
             <TextView
-                android:id="@+id/itemTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="itemTitle"
+                android:text="상대가 거래 완료 요청을 했습니다."
                 android:fontFamily="@font/scd5"
                 android:textColor="#000000"
-                android:textSize="13dp"/>
+                android:textSize="8dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginLeft="2dp"/>
+        </RelativeLayout>
 
-            <TextView
-                android:id="@+id/itemPrice"
+
+
+        <RelativeLayout
+            android:id="@+id/itemInfoLayout"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/itemCardView"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:cardCornerRadius="5dp"
+                android:layout_centerVertical="true">
+
+                <ImageView
+                    android:id="@+id/itemPhoto"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/calendar"/>
+            </androidx.cardview.widget.CardView>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="itemPrice"
-                android:fontFamily="@font/scd5"
-                android:textStyle="bold"
-                android:textColor="#000000"
-                android:textSize="13dp"/>
+                android:orientation="vertical"
+                android:layout_toRightOf="@+id/itemCardView"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp">
 
-        </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:layout_width="45dp"
-            android:layout_height="40dp"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/activity_chat_deal_complete_button"
-            android:textColor="#E203C75A"
-            android:text="거래 후기 남기기"
-            android:textSize="8dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:fontFamily="@font/scd5"/>
-
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="[거래완료] "
+                        android:fontFamily="@font/scd5"
+                        android:textColor="#E203C75A"
+                        android:textStyle="bold"
+                        android:textSize="13dp"/>
 
 
+                    <TextView
+                        android:id="@+id/itemTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="itemTitle"
+                        android:fontFamily="@font/scd5"
+                        android:textColor="#000000"
+                        android:textSize="13dp"/>
+
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/itemPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="itemPrice"
+                    android:fontFamily="@font/scd5"
+                    android:textStyle="bold"
+                    android:textColor="#000000"
+                    android:textSize="13dp"/>
+
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="45dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/activity_chat_deal_complete_button"
+                android:textColor="#E203C75A"
+                android:text="거래 후기 남기기"
+                android:textSize="8dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:fontFamily="@font/scd5"/>
+
+        </RelativeLayout>
     </RelativeLayout>
+
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -132,9 +191,8 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_below="@+id/itemInfo"
+        android:layout_below="@+id/completeLayout"
         android:layout_above="@+id/bottomLayout"
-        android:layout_marginTop="5dp"
         android:paddingBottom="10dp"
         android:clipToPadding="false"/>
 

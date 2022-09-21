@@ -2,6 +2,7 @@ package com.mirror.jmarket.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -28,14 +29,24 @@ public class ChatMenuActivity extends AppCompatActivity {
         chatMenuBinding.completeDeal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                
+
+                Intent data = new Intent();
+                data.putExtra("data", "complete");
+                setResult(RESULT_OK, data);
+                finish();
+                overridePendingTransition(R.anim.none, R.anim.fadeout_up);
+
             }
         });
 
         chatMenuBinding.outChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent data = new Intent();
+                data.putExtra("data", "out");
+                setResult(RESULT_OK, data);
+                finish();
+                overridePendingTransition(R.anim.none, R.anim.fadeout_up);
             }
         });
 

@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.mirror.jmarket.classes.CompleteUser;
 import com.mirror.jmarket.classes.Item;
 import com.mirror.jmarket.model.ItemRepository;
 
@@ -25,6 +26,8 @@ public class ItemViewModel extends AndroidViewModel {
 
     private MutableLiveData<Boolean> like;
 
+    private MutableLiveData<Boolean> complete;
+
     public ItemViewModel(@NonNull @NotNull Application application) {
         super(application);
         repository = new ItemRepository(application);
@@ -32,6 +35,7 @@ public class ItemViewModel extends AndroidViewModel {
         items = repository.getItems();
         item = repository.getItem();
         like = repository.getLike();
+        complete = repository.getComplete();
     }
 
     public MutableLiveData<Boolean> getItemSave() { return itemSave; }
@@ -41,6 +45,8 @@ public class ItemViewModel extends AndroidViewModel {
     public MutableLiveData<Item> getItem() { return item; }
 
     public MutableLiveData<Boolean> getLike() { return like; }
+
+    public MutableLiveData<Boolean> getComplete() { return complete; }
 
     public void getHomeItems() { repository.getHomeItems(); }
 
@@ -57,4 +63,8 @@ public class ItemViewModel extends AndroidViewModel {
     public void getLike(String key, String uid) {
         repository.getLike(key, uid);
     }
+
+    public void setComplete(String myUid, String userUid, String itemKey, CompleteUser completeUser) { repository.setComplete(myUid, userUid, itemKey, completeUser); }
+
+    public void getComplete(String userUid, String myUid, String itemKey) { repository.getComplete(userUid, myUid, itemKey); }
 }
