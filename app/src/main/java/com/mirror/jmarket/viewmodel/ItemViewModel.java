@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.mirror.jmarket.classes.CompleteUser;
 import com.mirror.jmarket.classes.Item;
+import com.mirror.jmarket.classes.Review;
 import com.mirror.jmarket.model.ItemRepository;
 
 import org.jetbrains.annotations.NotNull;
@@ -28,6 +29,8 @@ public class ItemViewModel extends AndroidViewModel {
 
     private MutableLiveData<Boolean> complete;
 
+    private MutableLiveData<Boolean> reviewComplete;
+
     public ItemViewModel(@NonNull @NotNull Application application) {
         super(application);
         repository = new ItemRepository(application);
@@ -36,6 +39,7 @@ public class ItemViewModel extends AndroidViewModel {
         item = repository.getItem();
         like = repository.getLike();
         complete = repository.getComplete();
+        reviewComplete= repository.getReviewComplete();
     }
 
     public MutableLiveData<Boolean> getItemSave() { return itemSave; }
@@ -47,6 +51,8 @@ public class ItemViewModel extends AndroidViewModel {
     public MutableLiveData<Boolean> getLike() { return like; }
 
     public MutableLiveData<Boolean> getComplete() { return complete; }
+
+    public MutableLiveData<Boolean> getReviewComplete() { return reviewComplete; }
 
     public void getHomeItems() { repository.getHomeItems(); }
 
@@ -67,4 +73,6 @@ public class ItemViewModel extends AndroidViewModel {
     public void setComplete(String myUid, String userUid, String itemKey, CompleteUser completeUser) { repository.setComplete(myUid, userUid, itemKey, completeUser); }
 
     public void getComplete(String userUid, String myUid, String itemKey) { repository.getComplete(userUid, myUid, itemKey); }
+
+    public void setReview(String userUid, Review review) { repository.setReview(userUid, review);}
 }

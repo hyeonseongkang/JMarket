@@ -56,6 +56,7 @@ public class ChatActivity extends AppCompatActivity {
     private String uid; // 상대 uid
     private String itemTitle;
     private String myNickName;
+    private String userNickName; // 상대 nickName
     private String userPhoto; // 상대 Profile Photo
 
     private boolean visited;
@@ -77,6 +78,7 @@ public class ChatActivity extends AppCompatActivity {
         uid = getIntent.getStringExtra("uid");
         itemTitle = getIntent.getStringExtra("itemTitle");
         myNickName = getIntent.getStringExtra("myNickName");
+        userNickName = getIntent.getStringExtra("userNickName");
         userPhoto = getIntent.getStringExtra("userPhoto");
 
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -84,7 +86,7 @@ public class ChatActivity extends AppCompatActivity {
         adapter = new ChatItemAdapter();
         binding.recyclerView.setAdapter(adapter);
 
-        binding.userNickName.setText(itemTitle);
+        binding.userNickName.setText(userNickName);
 
         // viewModel
         itemViewModel = new ViewModelProvider(this ,new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ItemViewModel.class);
@@ -183,6 +185,8 @@ public class ChatActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(ChatActivity.this, ReviewActivity.class);
                 intent.putExtra("itemKey", itemKey);
+                intent.putExtra("userUid", uid); // 상대 uid
+                intent.putExtra("userNickName", userNickName); // 상대 nickName
                 startActivity(intent);
 
             }

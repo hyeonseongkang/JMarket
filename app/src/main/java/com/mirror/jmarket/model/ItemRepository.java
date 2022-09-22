@@ -22,6 +22,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.mirror.jmarket.classes.CompleteUser;
 import com.mirror.jmarket.classes.Item;
+import com.mirror.jmarket.classes.Review;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -36,6 +37,7 @@ public class ItemRepository {
 
     private DatabaseReference myRef;
     private DatabaseReference completeRef;
+    private DatabaseReference reviewsRef;
 
     private MutableLiveData<Boolean> itemSave;
 
@@ -49,16 +51,20 @@ public class ItemRepository {
 
     private List<Item> tempItems;
 
+    private MutableLiveData<Boolean> reviewComplete;
+
     public ItemRepository(Application application) {
         this.application = application;
         myRef = FirebaseDatabase.getInstance().getReference("items");
         completeRef = FirebaseDatabase.getInstance().getReference("completeItems");
+        reviewsRef = FirebaseDatabase.getInstance().getReference("reviews");
         itemSave = new MutableLiveData<>();
         items = new MutableLiveData<>();
         tempItems = new ArrayList<>();
         item = new MutableLiveData<>();
         like = new MutableLiveData<>();
         complete = new MutableLiveData<>();
+        reviewComplete = new MutableLiveData<>();
     }
 
     public MutableLiveData<Boolean> getItemSave() {
@@ -76,6 +82,10 @@ public class ItemRepository {
     public MutableLiveData<Boolean> getLike() { return like; }
 
     public MutableLiveData<Boolean> getComplete() { return complete; }
+
+    public MutableLiveData<Boolean> getReviewComplete() {
+        return reviewComplete;
+    }
 
     public void getItem(String key) {
         myRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -251,4 +261,17 @@ public class ItemRepository {
             }
         });
     }
+
+    // review 작성
+    public void setReview(String userUid, Review review) {
+        reviewsRef.child(userUid).push().setValue(review).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    reviewComplete.setValue(true);
+                }
+            }
+        });
+    }
+
 }
