@@ -1,0 +1,65 @@
+package com.mirror.jmarket.view;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+
+import com.bumptech.glide.Glide;
+import com.mirror.jmarket.R;
+import com.mirror.jmarket.classes.Item;
+import com.mirror.jmarket.databinding.ActivityReviewBinding;
+import com.mirror.jmarket.viewmodel.ItemViewModel;
+
+public class ReviewActivity extends AppCompatActivity {
+
+    public static final String TAG = "ReviewActivity";
+
+    private ActivityReviewBinding binding;
+
+    // view model
+    private ItemViewModel itemViewModel;
+
+    private String itemKey;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        binding = ActivityReviewBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        overridePendingTransition(R.anim.fadein_left, R.anim.none);
+
+        // get Intent
+        Intent intent = getIntent();
+        itemKey = intent.getStringExtra("itemKey");
+
+        // view model
+        itemViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ItemViewModel.class);
+        itemViewModel.getItem(itemKey);
+        itemViewModel.getItem().observe(this, new Observer<Item>() {
+            @Override
+            public void onChanged(Item item) {
+                binding.itemTitle.setText(item.getTitle());
+
+                Glide.with(ReviewActivity.this)
+                        .load(item.getFirstPhotoUri())
+                        .into(binding.itemPhoto);
+            }
+        });
+
+
+        // button
+
+        binding.backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.none, R.anim.fadeout_left);
+            }
+        });
+    }
+}

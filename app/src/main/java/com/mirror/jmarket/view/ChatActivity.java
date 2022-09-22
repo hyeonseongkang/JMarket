@@ -178,6 +178,16 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        binding.reviewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ChatActivity.this, ReviewActivity.class);
+                intent.putExtra("itemKey", itemKey);
+                startActivity(intent);
+
+            }
+        });
+
         binding.menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
