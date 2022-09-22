@@ -31,6 +31,8 @@ public class ItemViewModel extends AndroidViewModel {
 
     private MutableLiveData<Boolean> reviewComplete;
 
+    private MutableLiveData<List<Review>> reviews;
+
     public ItemViewModel(@NonNull @NotNull Application application) {
         super(application);
         repository = new ItemRepository(application);
@@ -40,6 +42,7 @@ public class ItemViewModel extends AndroidViewModel {
         like = repository.getLike();
         complete = repository.getComplete();
         reviewComplete= repository.getReviewComplete();
+        reviews = repository.getReviews();
     }
 
     public MutableLiveData<Boolean> getItemSave() { return itemSave; }
@@ -53,6 +56,8 @@ public class ItemViewModel extends AndroidViewModel {
     public MutableLiveData<Boolean> getComplete() { return complete; }
 
     public MutableLiveData<Boolean> getReviewComplete() { return reviewComplete; }
+
+    public MutableLiveData<List<Review>> getReviews() { return reviews; }
 
     public void getHomeItems() { repository.getHomeItems(); }
 
@@ -75,4 +80,6 @@ public class ItemViewModel extends AndroidViewModel {
     public void getComplete(String userUid, String myUid, String itemKey) { repository.getComplete(userUid, myUid, itemKey); }
 
     public void setReview(String userUid, Review review) { repository.setReview(userUid, review);}
+
+    public void getReviews(String myUid) { repository.getReviews(myUid);}
 }

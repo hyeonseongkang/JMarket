@@ -150,6 +150,7 @@ public class DetailItemActivity extends AppCompatActivity {
                 intent.putExtra("uid", sellerUid);
                 intent.putExtra("itemTitle", currentItem.getTitle());
                 intent.putExtra("myNickName",  myUser.getNickName().length() <= 0 ? user.getEmail() : myUser.getNickName());
+                intent.putExtra("userNickName", otherUser.getNickName().length() > 0 ? otherUser.getNickName() : otherUser.getEmail());
                 intent.putExtra("userPhoto", currentItem.getSellerProfileUri());
                 startActivity(intent);
                 finish();

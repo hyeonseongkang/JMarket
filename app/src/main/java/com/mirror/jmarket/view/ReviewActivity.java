@@ -18,6 +18,8 @@ import com.mirror.jmarket.classes.Review;
 import com.mirror.jmarket.databinding.ActivityReviewBinding;
 import com.mirror.jmarket.viewmodel.ItemViewModel;
 
+import java.util.List;
+
 public class ReviewActivity extends AppCompatActivity {
 
     public static final String TAG = "ReviewActivity";
@@ -56,6 +58,7 @@ public class ReviewActivity extends AppCompatActivity {
             public void onChanged(Item item) {
                 currentItem = item;
                 binding.itemTitle.setText(item.getTitle());
+                binding.seller.setText(item.getSellerName());
 
                 Glide.with(ReviewActivity.this)
                         .load(item.getFirstPhotoUri())
@@ -72,8 +75,6 @@ public class ReviewActivity extends AppCompatActivity {
                     overridePendingTransition(R.anim.none, R.anim.fadeout_left);
                 } else {
                     Toast.makeText(ReviewActivity.this, "이미 리뷰를 작성했습니다.", Toast.LENGTH_SHORT).show();
-                    finish();
-                    overridePendingTransition(R.anim.none, R.anim.fadeout_left);
                 }
             }
         });

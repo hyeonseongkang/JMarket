@@ -53,6 +53,9 @@ public class ItemRepository {
 
     private MutableLiveData<Boolean> reviewComplete;
 
+    private MutableLiveData<List<Review>> reviews;
+    private List<Review> reviewList;
+
     public ItemRepository(Application application) {
         this.application = application;
         myRef = FirebaseDatabase.getInstance().getReference("items");
@@ -65,6 +68,8 @@ public class ItemRepository {
         like = new MutableLiveData<>();
         complete = new MutableLiveData<>();
         reviewComplete = new MutableLiveData<>();
+        reviews = new MutableLiveData<>();
+        reviewList = new ArrayList<>();
     }
 
     public MutableLiveData<Boolean> getItemSave() {
@@ -85,6 +90,10 @@ public class ItemRepository {
 
     public MutableLiveData<Boolean> getReviewComplete() {
         return reviewComplete;
+    }
+
+    public MutableLiveData<List<Review>> getReviews() {
+        return reviews;
     }
 
     public void getItem(String key) {
@@ -295,7 +304,25 @@ public class ItemRepository {
 
             }
         });
+    }
 
+    public void getReviews(String myUid) {
+        reviewsRef.child(myUid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                reviewList.clear();
+                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                    Review review = snapshot1.getValue(Review.class);
+                    reviewList.add(review);
+                }
+                reviews.setValue(reviewList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
     }
 
 }
