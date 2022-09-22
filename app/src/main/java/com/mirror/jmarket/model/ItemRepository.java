@@ -264,14 +264,38 @@ public class ItemRepository {
 
     // review 작성
     public void setReview(String userUid, Review review) {
-        reviewsRef.child(userUid).push().setValue(review).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+        reviewsRef.child(userUid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onComplete(@NonNull @NotNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    reviewComplete.setValue(true);
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                boolean alreadyReview = false;
+                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                    Review tempReview = snapshot1.getValue(Review.class);
+                    if (tempReview.getItem().getKey().equals(review.getItem().getKey())) {
+                        reviewComplete.setValue(false);
+                        alreadyReview = true;
+                    }
                 }
+
+                if (!alreadyReview) {
+                    reviewsRef.child(userUid).push().setValue(review).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull @NotNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                reviewComplete.setValue(true);
+                            }
+                        }
+                    });
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
             }
         });
+
     }
 
 }

@@ -71,7 +71,9 @@ public class ReviewActivity extends AppCompatActivity {
                     finish();
                     overridePendingTransition(R.anim.none, R.anim.fadeout_left);
                 } else {
-
+                    Toast.makeText(ReviewActivity.this, "이미 리뷰를 작성했습니다.", Toast.LENGTH_SHORT).show();
+                    finish();
+                    overridePendingTransition(R.anim.none, R.anim.fadeout_left);
                 }
             }
         });
