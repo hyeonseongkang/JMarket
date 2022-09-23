@@ -35,14 +35,17 @@ public class ItemRepository {
 
     private Application application;
 
-    private DatabaseReference myRef;
+    private DatabaseReference itemRef;
     private DatabaseReference completeRef;
     private DatabaseReference reviewsRef;
 
     private MutableLiveData<Boolean> itemSave;
 
     private MutableLiveData<List<Item>> items;
+
     private MutableLiveData<List<Item>> myInterestItems;
+    private MutableLiveData<List<Item>> myOnSalesItems;
+    private MutableLiveData<List<Item>> myCompleteSalesItems;
 
     private MutableLiveData<Item> item;
 
@@ -59,12 +62,14 @@ public class ItemRepository {
 
     public ItemRepository(Application application) {
         this.application = application;
-        myRef = FirebaseDatabase.getInstance().getReference("items");
+        itemRef = FirebaseDatabase.getInstance().getReference("items");
         completeRef = FirebaseDatabase.getInstance().getReference("completeItems");
         reviewsRef = FirebaseDatabase.getInstance().getReference("reviews");
         itemSave = new MutableLiveData<>();
         items = new MutableLiveData<>();
         myInterestItems = new MutableLiveData<>();
+        myOnSalesItems = new MutableLiveData<>();
+        myCompleteSalesItems = new MutableLiveData<>();
         tempItems = new ArrayList<>();
         item = new MutableLiveData<>();
         like = new MutableLiveData<>();
@@ -84,6 +89,10 @@ public class ItemRepository {
 
     public MutableLiveData<List<Item>> getMyInterestItems() { return myInterestItems; }
 
+    public MutableLiveData<List<Item>> getMyOnSalesItems() { return myOnSalesItems; }
+
+    public MutableLiveData<List<Item>> getMyCompleteSalesItems() { return myCompleteSalesItems; }
+
     public MutableLiveData<Item> getItem() {
         return item;
     }
@@ -102,7 +111,7 @@ public class ItemRepository {
 
 
     public void getItem(String key) {
-        myRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+        itemRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 Item tempItem = snapshot.getValue(Item.class);
@@ -117,7 +126,7 @@ public class ItemRepository {
     }
 
     public void getHomeItems() {
-        myRef.addValueEventListener(new ValueEventListener() {
+        itemRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 tempItems.clear();
@@ -140,7 +149,7 @@ public class ItemRepository {
         // uid = 좋아요 누른 사람 uid
 
         //ArrayList<String> likes = myRef.child(key).child("likes");
-        myRef.child(key).child("likes").addListenerForSingleValueEvent(new ValueEventListener() {
+        itemRef.child(key).child("likes").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 ArrayList<String> likes = new ArrayList<>();
@@ -161,7 +170,7 @@ public class ItemRepository {
                     like.setValue(false);
                 }
 
-                myRef.child(key).child("likes").setValue(likes);
+                itemRef.child(key).child("likes").setValue(likes);
             }
 
             @Override
@@ -172,7 +181,7 @@ public class ItemRepository {
     }
 
     public void getLike(String key, String uid) {
-        myRef.child(key).child("likes").addListenerForSingleValueEvent(new ValueEventListener() {
+        itemRef.child(key).child("likes").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 ArrayList<String> likes = new ArrayList<>();
@@ -205,7 +214,7 @@ public class ItemRepository {
         boolean priceOffer = item.isPriceOffer();
         String content = item.getContent();
         ArrayList<String> photoKeys = item.getPhotoKeys();
-        String key = myRef.push().getKey();
+        String key = itemRef.push().getKey();
         String firstPhotoUri = item.getFirstPhotoUri();
         String sellerProfileUri = item.getSellerProfileUri();
         String sellerName = item.getSellerName();
@@ -218,7 +227,7 @@ public class ItemRepository {
 
         ArrayList<String> tempPhotokeys = new ArrayList<>();
         for (int i = 0; i < photoKeys.size(); i++) {
-            String photoKey = myRef.push().getKey();
+            String photoKey = itemRef.push().getKey();
             StorageReference storage = FirebaseStorage.getInstance().getReference().child("items/" + photoKey + ".jpg");
             UploadTask uploadTask = storage.putFile(Uri.parse(photoKeys.get(i)));
             int finalI = i;
@@ -232,9 +241,9 @@ public class ItemRepository {
 
                             if (finalI == photoKeys.size() - 1) {
                                 // String id, String title, String price, boolean priceOffer, String content, ArrayList<String> photoKeys, String key, String firstPhotoUri, String sellerProfileUri, String sellerName, String likes
-                                Item tempItem = new Item(id, title, price, priceOffer, content, tempPhotokeys, key, tempPhotokeys.get(0), sellerProfileUri, sellerName, likes);
+                                Item tempItem = new Item(id, title, price, priceOffer, content, tempPhotokeys, key, tempPhotokeys.get(0), sellerProfileUri, sellerName, likes, false);
                                // Item item = new Item(id, title, price, priceOffer, content, tempPhotokeys, key, tempPhotokeys.get(0), sellerProfileUri, sellerName, likes);
-                                myRef.child(key).setValue(tempItem);
+                                itemRef.child(key).setValue(tempItem);
                                 itemSave.setValue(true);
                             }
                         }
@@ -262,6 +271,7 @@ public class ItemRepository {
                     CompleteUser completeUser = snapshot.getValue(CompleteUser.class);
 
                     if (completeUser.getSender().length() > 0 && completeUser.getReceiver().length() > 0) {
+                        itemRef.child(itemKey).child("salesComplete").setValue(true);
                         complete.setValue(true);
                     } else if (!(completeUser.getSender().equals(myUid))) {
                         complete.setValue(false);
@@ -333,7 +343,7 @@ public class ItemRepository {
     // 내 관심목록 아이템 가져오기
     public void getMyInterestItems(String myUid) {
         ArrayList<Item> tempItems = new ArrayList<>();
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        itemRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 for (DataSnapshot snapshot1 : snapshot.getChildren()) {
@@ -352,6 +362,29 @@ public class ItemRepository {
 
             }
         });
+    }
+
+    // 내가 판매중인 아이템 가져오기
+    public void getMyOnSalesItems(String myUid) {
+        ArrayList<Item> tempItems = new ArrayList<>();
+        itemRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                    Item item = snapshot1.getValue(Item.class);
+                    if (item.getId().equals(myUid) && !(item.isSalesComplete())) {
+                        tempItems.add(item);
+                    }
+                    myOnSalesItems.setValue(tempItems);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+
     }
 
 }

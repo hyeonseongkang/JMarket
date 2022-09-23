@@ -15,10 +15,11 @@ public class Item {
     private String sellerProfileUri;
     private String sellerName;
     private ArrayList<String> likes;
+    private boolean salesComplete;
 
     public Item() {}
 
-    public Item(String id, String title, String price, boolean priceOffer, String content, ArrayList<String> photoKeys, String key, String firstPhotoUri, String sellerProfileUri, String sellerName, ArrayList<String> likes) {
+    public Item(String id, String title, String price, boolean priceOffer, String content, ArrayList<String> photoKeys, String key, String firstPhotoUri, String sellerProfileUri, String sellerName, ArrayList<String> likes, boolean salesComplete) {
         this.id = id;
         this.title = title;
         this.price = price;
@@ -30,6 +31,7 @@ public class Item {
         this.sellerProfileUri = sellerProfileUri;
         this.sellerName = sellerName;
         this.likes = likes;
+        this.salesComplete = salesComplete;
     }
 
     public String getId() {
@@ -76,4 +78,11 @@ public class Item {
         return likes;
     }
 
+    public boolean isSalesComplete() {
+        return salesComplete;
+    }
+
+    public void setSalesComplete(boolean salesComplete) {
+        this.salesComplete = salesComplete;
+    }
 }

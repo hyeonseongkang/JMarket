@@ -22,7 +22,10 @@ public class ItemViewModel extends AndroidViewModel {
     private MutableLiveData<Boolean> itemSave;
 
     private MutableLiveData<List<Item>> items;
+
     private MutableLiveData<List<Item>> myInterestItems;
+    private MutableLiveData<List<Item>> myOnSalesItems;
+    private MutableLiveData<List<Item>> myCompleteSalesItems;
 
     private MutableLiveData<Item> item;
 
@@ -40,6 +43,8 @@ public class ItemViewModel extends AndroidViewModel {
         itemSave = repository.getItemSave();
         items = repository.getItems();
         myInterestItems = repository.getMyInterestItems();
+        myOnSalesItems = repository.getMyOnSalesItems();
+        myCompleteSalesItems = repository.getMyCompleteSalesItems();
         item = repository.getItem();
         like = repository.getLike();
         complete = repository.getComplete();
@@ -52,6 +57,10 @@ public class ItemViewModel extends AndroidViewModel {
     public MutableLiveData<List<Item>> getItems() { return items; }
 
     public MutableLiveData<List<Item>> getMyInterestItems() { return myInterestItems; }
+
+    public MutableLiveData<List<Item>> getMyOnSalesItems() { return myOnSalesItems; }
+
+    public MutableLiveData<List<Item>> getMyCompleteSalesItems() { return myCompleteSalesItems; }
 
     public MutableLiveData<Item> getItem() { return item; }
 
@@ -88,4 +97,6 @@ public class ItemViewModel extends AndroidViewModel {
     public void getReviews(String myUid) { repository.getReviews(myUid);}
 
     public void getMyInterestItems(String myUid) { repository.getMyInterestItems(myUid); }
+
+    public void getMyOnSalesItems(String myUid) { repository.getMyOnSalesItems(myUid); }
 }

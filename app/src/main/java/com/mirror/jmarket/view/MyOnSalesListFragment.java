@@ -63,15 +63,14 @@ public class MyOnSalesListFragment extends Fragment {
 
         user = MainActivity.USER;
 
-
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.recyclerView.setHasFixedSize(true);
         adapter = new HomeItemAdapter();
         binding.recyclerView.setAdapter(adapter);
 
         itemViewModel = new ViewModelProvider(requireActivity()).get(ItemViewModel.class);
-        itemViewModel.getHomeItems();
-        itemViewModel.getItems().observe(getActivity(), new Observer<List<Item>>() {
+        itemViewModel.getMyOnSalesItems(user.getUid());
+        itemViewModel.getMyOnSalesItems().observe(getActivity(), new Observer<List<Item>>() {
             @Override
             public void onChanged(List<Item> items) {
                 if (items != null) {
