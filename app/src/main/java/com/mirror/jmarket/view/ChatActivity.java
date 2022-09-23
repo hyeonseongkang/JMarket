@@ -127,7 +127,7 @@ public class ChatActivity extends AppCompatActivity {
         binding.completeDeal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CompleteUser completeUser = new CompleteUser(uid, user.getUid());
+                CompleteUser completeUser = new CompleteUser(currentItem, uid, user.getUid(), currentItem.getId());
                 itemViewModel.setComplete(user.getUid(), uid, itemKey, completeUser);
             }
         });
@@ -261,7 +261,7 @@ public class ChatActivity extends AppCompatActivity {
                                 Toast.makeText(ChatActivity.this, "이미 거래 요청이 왔습니다.", Toast.LENGTH_SHORT).show();
                                 return;
                             } else {
-                                CompleteUser completeUser = new CompleteUser(user.getUid(), "");
+                                CompleteUser completeUser = new CompleteUser(currentItem, user.getUid(), "", currentItem.getId());
                                 itemViewModel.setComplete(user.getUid(), uid, itemKey, completeUser);
                             }
 

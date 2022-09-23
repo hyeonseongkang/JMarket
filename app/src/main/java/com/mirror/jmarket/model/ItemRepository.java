@@ -47,6 +47,8 @@ public class ItemRepository {
     private MutableLiveData<List<Item>> myOnSalesItems;
     private MutableLiveData<List<Item>> myCompleteSalesItems;
 
+    private MutableLiveData<List<Item>> myBuyItems;
+
     private MutableLiveData<Item> item;
 
     private MutableLiveData<Boolean> like;
@@ -70,6 +72,7 @@ public class ItemRepository {
         myInterestItems = new MutableLiveData<>();
         myOnSalesItems = new MutableLiveData<>();
         myCompleteSalesItems = new MutableLiveData<>();
+        myBuyItems = new MutableLiveData<>();
         tempItems = new ArrayList<>();
         item = new MutableLiveData<>();
         like = new MutableLiveData<>();
@@ -92,6 +95,8 @@ public class ItemRepository {
     public MutableLiveData<List<Item>> getMyOnSalesItems() { return myOnSalesItems; }
 
     public MutableLiveData<List<Item>> getMyCompleteSalesItems() { return myCompleteSalesItems; }
+
+    public MutableLiveData<List<Item>> getMyBuyItems() { return myBuyItems; }
 
     public MutableLiveData<Item> getItem() {
         return item;
@@ -364,7 +369,7 @@ public class ItemRepository {
         });
     }
 
-    // 내가 판매중인 아이템 가져오기
+    // 내가 판매중인 아이템 리스트 가져오기
     public void getMyOnSalesItems(String myUid) {
         ArrayList<Item> tempItems = new ArrayList<>();
         itemRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -386,7 +391,7 @@ public class ItemRepository {
         });
     }
 
-    // 내가 판매완료한 아이템 가져오기
+    // 내가 판매완료한 아이템 리스트 가져오기
     public void getMyCompleteSalesItems(String myUid) {
         ArrayList<Item> tempItems = new ArrayList<>();
         itemRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -399,6 +404,33 @@ public class ItemRepository {
                     }
                     myCompleteSalesItems.setValue(tempItems);
                 }
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
+
+
+
+    // 내가 구매한 아이템 리스트 가져오기
+    public void getMyBuyItems(String myUid) {
+        ArrayList<Item> tempItems = new ArrayList<>();
+        completeRef.child(myUid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                    for (DataSnapshot snapshot2: snapshot1.getChildren()) {
+                        CompleteUser completeUser = snapshot2.getValue(CompleteUser.class);
+                        if ((completeUser.getSender().length() > 0 && completeUser.getReceiver().length() > 0) && !(completeUser.getSeller().equals(myUid))) {
+                            tempItems.add(completeUser.getItem());
+                        }
+                    }
+                    myBuyItems.setValue(tempItems);
+                }
+
             }
 
             @Override

@@ -78,9 +78,13 @@ public class MyPageFragment extends Fragment {
                 Log.d(TAG, "Hello!@!@" + user.getPhotoUri() + " " + user.getNickName());
                 if (!(user.getPhotoUri().equals(""))) {
                     photoUri = user.getPhotoUri();
-                    Glide.with(getActivity())
-                            .load(Uri.parse(user.getPhotoUri()))
-                            .into(binding.userPhoto);
+                    try {
+                        Glide.with(getActivity())
+                                .load(Uri.parse(user.getPhotoUri()))
+                                .into(binding.userPhoto);
+                    } catch (NullPointerException e){
+                    }
+
                 } else {
                     photoUri = null;
                 }
@@ -109,6 +113,22 @@ public class MyPageFragment extends Fragment {
             }
         });
 
+        binding.mySalesList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), MySalesListActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        binding.myBuyList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), MyBuyListActivity.class);
+                startActivity(intent);
+            }
+        });
+
         binding.myInterestList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -117,13 +137,7 @@ public class MyPageFragment extends Fragment {
             }
         });
 
-        binding.mySalesList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), MySalesListActivity.class);
-                startActivity(intent);
-            }
-        });
+
 
         binding.logout.setOnClickListener(new View.OnClickListener() {
             @Override
