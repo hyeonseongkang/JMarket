@@ -99,4 +99,6 @@ public class ItemViewModel extends AndroidViewModel {
     public void getMyInterestItems(String myUid) { repository.getMyInterestItems(myUid); }
 
     public void getMyOnSalesItems(String myUid) { repository.getMyOnSalesItems(myUid); }
+
+    public void getMyCompleteSalesItems(String myUid) { repository.getMyCompleteSalesItems(myUid); }
 }

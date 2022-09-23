@@ -384,7 +384,28 @@ public class ItemRepository {
 
             }
         });
+    }
 
+    // 내가 판매완료한 아이템 가져오기
+    public void getMyCompleteSalesItems(String myUid) {
+        ArrayList<Item> tempItems = new ArrayList<>();
+        itemRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                    Item item = snapshot1.getValue(Item.class);
+                    if (item.getId().equals(myUid) && item.isSalesComplete()) {
+                        tempItems.add(item);
+                    }
+                    myCompleteSalesItems.setValue(tempItems);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
     }
 
 }

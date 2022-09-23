@@ -34,10 +34,11 @@ public class MySalesListActivity extends AppCompatActivity {
                 int position = tab.getPosition();
 
                 if (position == 0) {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container, new MyOnSalesListFragment()).commit();
                     // 거래중
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container, new MyOnSalesListFragment()).commit();
                 } else if (position == 1) {
                     // 판매완료
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container, new MyCompleteSalesListFragment()).commit();
                 }
             }
 
