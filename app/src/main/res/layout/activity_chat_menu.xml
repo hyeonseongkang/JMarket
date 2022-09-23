@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/activity_chat_menu_button_layout">
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/completeDeal"
@@ -20,7 +21,7 @@
             android:text="거래 완료 요청"
             android:textColor="#00FF71"
             android:fontFamily="@font/scd5"
-            android:background="@null"/>
+            android:background="#FFFFFF"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/outChat"
@@ -29,8 +30,7 @@
             android:text="채팅방 나가기"
             android:fontFamily="@font/scd5"
             android:textColor="#FF0000"
-            android:background="@null"
-            android:layout_marginTop="1dp"/>
+            android:background="#FFFFFF"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/backButton"
@@ -38,7 +38,8 @@
             android:layout_height="wrap_content"
             android:text="취소"
             android:fontFamily="@font/scd5"
-            android:background="@null"/>
+            android:background="#FFFFFF"
+            android:textColor="#000000"/>
     </LinearLayout>
 
 </RelativeLayout>

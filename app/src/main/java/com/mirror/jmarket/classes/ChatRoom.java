@@ -7,15 +7,17 @@ public class ChatRoom {
     private LastMessage lastMessage;
     private boolean visited;
     private int unReadChatCount;
+    private boolean leaveChatRoom;
 
     public ChatRoom() {}
 
-    public ChatRoom(User user, Item item, LastMessage lastMessage, boolean visited, int unReadChatCount) {
+    public ChatRoom(User user, Item item, LastMessage lastMessage, boolean visited, int unReadChatCount, boolean leaveChatRoom) {
         this.user = user;
         this.item = item;
         this.lastMessage = lastMessage;
         this.visited = visited;
         this.unReadChatCount = unReadChatCount;
+        this.leaveChatRoom = leaveChatRoom;
     }
 
 
@@ -63,4 +65,7 @@ public class ChatRoom {
         return unReadChatCount;
     }
 
+    public boolean isLeaveChatRoom() {
+        return leaveChatRoom;
+    }
 }

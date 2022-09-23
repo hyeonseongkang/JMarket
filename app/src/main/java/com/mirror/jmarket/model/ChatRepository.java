@@ -29,6 +29,7 @@ import com.mirror.jmarket.classes.Chat;
 import com.mirror.jmarket.classes.ChatRoom;
 import com.mirror.jmarket.classes.LastMessage;
 import com.mirror.jmarket.classes.User;
+import com.mirror.jmarket.view.MyPageFragment;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -60,6 +61,9 @@ public class ChatRepository {
 
     private MutableLiveData<HashMap<String, Integer>> unReadChatCount;
 
+    private MutableLiveData<Boolean> leaveChatRoom;
+    private MutableLiveData<Boolean> myLeaveChatRoom;
+
     private ChatRoom showLastChatNoti;
 
     public ChatRepository(Application application) {
@@ -79,6 +83,10 @@ public class ChatRepository {
         createChatRoom = new MutableLiveData<>();
 
         unReadChatCount = new MutableLiveData<>();
+
+        leaveChatRoom = new MutableLiveData<>();
+
+        myLeaveChatRoom = new MutableLiveData<>();
 
     }
 
@@ -101,6 +109,10 @@ public class ChatRepository {
     public MutableLiveData<HashMap<String, Integer>> getUnReadChatCount() {
         return unReadChatCount;
     }
+
+    public MutableLiveData<Boolean> getLeaveChatRoom() { return leaveChatRoom; }
+
+    public MutableLiveData<Boolean> getMyLeaveChatRoom() { return myLeaveChatRoom; }
 
 
     public void setVisited(String myUid, String userUid, boolean visit) {
@@ -258,8 +270,11 @@ public class ChatRepository {
                 // 마지막으로 보낸 메시지가 있는 채팅방만 추가
                 ChatRoom chatRoom = snapshot.getValue(ChatRoom.class);
                 if (chatRoom.getLastMessage().getMessage().length() > 0) {
-                    chatRoomList.add(0, chatRoom);
-                    chatRooms.setValue(chatRoomList);
+                    if (!chatRoom.isLeaveChatRoom()) {
+                        chatRoomList.add(0, chatRoom);
+                        chatRooms.setValue(chatRoomList);
+                    }
+
                 }
             }
             @Override
@@ -272,14 +287,17 @@ public class ChatRepository {
                         break;
                     }
                 }
-                chatRoomList.add(0, chatRoom);
 
-                // 내가 채팅방을 열고 있지 않다면
-                if (!chatRoom.getVisited()) {
-                    String userName = chatRoom.getUser().getNickName().length() > 0 ? chatRoom.getUser().getNickName() : chatRoom.getUser().getEmail();
-                    if (!(chatRoom.getLastMessage().getChecked())) {
-                        snapshot.getRef().child("lastMessage").child("checked").setValue(true);
-                        showChatNoti(userName, chatRoom.getLastMessage().getMessage());
+                if (!(chatRoom.isLeaveChatRoom())) {
+                    chatRoomList.add(0, chatRoom);
+
+                    // 내가 채팅방을 열고 있지 않다면
+                    if (!chatRoom.getVisited()) {
+                        String userName = chatRoom.getUser().getNickName().length() > 0 ? chatRoom.getUser().getNickName() : chatRoom.getUser().getEmail();
+                        if (!(chatRoom.getLastMessage().getChecked())) {
+                            snapshot.getRef().child("lastMessage").child("checked").setValue(true);
+                            showChatNoti(userName, chatRoom.getLastMessage().getMessage());
+                        }
                     }
                 }
                 chatRooms.setValue(chatRoomList);
@@ -403,6 +421,38 @@ public class ChatRepository {
 
         }
 
+    }
+
+    public void setLeaveChatRoom(String myUid, String userUid) {
+        chatRoomsRef.child(myUid).child(userUid).child("leaveChatRoom").setValue(true).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    myLeaveChatRoom.setValue(true);
+                }
+            }
+        });
+    }
+
+    public void getLeaveChatRoom(String userUid, String myUid) {
+        chatRoomsRef.child(userUid).child(myUid).child("leaveChatRoom").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                boolean value = snapshot.getValue(Boolean.class);
+
+                if (value) {
+                    leaveChatRoom.setValue(true);
+                } else {
+                    leaveChatRoom.setValue(false);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
     }
 
     /*

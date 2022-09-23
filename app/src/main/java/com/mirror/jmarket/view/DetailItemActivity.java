@@ -170,7 +170,7 @@ public class DetailItemActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 LastMessage lastMessage = new LastMessage("", "", "", "", false);
-                ChatRoom chatRoom = new ChatRoom(null, currentItem, lastMessage, true, 0);
+                ChatRoom chatRoom = new ChatRoom(null, currentItem, lastMessage, true, 0, false);
                 chatViewModel.setChatRoom(user.getUid(), sellerUid, chatRoom, myUser, otherUser);
 
             }

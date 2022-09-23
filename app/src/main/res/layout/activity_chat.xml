@@ -197,6 +197,18 @@
         android:paddingBottom="10dp"
         android:clipToPadding="false"/>
 
+    <TextView
+        android:id="@+id/leaveChatRoomUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="상대방이 채팅방을 나갔습니다."
+        android:fontFamily="@font/scd5"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:textSize="23dp"
+        android:visibility="gone"/>
+
     <RelativeLayout
         android:id="@+id/bottomLayout"
         android:layout_width="match_parent"

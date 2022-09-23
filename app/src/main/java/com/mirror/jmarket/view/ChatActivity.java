@@ -63,6 +63,8 @@ public class ChatActivity extends AppCompatActivity {
 
     private int completeDeal;
 
+    private boolean leaveChatRoom; // 상대방이 채팅방을 나갔는지 확인, true -> 나감, false -> 안나감
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,6 +148,31 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        // 상대방이 채팅방을 나간경우
+        chatViewModel.getLeaveChatRoom(uid, user.getUid());
+        chatViewModel.getLeaveChatRoom().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean) {
+                    leaveChatRoom = true;
+                    binding.leaveChatRoomUser.setVisibility(View.VISIBLE);
+                } else {
+                    leaveChatRoom = false;
+                }
+            }
+        });
+
+        // 내가 채팅방을 나간경우
+        chatViewModel.getMyLeaveChatRoom().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean) {
+                    finish();
+                    overridePendingTransition(R.anim.none, R.anim.fadeout_left);
+                }
+            }
+        });
+
 
         chatViewModel.allMessageChecked(user.getUid(), uid);
         chatViewModel.setVisited(user.getUid(), uid, true);
@@ -171,6 +198,12 @@ public class ChatActivity extends AppCompatActivity {
                     Log.d(TAG, "상대가 채팅방에 있습니다.");
                 } else {
                     Log.d(TAG, "상대가 채팅방에 없습니다.");
+                }
+
+                // 상대방이 채팅방을 나갔을 경우
+                if (leaveChatRoom) {
+                    Toast.makeText(ChatActivity.this, "상대방이 채팅방을 나갔습니다.", Toast.LENGTH_SHORT).show();
+                    return;
                 }
 
                 // String userNickName, String sender, String receiver, String message, String date, String time, boolean checked
@@ -236,7 +269,7 @@ public class ChatActivity extends AppCompatActivity {
 
                         } else if (data.equals("out")) {
                             // 채팅방 나가기
-
+                            chatViewModel.setLeaveChatRoom(user.getUid(), uid);
                         }
 
                     }

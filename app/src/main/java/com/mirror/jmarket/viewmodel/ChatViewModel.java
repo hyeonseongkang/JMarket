@@ -11,6 +11,7 @@ import com.mirror.jmarket.classes.Chat;
 import com.mirror.jmarket.classes.ChatRoom;
 import com.mirror.jmarket.classes.User;
 import com.mirror.jmarket.model.ChatRepository;
+import com.mirror.jmarket.view.MyPageFragment;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +30,9 @@ public class ChatViewModel extends AndroidViewModel {
 
     private MutableLiveData<HashMap<String, Integer>> unReadChatCount;
 
+    private MutableLiveData<Boolean> leaveChatRoom;
+    private MutableLiveData<Boolean> myLeaveChatRoom;
+
     public ChatViewModel(Application application) {
         super(application);
         repository = new ChatRepository(application);
@@ -37,6 +41,8 @@ public class ChatViewModel extends AndroidViewModel {
         visited = repository.getVisited();
         createChatRoom = repository.getCreateChatRoom();
         unReadChatCount = repository.getUnReadChatCount();
+        leaveChatRoom = repository.getLeaveChatRoom();
+        myLeaveChatRoom = repository.getMyLeaveChatRoom() ;
     }
 
     public MutableLiveData<List<HashMap<String, List<Chat>>>> getMyChats() { return myChats; }
@@ -52,6 +58,10 @@ public class ChatViewModel extends AndroidViewModel {
     public MutableLiveData<HashMap<String, Integer>> getUnReadChatCount() {
         return unReadChatCount;
     }
+
+    public MutableLiveData<Boolean> getLeaveChatRoom() { return leaveChatRoom; }
+
+    public MutableLiveData<Boolean> getMyLeaveChatRoom() { return myLeaveChatRoom; }
 
     public void getUnReadChatCount(String myUid) {
         repository.getUnReadChatCount(myUid);
@@ -91,5 +101,13 @@ public class ChatViewModel extends AndroidViewModel {
     }
 
     public void getMyChats(String myUid) { repository.getMyChats(myUid); }
+
+    public void setLeaveChatRoom(String myUid, String userUid) {
+        repository.setLeaveChatRoom(myUid, userUid);
+    }
+
+    public void getLeaveChatRoom(String userUid, String myUid) {
+        repository.getLeaveChatRoom(userUid, myUid);
+    }
 
 }

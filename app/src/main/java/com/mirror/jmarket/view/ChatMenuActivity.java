@@ -1,7 +1,9 @@
 package com.mirror.jmarket.view;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -42,11 +44,29 @@ public class ChatMenuActivity extends AppCompatActivity {
         chatMenuBinding.outChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent data = new Intent();
-                data.putExtra("data", "out");
-                setResult(RESULT_OK, data);
-                finish();
-                overridePendingTransition(R.anim.none, R.anim.fadeout_up);
+                AlertDialog.Builder builder = new AlertDialog.Builder(ChatMenuActivity.this);
+                builder.setTitle("채팅방 나가기");
+                builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent data = new Intent();
+                        data.putExtra("data", "out");
+                        setResult(RESULT_OK, data);
+                        finish();
+                        overridePendingTransition(R.anim.none, R.anim.fadeout_up);
+                    }
+                });
+
+                builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+
             }
         });
 
