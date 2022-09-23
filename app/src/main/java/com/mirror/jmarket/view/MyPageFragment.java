@@ -117,6 +117,14 @@ public class MyPageFragment extends Fragment {
             }
         });
 
+        binding.mySalesList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), MySalesListActivity.class);
+                startActivity(intent);
+            }
+        });
+
         binding.logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

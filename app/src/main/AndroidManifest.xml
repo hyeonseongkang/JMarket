@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.JMarket">
-        <activity android:name=".view.MyInterestListActivity"></activity>
+        <activity android:name=".view.MySalesListActivity"></activity>
+        <activity android:name=".view.MyInterestListActivity" />
         <activity android:name=".view.ReviewActivity" />
         <activity
             android:name=".view.ChatMenuActivity"
