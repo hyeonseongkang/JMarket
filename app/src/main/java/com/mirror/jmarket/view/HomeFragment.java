@@ -56,9 +56,6 @@ public class HomeFragment extends Fragment {
 
         loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
 
-
-
-
         binding.progress.setVisibility(View.VISIBLE);
 
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -72,7 +69,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onChanged(List<Item> items) {
                 if (items != null) {
-                    adapter.setItems(items);
+                    adapter.setItems(items, false);
                     binding.progress.setVisibility(View.GONE);
                 }
             }

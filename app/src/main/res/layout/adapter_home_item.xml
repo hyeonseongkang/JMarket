@@ -31,7 +31,7 @@
         android:layout_toRightOf="@+id/cardView"
         android:orientation="vertical">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -45,9 +45,19 @@
                 android:maxLines="1"
                 android:text="제목"
                 android:textColor="#000000"
-                android:textSize="16dp" />
+                android:textSize="16dp"
+                android:layout_centerVertical="true"/>
 
-        </LinearLayout>
+            <ImageView
+                android:id="@+id/interest"
+                android:visibility="gone"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/red_heart"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"/>
+
+        </RelativeLayout>
 
 
         <TextView

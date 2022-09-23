@@ -24,6 +24,8 @@ public class HomeItemAdapter extends RecyclerView.Adapter<HomeItemAdapter.MyView
     private List<Item> items = new ArrayList<>();
     private onItemClickListener listener;
 
+    private boolean interest;
+
     @NonNull
     @NotNull
     @Override
@@ -37,6 +39,13 @@ public class HomeItemAdapter extends RecyclerView.Adapter<HomeItemAdapter.MyView
     @Override
     public void onBindViewHolder(@NonNull @NotNull MyViewHolder holder, int position) {
         Item item = items.get(position);
+
+        holder.interest.setVisibility(View.GONE);
+
+        if (interest == true) {
+            holder.interest.setVisibility(View.VISIBLE);
+        }
+
         holder.title.setText(item.getTitle());
         holder.content.setText(item.getContent());
         holder.price.setText(item.getPrice() + "원");
@@ -48,8 +57,9 @@ public class HomeItemAdapter extends RecyclerView.Adapter<HomeItemAdapter.MyView
     @Override
     public int getItemCount() { return items == null ? 0 : items.size();}
 
-    public void setItems(List<Item> items) {
+    public void setItems(List<Item> items, boolean interest) {
         this.items = items;
+        this.interest = interest;
         notifyDataSetChanged();
 
     }
@@ -57,12 +67,14 @@ public class HomeItemAdapter extends RecyclerView.Adapter<HomeItemAdapter.MyView
     class MyViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView photo;
+        private ImageView interest;
         private TextView title, content, price;
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
             photo = itemView.findViewById(R.id.photo);
+            interest = itemView.findViewById(R.id.interest);
 
             title = itemView.findViewById(R.id.title);
             content = itemView.findViewById(R.id.content);

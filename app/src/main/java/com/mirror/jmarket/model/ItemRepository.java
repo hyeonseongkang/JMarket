@@ -42,6 +42,7 @@ public class ItemRepository {
     private MutableLiveData<Boolean> itemSave;
 
     private MutableLiveData<List<Item>> items;
+    private MutableLiveData<List<Item>> myInterestItems;
 
     private MutableLiveData<Item> item;
 
@@ -63,6 +64,7 @@ public class ItemRepository {
         reviewsRef = FirebaseDatabase.getInstance().getReference("reviews");
         itemSave = new MutableLiveData<>();
         items = new MutableLiveData<>();
+        myInterestItems = new MutableLiveData<>();
         tempItems = new ArrayList<>();
         item = new MutableLiveData<>();
         like = new MutableLiveData<>();
@@ -80,6 +82,8 @@ public class ItemRepository {
         return items;
     }
 
+    public MutableLiveData<List<Item>> getMyInterestItems() { return myInterestItems; }
+
     public MutableLiveData<Item> getItem() {
         return item;
     }
@@ -95,6 +99,7 @@ public class ItemRepository {
     public MutableLiveData<List<Review>> getReviews() {
         return reviews;
     }
+
 
     public void getItem(String key) {
         myRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -316,6 +321,30 @@ public class ItemRepository {
                     reviewList.add(review);
                 }
                 reviews.setValue(reviewList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    // 내 관심목록 아이템 가져오기
+    public void getMyInterestItems(String myUid) {
+        ArrayList<Item> tempItems = new ArrayList<>();
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                    Item item = snapshot1.getValue(Item.class);
+                    if (item.getLikes() != null) {
+                        if (item.getLikes().contains(myUid)) {
+                            tempItems.add(item);
+                        }
+                    }
+                }
+                myInterestItems.setValue(tempItems);
             }
 
             @Override

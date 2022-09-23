@@ -109,6 +109,14 @@ public class MyPageFragment extends Fragment {
             }
         });
 
+        binding.myInterestList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), MyInterestListActivity.class);
+                startActivity(intent);
+            }
+        });
+
         binding.logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
