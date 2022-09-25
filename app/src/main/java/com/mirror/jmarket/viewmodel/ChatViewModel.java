@@ -71,12 +71,12 @@ public class ChatViewModel extends AndroidViewModel {
         repository.setUnReadChatCount(myUid, userUid, unReadChatCount);
     }
 
-    public void setVisited(String myUid, String userUid, boolean visit) {
-        repository.setVisited(myUid, userUid, visit);
+    public void setVisited(String myUid, String userUid, String itemKey, boolean visit) {
+        repository.setVisited(myUid, userUid, itemKey, visit);
     }
 
-    public void getVisited( String userUid, String myUid) {
-        repository.getVisited(userUid, myUid);
+    public void getVisited( String userUid, String myUid, String itemKey) {
+        repository.getVisited(userUid, myUid, itemKey);
     }
 
     public void allMessageChecked(String myUid, String userUid) {
@@ -96,6 +96,10 @@ public class ChatViewModel extends AndroidViewModel {
         repository.setChatRoom(uid, sellerUid, chatRoom, myUser, otherUser);
     }
 
+    public void setChatRoom(String uid, String sellerUid, String itemKey, ChatRoom chatRoom, User myUser, User otherUser) {
+        repository.setChatRoom(uid, sellerUid, itemKey, chatRoom, myUser, otherUser);
+    }
+
     public void getMyChatRooms(String myUid) {
         repository.getMyChatRooms(myUid);
     }
@@ -106,8 +110,8 @@ public class ChatViewModel extends AndroidViewModel {
         repository.setLeaveChatRoom(myUid, userUid);
     }
 
-    public void getLeaveChatRoom(String userUid, String myUid) {
-        repository.getLeaveChatRoom(userUid, myUid);
+    public void getLeaveChatRoom(String userUid, String myUid, String itemKey) {
+        repository.getLeaveChatRoom(userUid, myUid, itemKey);
     }
 
 }

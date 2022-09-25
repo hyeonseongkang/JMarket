@@ -149,7 +149,7 @@ public class ChatActivity extends AppCompatActivity {
         });
 
         // 상대방이 채팅방을 나간경우
-        chatViewModel.getLeaveChatRoom(uid, user.getUid());
+        chatViewModel.getLeaveChatRoom(uid, user.getUid(), itemKey);
         chatViewModel.getLeaveChatRoom().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
@@ -175,8 +175,8 @@ public class ChatActivity extends AppCompatActivity {
 
 
         chatViewModel.allMessageChecked(user.getUid(), uid);
-        chatViewModel.setVisited(user.getUid(), uid, true);
-        chatViewModel.getVisited(uid, user.getUid());
+        chatViewModel.setVisited(user.getUid(), uid, itemKey, true);
+        chatViewModel.getVisited(uid, user.getUid(), itemKey);
         chatViewModel.getVisited().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
@@ -281,7 +281,7 @@ public class ChatActivity extends AppCompatActivity {
     public void onStop() {
         super.onStop();
         Log.d(TAG, "onStop");
-        chatViewModel.setVisited(user.getUid(), uid, false);
+        chatViewModel.setVisited(user.getUid(), uid, itemKey, false);
     }
 
     @Override
@@ -294,6 +294,6 @@ public class ChatActivity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy");
-        chatViewModel.setVisited(user.getUid(), uid, false);
+        chatViewModel.setVisited(user.getUid(), uid, itemKey, false);
     }
 }

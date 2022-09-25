@@ -64,8 +64,6 @@ public class ChatRepository {
     private MutableLiveData<Boolean> leaveChatRoom;
     private MutableLiveData<Boolean> myLeaveChatRoom;
 
-    private ChatRoom showLastChatNoti;
-
     public ChatRepository(Application application) {
         this.application = application;
         chatsRef = FirebaseDatabase.getInstance().getReference("chats");
@@ -115,13 +113,13 @@ public class ChatRepository {
     public MutableLiveData<Boolean> getMyLeaveChatRoom() { return myLeaveChatRoom; }
 
 
-    public void setVisited(String myUid, String userUid, boolean visit) {
-        chatRoomsRef.child(myUid).child(userUid).child("visited").setValue(visit);
+    public void setVisited(String myUid, String userUid, String itemKey, boolean visit) {
+        chatRoomsRef.child(myUid).child(userUid).child(itemKey).child("visited").setValue(visit);
     }
 
     // 상대방이 채팅방에 들어와 있는지 확인
-    public void getVisited(String userUid, String myUid) {
-        chatRoomsRef.child(userUid).child(myUid).child("visited").addValueEventListener(new ValueEventListener() {
+    public void getVisited(String userUid, String myUid, String itemKey) {
+        chatRoomsRef.child(userUid).child(myUid).child(itemKey).child("visited").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 if (snapshot.getValue(Boolean.class) != null) {
@@ -261,6 +259,53 @@ public class ChatRepository {
     }
 
 
+
+    // version 2
+    public void setChatRoom(String uid, String sellerUid, String itemKey, ChatRoom chatRoom, User myUser, User otherUser) {
+
+        if (uid.equals(sellerUid))
+            return;
+
+        chatRoomsRef.child(uid).child(sellerUid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                boolean alreadyItemChatRoom = false;
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                    if (snapshot1.getKey().equals(itemKey))
+                        alreadyItemChatRoom = true;
+                }
+
+                if (!alreadyItemChatRoom) {
+                    ChatRoom chatRoom1 = new ChatRoom();
+                    chatRoom1.setItem(chatRoom.getItem());
+                    chatRoom1.setLastMessage(chatRoom.getLastMessage());
+                    chatRoom1.setUser(otherUser);
+                    chatRoom1.setVisited(true);
+                    ChatRoom chatRoom2 = new ChatRoom();
+                    chatRoom2.setItem(chatRoom.getItem());
+                    chatRoom2.setLastMessage(chatRoom.getLastMessage());
+                    chatRoom2.setUser(myUser);
+                    chatRoomsRef.child(uid).child(sellerUid).child(itemKey).setValue(chatRoom1);
+                    chatRoomsRef.child(sellerUid).child(uid).child(itemKey).setValue(chatRoom2).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull @NotNull Task<Void> task) {
+                            if (task.isSuccessful()) createChatRoom.setValue(true);
+                            else createChatRoom.setValue(false);
+                        }
+                    });
+                } else {
+                    createChatRoom.setValue(false);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
+
+
     public void getMyChatRooms(String myUid) {
         chatRoomsRef.child(myUid).addChildEventListener(new ChildEventListener() {
             @Override
@@ -268,37 +313,110 @@ public class ChatRepository {
                 Log.d("MyChatRooms Added:", snapshot.getValue().toString());
 
                 // 마지막으로 보낸 메시지가 있는 채팅방만 추가
-                ChatRoom chatRoom = snapshot.getValue(ChatRoom.class);
-                if (chatRoom.getLastMessage().getMessage().length() > 0) {
-                    if (!chatRoom.isLeaveChatRoom()) {
-                        chatRoomList.add(0, chatRoom);
-                        chatRooms.setValue(chatRoomList);
-                    }
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                    ChatRoom chatRoom = snapshot1.getValue(ChatRoom.class);
+                    if (chatRoom.getLastMessage().getMessage().length() > 0) {
+                        if (!chatRoom.isLeaveChatRoom()) {
+                            chatRoomList.add(0, chatRoom);
+                        }
 
+                    }
                 }
+                chatRooms.setValue(chatRoomList);
             }
             @Override
             public void onChildChanged(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
                 //Log.d("MyChatRooms Changed:", snapshot.getValue().toString());
-                ChatRoom chatRoom = snapshot.getValue(ChatRoom.class);
-                for (int i = 0; i < chatRoomList.size(); i++) {
-                    if (chatRoomList.get(i).getUser().getUid().equals(chatRoom.getUser().getUid())) {
-                        chatRoomList.remove(i);
-                        break;
+                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                    ChatRoom chatRoom = snapshot1.getValue(ChatRoom.class);
+                    for (int i = 0; i < chatRoomList.size(); i++) {
+                        if (chatRoomList.get(i).getUser().getUid().equals(chatRoom.getUser().getUid())) {
+                            chatRoomList.remove(i);
+                            break;
+                        }
+                    }
+
+                    if (!(chatRoom.isLeaveChatRoom())) {
+                        chatRoomList.add(0, chatRoom);
+
+                        // 내가 채팅방을 열고 있지 않다면
+                        if (!chatRoom.getVisited()) {
+                            String userName = chatRoom.getUser().getNickName().length() > 0 ? chatRoom.getUser().getNickName() : chatRoom.getUser().getEmail();
+                            if (!(chatRoom.getLastMessage().getChecked())) {
+                                snapshot1.getRef().child("lastMessage").child("checked").setValue(true);
+                                showChatNoti(userName, chatRoom.getLastMessage().getMessage());
+                            }
+                        }
                     }
                 }
 
-                if (!(chatRoom.isLeaveChatRoom())) {
-                    chatRoomList.add(0, chatRoom);
+                chatRooms.setValue(chatRoomList);
+            }
+            @Override
+            public void onChildRemoved(@NonNull @NotNull DataSnapshot snapshot) {
+                Log.d("MyChatRooms Removed:", snapshot.getValue().toString());
+            }
 
-                    // 내가 채팅방을 열고 있지 않다면
-                    if (!chatRoom.getVisited()) {
-                        String userName = chatRoom.getUser().getNickName().length() > 0 ? chatRoom.getUser().getNickName() : chatRoom.getUser().getEmail();
-                        if (!(chatRoom.getLastMessage().getChecked())) {
-                            snapshot.getRef().child("lastMessage").child("checked").setValue(true);
-                            showChatNoti(userName, chatRoom.getLastMessage().getMessage());
+            @Override
+            public void onChildMoved(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
+                Log.d("MyChatRooms Moved:", snapshot.getValue().toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                Log.d("MyChatRooms Added:", error.getMessage());
+            }
+        });
+    }
+
+
+    /*
+    // version 2
+    public void getMyChatRooms(String myUid) {
+        chatRoomsRef.child(myUid).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
+                Log.d("MyChatRooms Added:", snapshot.getValue().toString());
+
+                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                    // 마지막으로 보낸 메시지가 있는 채팅방만 추가
+                    ChatRoom chatRoom = snapshot1.getValue(ChatRoom.class);
+                    if (chatRoom.getLastMessage().getMessage().length() > 0) {
+                        if (!chatRoom.isLeaveChatRoom()) {
+                            chatRoomList.add(0, chatRoom);
+                            chatRooms.setValue(chatRoomList);
+                        }
+
+                    }
+                }
+
+            }
+            @Override
+            public void onChildChanged(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
+                //Log.d("MyChatRooms Changed:", snapshot.getValue().toString());
+
+                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                    ChatRoom chatRoom = snapshot1.getValue(ChatRoom.class);
+                    for (int i = 0; i < chatRoomList.size(); i++) {
+                        if (chatRoomList.get(i).getUser().getUid().equals(chatRoom.getUser().getUid())) {
+                            chatRoomList.remove(i);
+                            break;
                         }
                     }
+
+                    if (!(chatRoom.isLeaveChatRoom())) {
+                        chatRoomList.add(0, chatRoom);
+
+                        // 내가 채팅방을 열고 있지 않다면
+                        if (!chatRoom.getVisited()) {
+                            String userName = chatRoom.getUser().getNickName().length() > 0 ? chatRoom.getUser().getNickName() : chatRoom.getUser().getEmail();
+                            if (!(chatRoom.getLastMessage().getChecked())) {
+                                snapshot1.getRef().child("lastMessage").child("checked").setValue(true);
+                                showChatNoti(userName, chatRoom.getLastMessage().getMessage());
+                            }
+                        }
+                    }
+
                 }
                 chatRooms.setValue(chatRoomList);
             }
@@ -318,6 +436,8 @@ public class ChatRepository {
             }
         });
     }
+
+     */
 
     public void sendMessage(String sender, String receiver, Chat chat, String lastSendUser) {
         String[] dateTime = getDate().split(" ");
@@ -434,8 +554,8 @@ public class ChatRepository {
         });
     }
 
-    public void getLeaveChatRoom(String userUid, String myUid) {
-        chatRoomsRef.child(userUid).child(myUid).child("leaveChatRoom").addValueEventListener(new ValueEventListener() {
+    public void getLeaveChatRoom(String userUid, String myUid, String itemKey) {
+        chatRoomsRef.child(userUid).child(myUid).child(itemKey).child("leaveChatRoom").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 boolean value = snapshot.getValue(Boolean.class);
