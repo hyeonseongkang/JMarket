@@ -134,6 +134,22 @@ public class ChatActivity extends AppCompatActivity {
 
         chatViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ChatViewModel.class);
         chatViewModel.getMyChats(user.getUid());
+        chatViewModel.getMyChats().observe(this, new Observer<List<HashMap<List<String>, List<Chat>>>>() {
+            @Override
+            public void onChanged(List<HashMap<List<String>, List<Chat>>> hashMaps) {
+                for (HashMap<List<String>, List<Chat>> map : hashMaps) {
+                    for (List<String> keys: map.keySet()) {
+                        if (keys.contains(uid)) {
+                            List<Chat> chat = map.get(keys);
+                            adapter.setChats(chat, user.getUid(), uid, userPhoto);
+                            binding.recyclerView.scrollToPosition(chat.size() - 1);
+                            break;
+                        }
+                    }
+                }
+            }
+        });
+        /*
         chatViewModel.getMyChats().observe(this, new Observer<List<HashMap<String, List<Chat>>>>() {
             @Override
             public void onChanged(List<HashMap<String, List<Chat>>> hashMaps) {
@@ -147,6 +163,8 @@ public class ChatActivity extends AppCompatActivity {
                 }
             }
         });
+
+         */
 
         // 상대방이 채팅방을 나간경우
         chatViewModel.getLeaveChatRoom(uid, user.getUid(), itemKey);

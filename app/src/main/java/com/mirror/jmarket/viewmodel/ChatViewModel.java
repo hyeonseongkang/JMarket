@@ -20,7 +20,7 @@ public class ChatViewModel extends AndroidViewModel {
 
     private ChatRepository repository;
 
-    private MutableLiveData<List<HashMap<String, List<Chat>>>> myChats;
+    private MutableLiveData<List<HashMap<List<String>, List<Chat>>>> myChats;
 
     private MutableLiveData<List<ChatRoom>> chatRooms;
 
@@ -45,7 +45,7 @@ public class ChatViewModel extends AndroidViewModel {
         myLeaveChatRoom = repository.getMyLeaveChatRoom() ;
     }
 
-    public MutableLiveData<List<HashMap<String, List<Chat>>>> getMyChats() { return myChats; }
+    public MutableLiveData<List<HashMap<List<String>, List<Chat>>>> getMyChats() { return myChats; }
 
     // public MutableLiveData<List<List<Chat>>> getMyChats() { return myChats; }
 

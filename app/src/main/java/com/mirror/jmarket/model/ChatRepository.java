@@ -49,8 +49,8 @@ public class ChatRepository {
     private DatabaseReference usersRef;
     private DatabaseReference chatRoomsRef;
 
-    private MutableLiveData<List<HashMap<String, List<Chat>>>> myChats;
-    private List<HashMap<String, List<Chat>>> myChatList;
+    private MutableLiveData<List<HashMap<List<String>, List<Chat>>>> myChats;
+    private List<HashMap<List<String>, List<Chat>>> myChatList;
 
     private MutableLiveData<List<ChatRoom>> chatRooms;
     private List<ChatRoom> chatRoomList;
@@ -88,7 +88,7 @@ public class ChatRepository {
 
     }
 
-    public MutableLiveData<List<HashMap<String, List<Chat>>>> getMyChats() {
+    public MutableLiveData<List<HashMap<List<String>, List<Chat>>>> getMyChats() {
         return myChats;
     }
 
@@ -499,15 +499,23 @@ public class ChatRepository {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 myChatList.clear();
+                // userUids
                 for (DataSnapshot snapshot1: snapshot.getChildren()) {
-                    List<Chat> chats = new ArrayList<>();
+                    // itemKeys
                     for (DataSnapshot snapshot2: snapshot1.getChildren()) {
-                        Chat chat = snapshot2.getValue(Chat.class);
-                        chats.add(chat);
+                        HashMap<List<String>, List<Chat>> hashMap = new HashMap<>();
+                        List<String> keys = new ArrayList<>();
+                        keys.add(snapshot1.getKey()); // userUid
+                        keys.add(snapshot2.getKey()); // itemKey;
+                        List<Chat> chats = new ArrayList<>();
+                        // chats
+                        for (DataSnapshot snapshot3: snapshot2.getChildren()) {
+                            Chat chat = snapshot3.getValue(Chat.class);
+                            chats.add(chat);
+                        }
+                        hashMap.put(keys, chats);
+                        myChatList.add(hashMap);
                     }
-                    HashMap<String, List<Chat>> hashMap = new HashMap<>();
-                    hashMap.put(snapshot1.getKey(), chats);
-                    myChatList.add(hashMap);
 
                     /*
                     Chat chat = chats.get(chats.size() - 1);
