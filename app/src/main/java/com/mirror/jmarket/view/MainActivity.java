@@ -19,6 +19,7 @@ import com.mirror.jmarket.viewmodel.ChatViewModel;
 import com.mirror.jmarket.viewmodel.LoginViewModel;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,6 +52,24 @@ public class MainActivity extends AppCompatActivity {
         chatViewModel.getMyChats(USER.getUid());
         chatViewModel.getMyChatRooms(USER.getUid());
         chatViewModel.getUnReadChatCount(USER.getUid());
+        chatViewModel.getUnReadChatCount().observe(this, new Observer<HashMap<List<String>, Integer>>() {
+            @Override
+            public void onChanged(HashMap<List<String>, Integer> hashMap) {
+                int count = 0;
+                for (List<String> keys: hashMap.keySet()) {
+                    chatViewModel.setUnReadChatCount(USER.getUid(), keys.get(0), keys.get(1), hashMap.get(keys));
+                    count += hashMap.get(keys);
+                }
+                if (count > 0) {
+                    badgeDrawable.setNumber(count);
+                    badgeDrawable.setVisible(true);
+                } else {
+                    badgeDrawable.clearNumber();
+                    badgeDrawable.setVisible(false);
+                }
+            }
+        });
+        /*
         chatViewModel.getUnReadChatCount().observe(this, new Observer<HashMap<String, Integer>>() {
             @Override
             public void onChanged(HashMap<String, Integer> hashMap) {
@@ -72,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+         */
 
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container, new HomeFragment()).commit();

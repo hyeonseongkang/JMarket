@@ -28,7 +28,7 @@ public class ChatViewModel extends AndroidViewModel {
 
     private MutableLiveData<Boolean> createChatRoom;
 
-    private MutableLiveData<HashMap<String, Integer>> unReadChatCount;
+    private MutableLiveData<HashMap<List<String>, Integer>> unReadChatCount;
 
     private MutableLiveData<Boolean> leaveChatRoom;
     private MutableLiveData<Boolean> myLeaveChatRoom;
@@ -55,7 +55,7 @@ public class ChatViewModel extends AndroidViewModel {
 
     public MutableLiveData<Boolean> getCreateChatRoom() { return createChatRoom; }
 
-    public MutableLiveData<HashMap<String, Integer>> getUnReadChatCount() {
+    public MutableLiveData<HashMap<List<String>, Integer>> getUnReadChatCount() {
         return unReadChatCount;
     }
 
@@ -67,8 +67,8 @@ public class ChatViewModel extends AndroidViewModel {
         repository.getUnReadChatCount(myUid);
     }
 
-    public void setUnReadChatCount(String myUid, String userUid, int unReadChatCount) {
-        repository.setUnReadChatCount(myUid, userUid, unReadChatCount);
+    public void setUnReadChatCount(String myUid, String userUid, String itemKey, int unReadChatCount) {
+        repository.setUnReadChatCount(myUid, userUid, itemKey, unReadChatCount);
     }
 
     public void setVisited(String myUid, String userUid, String itemKey, boolean visit) {

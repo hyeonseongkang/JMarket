@@ -59,7 +59,7 @@ public class ChatRepository {
 
     private MutableLiveData<Boolean> createChatRoom;
 
-    private MutableLiveData<HashMap<String, Integer>> unReadChatCount;
+    private MutableLiveData<HashMap<List<String>, Integer>> unReadChatCount;
 
     private MutableLiveData<Boolean> leaveChatRoom;
     private MutableLiveData<Boolean> myLeaveChatRoom;
@@ -104,7 +104,7 @@ public class ChatRepository {
         return visited;
     }
 
-    public MutableLiveData<HashMap<String, Integer>> getUnReadChatCount() {
+    public MutableLiveData<HashMap<List<String>, Integer>> getUnReadChatCount() {
         return unReadChatCount;
     }
 
@@ -180,23 +180,33 @@ public class ChatRepository {
 
     // 읽지 않은 채팅 수
     public void getUnReadChatCount(String myUid) {
-        HashMap<String, Integer> hashMap = new LinkedHashMap<>();
+        HashMap<List<String>, Integer> hashMap = new LinkedHashMap<>();
         chatsRef.child(myUid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
 
                 for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-                    int count = 0;
+
                     for (DataSnapshot snapshot2 : snapshot1.getChildren()) {
-                        Chat chat = snapshot2.getValue(Chat.class);
-                        // 내가 보낸 메시지가 아니라면
-                        if (!(chat.getSender().equals(myUid))) {
-                            if (!(chat.getChecked())) {
-                                count++;
+                        int count = 0;
+                        List<String> keyList = new ArrayList<>();
+                        keyList.add(snapshot1.getKey());
+                        boolean first = true;
+                        for (DataSnapshot snapshot3: snapshot2.getChildren()) {
+                            Chat chat = snapshot3.getValue(Chat.class);
+                            if (first) {
+                                keyList.add(snapshot2.getKey());
+                                first = false;
                             }
+                            // 내가 보낸 메시지가 아니라면
+                            if (!(chat.getSender().equals(myUid))) {
+                                if (!(chat.getChecked())) {
+                                    count++;
+                                }
+                            }
+                            hashMap.put(keyList, count);
                         }
 
-                        hashMap.put(snapshot1.getKey(), count);
                     }
                 }
                 unReadChatCount.setValue(hashMap);
@@ -209,8 +219,8 @@ public class ChatRepository {
         });
     }
 
-    public void setUnReadChatCount(String myUid, String userUid, int unReadChatCount) {
-        chatRoomsRef.child(myUid).child(userUid).child("unReadChatCount").setValue(unReadChatCount);
+    public void setUnReadChatCount(String myUid, String userUid, String itemKey, int unReadChatCount) {
+        chatRoomsRef.child(myUid).child(userUid).child(itemKey).child("unReadChatCount").setValue(unReadChatCount);
     }
 
 
