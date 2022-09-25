@@ -208,7 +208,7 @@ public class ChatActivity extends AppCompatActivity {
 
                 // String userNickName, String sender, String receiver, String message, String date, String time, boolean checked
                 Chat chat = new Chat(myNickName, user.getUid(), uid, message, "", "", visited);
-                chatViewModel.sendMessage(user.getUid(), uid, chat, user.getUid());
+                chatViewModel.sendMessage(user.getUid(), uid, itemKey, chat, user.getUid());
                 binding.message.setText("");
             }
         });

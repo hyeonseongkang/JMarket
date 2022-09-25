@@ -439,7 +439,26 @@ public class ChatRepository {
 
      */
 
-    public void sendMessage(String sender, String receiver, Chat chat, String lastSendUser) {
+    public void sendMessage(String sender, String receiver, String itemKey, Chat chat, String lastSendUser) {
+        String[] dateTime = getDate().split(" ");
+        chat.setDate(dateTime[0]);
+        chat.setTime(dateTime[1]);
+
+        chatsRef.child(sender).child(receiver).child(itemKey).push().setValue(chat);
+        chatsRef.child(receiver).child(sender).child(itemKey).push().setValue(chat);
+
+        // String message, String user, String time
+        boolean checked = chat.getChecked();
+        LastMessage lastMessage = new LastMessage(chat.getMessage(), lastSendUser, dateTime[0], dateTime[1], checked);
+        chatRoomsRef.child(receiver).child(sender).child(itemKey).child("lastMessage").setValue(lastMessage);
+
+        // 보내는 사람은 lastMessage checked -> true
+        lastMessage.setChecked(true);
+        chatRoomsRef.child(sender).child(receiver).child(itemKey).child("lastMessage").setValue(lastMessage);
+
+    }
+    /*
+        public void sendMessage(String sender, String receiver, Chat chat, String lastSendUser) {
         String[] dateTime = getDate().split(" ");
         chat.setDate(dateTime[0]);
         chat.setTime(dateTime[1]);
@@ -457,6 +476,7 @@ public class ChatRepository {
         chatRoomsRef.child(sender).child(receiver).child("lastMessage").setValue(lastMessage);
 
     }
+     */
 
           /*
         Service 부분으로 넘어가서 백그라운드에서 계속 동작돼야 하는 메서드임

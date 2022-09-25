@@ -83,8 +83,8 @@ public class ChatViewModel extends AndroidViewModel {
         repository.allMessageChecked(myUid, userUid);
     }
 
-    public void sendMessage(String sender, String receiver, Chat chat, String lastSendUser) {
-        repository.sendMessage(sender, receiver, chat, lastSendUser);
+    public void sendMessage(String sender, String receiver, String itemKey, Chat chat, String lastSendUser) {
+        repository.sendMessage(sender, receiver, itemKey, chat, lastSendUser);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
