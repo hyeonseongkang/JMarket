@@ -79,8 +79,8 @@ public class ChatViewModel extends AndroidViewModel {
         repository.getVisited(userUid, myUid, itemKey);
     }
 
-    public void allMessageChecked(String myUid, String userUid) {
-        repository.allMessageChecked(myUid, userUid);
+    public void allMessageChecked(String myUid, String userUid, String itemKey) {
+        repository.allMessageChecked(myUid, userUid, itemKey);
     }
 
     public void sendMessage(String sender, String receiver, String itemKey, Chat chat, String lastSendUser) {
@@ -92,9 +92,12 @@ public class ChatViewModel extends AndroidViewModel {
         return repository.getDate();
     }
 
+    /*
     public void setChatRoom(String uid, String sellerUid, ChatRoom chatRoom, User myUser, User otherUser) {
         repository.setChatRoom(uid, sellerUid, chatRoom, myUser, otherUser);
     }
+
+     */
 
     public void setChatRoom(String uid, String sellerUid, String itemKey, ChatRoom chatRoom, User myUser, User otherUser) {
         repository.setChatRoom(uid, sellerUid, itemKey, chatRoom, myUser, otherUser);
@@ -112,6 +115,10 @@ public class ChatViewModel extends AndroidViewModel {
 
     public void getLeaveChatRoom(String userUid, String myUid, String itemKey) {
         repository.getLeaveChatRoom(userUid, myUid, itemKey);
+    }
+
+    public void testDelete() {
+        repository.testDelete();
     }
 
 }

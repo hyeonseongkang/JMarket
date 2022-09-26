@@ -20,6 +20,7 @@ import com.mirror.jmarket.adapter.HomeItemAdapter;
 import com.mirror.jmarket.adapter.HomeItemPhotoAdapter;
 import com.mirror.jmarket.classes.Item;
 import com.mirror.jmarket.databinding.FragmentHomeBinding;
+import com.mirror.jmarket.viewmodel.ChatViewModel;
 import com.mirror.jmarket.viewmodel.ItemViewModel;
 import com.mirror.jmarket.viewmodel.LoginViewModel;
 
@@ -35,6 +36,7 @@ public class HomeFragment extends Fragment {
     // viewModel
     private LoginViewModel loginViewModel;
     private ItemViewModel itemViewModel;
+    private ChatViewModel chatViewModel;
 
     // Adapter
     private HomeItemAdapter adapter;
@@ -54,9 +56,18 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        chatViewModel = new ViewModelProvider(requireActivity()).get(ChatViewModel.class);
+
         loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
 
         binding.progress.setVisibility(View.VISIBLE);
+
+        binding.search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                chatViewModel.testDelete();
+            }
+        });
 
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.recyclerView.setHasFixedSize(true);
@@ -78,12 +89,12 @@ public class HomeFragment extends Fragment {
         binding.tempUserUid.setText(MainActivity.USER.getUid());
 
 
-        binding.search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loginViewModel.logout();
-            }
-        });
+//        binding.search.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                loginViewModel.logout();
+//            }
+//        });
 
         adapter.setOnItemClickListener(new HomeItemAdapter.onItemClickListener() {
             @Override

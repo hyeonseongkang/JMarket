@@ -108,9 +108,13 @@ public class ChatRepository {
         return unReadChatCount;
     }
 
-    public MutableLiveData<Boolean> getLeaveChatRoom() { return leaveChatRoom; }
+    public MutableLiveData<Boolean> getLeaveChatRoom() {
+        return leaveChatRoom;
+    }
 
-    public MutableLiveData<Boolean> getMyLeaveChatRoom() { return myLeaveChatRoom; }
+    public MutableLiveData<Boolean> getMyLeaveChatRoom() {
+        return myLeaveChatRoom;
+    }
 
 
     public void setVisited(String myUid, String userUid, String itemKey, boolean visit) {
@@ -140,8 +144,8 @@ public class ChatRepository {
     채팅방에 입장하면 상대가 내게 보낸 모든 메시지의 checked 값을 true로 변경,
     채팅 데이터는 myUid/userUid/ChatData && userUid/myUid/ChatData 양쪽 uid 하위 모두에 저장되니 myUid 와 userUid(상대) 하위의 값을 모두 바꿔줘야함
      */
-    public void allMessageChecked(String myUid, String userUid) {
-        chatsRef.child(myUid).child(userUid).addListenerForSingleValueEvent(new ValueEventListener() {
+    public void allMessageChecked(String myUid, String userUid, String itemKey) {
+        chatsRef.child(myUid).child(userUid).child(itemKey).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 for (DataSnapshot snapshot1 : snapshot.getChildren()) {
@@ -159,7 +163,7 @@ public class ChatRepository {
             }
         });
 
-        chatsRef.child(userUid).child(myUid).addListenerForSingleValueEvent(new ValueEventListener() {
+        chatsRef.child(userUid).child(myUid).child(itemKey).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 for (DataSnapshot snapshot1 : snapshot.getChildren()) {
@@ -192,7 +196,7 @@ public class ChatRepository {
                         List<String> keyList = new ArrayList<>();
                         keyList.add(snapshot1.getKey());
                         boolean first = true;
-                        for (DataSnapshot snapshot3: snapshot2.getChildren()) {
+                        for (DataSnapshot snapshot3 : snapshot2.getChildren()) {
                             Chat chat = snapshot3.getValue(Chat.class);
                             if (first) {
                                 keyList.add(snapshot2.getKey());
@@ -224,6 +228,7 @@ public class ChatRepository {
     }
 
 
+    /*
     public void setChatRoom(String uid, String sellerUid, ChatRoom chatRoom, User myUser, User otherUser) {
 
         if (uid.equals(sellerUid))
@@ -268,6 +273,7 @@ public class ChatRepository {
         });
     }
 
+     */
 
 
     // version 2
@@ -287,11 +293,13 @@ public class ChatRepository {
 
                 if (!alreadyItemChatRoom) {
                     ChatRoom chatRoom1 = new ChatRoom();
+                    chatRoom1.setKey(itemKey);
                     chatRoom1.setItem(chatRoom.getItem());
                     chatRoom1.setLastMessage(chatRoom.getLastMessage());
                     chatRoom1.setUser(otherUser);
                     chatRoom1.setVisited(true);
                     ChatRoom chatRoom2 = new ChatRoom();
+                    chatRoom2.setKey(itemKey);
                     chatRoom2.setItem(chatRoom.getItem());
                     chatRoom2.setLastMessage(chatRoom.getLastMessage());
                     chatRoom2.setUser(myUser);
@@ -315,7 +323,230 @@ public class ChatRepository {
         });
     }
 
+    public void testDelete() {
+        chatRoomsRef.removeValue();
+        chatsRef.removeValue();
+    }
 
+//    public void getMyChatRooms(String myUid) {
+//        chatRoomsRef.child(myUid).addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+//                // userUid
+//                chatRoomList.clear();
+//                for (DataSnapshot snapshot1: snapshot.getChildren()){
+//
+//                    // itemKey
+//                    for (DataSnapshot snapshot2: snapshot1.getChildren()) {
+//                        ChatRoom chatRoom = snapshot2.getValue(ChatRoom.class);
+//
+//                        if (!chatRoom.isLeaveChatRoom()) {
+//                            if (chatRoom.getLastMessage().getMessage().length() > 0) {
+//                                if (chatRoom.isFirstUp()) {
+//                                    snapshot2.getRef().child("firstUp").setValue(false);
+//                                    chatRoomList.add(0, chatRoom);
+//
+//                                } else {
+//                                    chatRoomList.add(chatRoom);
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//                chatRooms.setValue(chatRoomList);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+//
+//            }
+//        });
+//    }
+
+    public void getMyChatRooms(String myUid) {
+        chatRoomsRef.child(myUid).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
+
+                Log.d("ㅇㅕ기요!", snapshot.getValue().toString());
+                Log.d("추가1", snapshot.getKey().toString());
+                Log.d("추가2" , snapshot.getRef().toString());
+                // 마지막으로 보낸 메시지가 있는 채팅방만 추가
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                    ChatRoom chatRoom = snapshot1.getValue(ChatRoom.class);
+                    Log.d("추가3", snapshot1.getKey());
+                    if (chatRoom.getLastMessage().getMessage().length() > 0) {
+                        if (!chatRoom.isLeaveChatRoom()) {
+                            chatRoomList.add(0, chatRoom);
+                            Log.d("처음 추가", "추가함 ");
+                        }
+
+                    }
+                }
+                chatRooms.setValue(chatRoomList);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
+                // 변경된 ref의 상위 key가 들어옴
+                /*
+                ex
+                myUid
+                    userUid1
+                        itemKey1 {...}
+                        itemKey2 {...}
+
+                    userUid2
+                        itemKey1 {...}
+
+                위와 같은 구조에서 userUid1/itemKey1가 변경되면 userUid1이 snapshot으로 들어옴
+
+                 */
+                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                    ChatRoom chatRoom = snapshot1.getValue(ChatRoom.class);
+
+                    boolean cond = true;
+                    if (chatRoom.isFirstUp()) {
+                        if (chatRoomList.size() == 0) {
+                            chatRoomList.add(0, chatRoom);
+                            snapshot.getRef().child(chatRoom.getKey()).child("firstUp").setValue(false);
+                            break;
+                        }
+                        for (int i = 0 ; i < chatRoomList.size(); i++) {
+                            if (chatRoomList.get(i).getUser().getUid().equals(chatRoom.getUser().getUid()) &&
+                                chatRoomList.get(i).getKey().equals(chatRoom.getKey())) {
+                                chatRoomList.remove(i);
+                                chatRoomList.add(0, chatRoom);
+                                snapshot.getRef().child(chatRoom.getKey()).child("firstUp").setValue(false);
+                                cond = false;
+                                break;
+                            }
+                        }
+
+                    }
+
+                    if (cond) {
+                        if (!(chatRoom.isLeaveChatRoom())) {
+                            chatRoomList.add(0, chatRoom);
+                        }
+                    }
+                }
+                chatRooms.setValue(chatRoomList);
+                Log.d("변경", snapshot.getKey().toString());
+                Log.d("변경2" , snapshot.getRef().toString());
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull @NotNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    /*
+
+    public void getMyChatRooms(String myUid) {
+
+        chatRoomsRef.child(myUid).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
+                Log.d("MyChatRooms Added:", snapshot.getValue().toString());
+
+                // 마지막으로 보낸 메시지가 있는 채팅방만 추가
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                    ChatRoom chatRoom = snapshot1.getValue(ChatRoom.class);
+                    if (chatRoom.getLastMessage().getMessage().length() > 0) {
+                        if (!chatRoom.isLeaveChatRoom()) {
+                            chatRoomList.add(0, chatRoom);
+                            Log.d("처음 추가", "추가함 ");
+                        }
+
+                    }
+                }
+                chatRooms.setValue(chatRoomList);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
+                Log.d("MyChatRooms Changed:", snapshot.getValue().toString());
+
+
+                // itemKey
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                    ChatRoom chatRoom = snapshot1.getValue(ChatRoom.class);
+                    Log.d("gk..", snapshot1.getValue().toString());
+
+                    boolean check = false;
+                    for (int i = 0; i < chatRoomList.size(); i++) {
+                        // 이미 있는경우
+                        if (chatRoomList.get(i).getKey().equals(chatRoom.getKey())) {
+                            check = true;
+                            if (chatRoom.isFirstUp()) {
+                                chatRoomList.remove(i);
+                                chatRoomList.add(0, chatRoom);
+                                Log.d("Asdad", snapshot1.getRef().toString());
+                                snapshot1.getRef().child("firstUp").setValue(false);
+                                break;
+                            }
+                        }
+                    }
+
+                    if (chatRoom.getLastMessage().getMessage().length() <= 0)
+                        check = true;
+
+                    if (!check) {
+                        chatRoomList.add(0, chatRoom);
+                    }
+
+
+//                    for (int i = 0; i < chatRoomList.size(); i++) {
+//                        if (chatRoomList.get(i).getKey().equals(chatRoom.getKey())) {
+//                            if (chatRoomList.get(i).isFirstUp()) {
+//                                chatRoomList.remove(i);
+//                                chatRoomList.add(0, chatRoom);
+//                                Log.d("수정함", "수정");
+//                                snapshot1.getRef().child(chatRoomList.get(i).getKey()).child("firstUp").setValue(false);
+//                            }
+//                        }
+//                    }
+
+
+
+
+                }
+
+                chatRooms.setValue(chatRoomList);
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull @NotNull DataSnapshot snapshot) {
+                Log.d("MyChatRooms Removed:", snapshot.getValue().toString());
+            }
+
+            @Override
+            public void onChildMoved(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
+                Log.d("MyChatRooms Moved:", snapshot.getValue().toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                Log.d("MyChatRooms Cancelled:", error.getMessage());
+            }
+        });
+    }
+        */
+    // getMyChatRooms
+    /*
     public void getMyChatRooms(String myUid) {
         chatRoomsRef.child(myUid).addChildEventListener(new ChildEventListener() {
             @Override
@@ -336,13 +567,14 @@ public class ChatRepository {
             }
             @Override
             public void onChildChanged(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
-                //Log.d("MyChatRooms Changed:", snapshot.getValue().toString());
+                Log.d("MyChatRooms Changed:", snapshot.getValue().toString());
+
+                // userUid
                 for (DataSnapshot snapshot1: snapshot.getChildren()) {
                     ChatRoom chatRoom = snapshot1.getValue(ChatRoom.class);
                     for (int i = 0; i < chatRoomList.size(); i++) {
-                        if (chatRoomList.get(i).getUser().getUid().equals(chatRoom.getUser().getUid())) {
+                        if (chatRoomList.get(i).getKey().equals(chatRoom.getKey())) {
                             chatRoomList.remove(i);
-                            break;
                         }
                     }
 
@@ -378,6 +610,8 @@ public class ChatRepository {
             }
         });
     }
+
+     */
 
 
     /*
@@ -461,6 +695,7 @@ public class ChatRepository {
         boolean checked = chat.getChecked();
         LastMessage lastMessage = new LastMessage(chat.getMessage(), lastSendUser, dateTime[0], dateTime[1], checked);
         chatRoomsRef.child(receiver).child(sender).child(itemKey).child("lastMessage").setValue(lastMessage);
+        chatRoomsRef.child(receiver).child(sender).child(itemKey).child("firstUp").setValue(true);
 
         // 보내는 사람은 lastMessage checked -> true
         lastMessage.setChecked(true);
@@ -500,16 +735,16 @@ public class ChatRepository {
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 myChatList.clear();
                 // userUids
-                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                     // itemKeys
-                    for (DataSnapshot snapshot2: snapshot1.getChildren()) {
+                    for (DataSnapshot snapshot2 : snapshot1.getChildren()) {
                         HashMap<List<String>, List<Chat>> hashMap = new HashMap<>();
                         List<String> keys = new ArrayList<>();
                         keys.add(snapshot1.getKey()); // userUid
                         keys.add(snapshot2.getKey()); // itemKey;
                         List<Chat> chats = new ArrayList<>();
                         // chats
-                        for (DataSnapshot snapshot3: snapshot2.getChildren()) {
+                        for (DataSnapshot snapshot3 : snapshot2.getChildren()) {
                             Chat chat = snapshot3.getValue(Chat.class);
                             chats.add(chat);
                         }

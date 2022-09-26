@@ -1,37 +1,39 @@
 package com.mirror.jmarket.classes;
 
 public class ChatRoom {
-    private String uid;
+    private String key;
     private User user;
     private Item item;
     private LastMessage lastMessage;
     private boolean visited;
     private int unReadChatCount;
     private boolean leaveChatRoom;
+    private boolean firstUp;
 
     public ChatRoom() {}
 
-    public ChatRoom(User user, Item item, LastMessage lastMessage, boolean visited, int unReadChatCount, boolean leaveChatRoom) {
+    public ChatRoom(String key,User user, Item item, LastMessage lastMessage, boolean visited, int unReadChatCount, boolean leaveChatRoom, boolean firstUp) {
+        this.key = key;
         this.user = user;
         this.item = item;
         this.lastMessage = lastMessage;
         this.visited = visited;
         this.unReadChatCount = unReadChatCount;
         this.leaveChatRoom = leaveChatRoom;
+        this.firstUp = firstUp;
     }
 
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
 
     public User getUser() { return user; }
 
     public void setUser(User user) { this.user = user;}
-
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
 
     public Item getItem() {
         return item;
@@ -67,5 +69,13 @@ public class ChatRoom {
 
     public boolean isLeaveChatRoom() {
         return leaveChatRoom;
+    }
+
+    public boolean isFirstUp() {
+        return firstUp;
+    }
+
+    public void setFirstUp(boolean firstUp) {
+        this.firstUp = firstUp;
     }
 }

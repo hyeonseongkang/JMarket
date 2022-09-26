@@ -139,7 +139,7 @@ public class ChatActivity extends AppCompatActivity {
             public void onChanged(List<HashMap<List<String>, List<Chat>>> hashMaps) {
                 for (HashMap<List<String>, List<Chat>> map : hashMaps) {
                     for (List<String> keys: map.keySet()) {
-                        if (keys.contains(uid)) {
+                        if (keys.contains(itemKey)) {
                             List<Chat> chat = map.get(keys);
                             adapter.setChats(chat, user.getUid(), uid, userPhoto);
                             binding.recyclerView.scrollToPosition(chat.size() - 1);
@@ -192,7 +192,7 @@ public class ChatActivity extends AppCompatActivity {
         });
 
 
-        chatViewModel.allMessageChecked(user.getUid(), uid);
+        chatViewModel.allMessageChecked(user.getUid(), uid, itemKey);
         chatViewModel.setVisited(user.getUid(), uid, itemKey, true);
         chatViewModel.getVisited(uid, user.getUid(), itemKey);
         chatViewModel.getVisited().observe(this, new Observer<Boolean>() {
