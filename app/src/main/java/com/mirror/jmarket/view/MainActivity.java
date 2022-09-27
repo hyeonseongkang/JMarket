@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         badgeDrawable.setMaxCharacterCount(4);
 
         chatViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ChatViewModel.class);
+        chatViewModel.testDelete();
         chatViewModel.getMyChats(USER.getUid());
         chatViewModel.getMyChatRooms(USER.getUid());
         chatViewModel.getUnReadChatCount(USER.getUid());

@@ -324,8 +324,8 @@ public class ChatRepository {
     }
 
     public void testDelete() {
-        chatRoomsRef.removeValue();
         chatsRef.removeValue();
+        chatRoomsRef.removeValue();
     }
 
 //    public void getMyChatRooms(String myUid) {
@@ -368,9 +368,11 @@ public class ChatRepository {
             @Override
             public void onChildAdded(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
 
+
                 Log.d("ㅇㅕ기요!", snapshot.getValue().toString());
                 Log.d("추가1", snapshot.getKey().toString());
                 Log.d("추가2" , snapshot.getRef().toString());
+                /*
                 // 마지막으로 보낸 메시지가 있는 채팅방만 추가
                 for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                     ChatRoom chatRoom = snapshot1.getValue(ChatRoom.class);
@@ -384,6 +386,8 @@ public class ChatRepository {
                     }
                 }
                 chatRooms.setValue(chatRoomList);
+
+                 */
             }
 
             @Override
@@ -402,38 +406,44 @@ public class ChatRepository {
                 위와 같은 구조에서 userUid1/itemKey1가 변경되면 userUid1이 snapshot으로 들어옴
 
                  */
+                Log.d("onChildChanged", snapshot.getRef().toString());
+
                 for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                    Log.d("onChildChanged/", snapshot1.getRef().toString());
                     ChatRoom chatRoom = snapshot1.getValue(ChatRoom.class);
 
+
+                    // chatRoomList가 비어있으면 저장
+                    if (chatRoomList.size() == 0) {
+                        chatRoomList.add(chatRoom);
+                        continue;
+                    }
+
                     boolean cond = true;
-                    if (chatRoom.isFirstUp()) {
-                        if (chatRoomList.size() == 0) {
-                            chatRoomList.add(0, chatRoom);
-                            snapshot.getRef().child(chatRoom.getKey()).child("firstUp").setValue(false);
+                    for (int i = 0; i < chatRoomList.size(); i++) {
+                        // chatRoomList에 이번 chatRoom이 존재하는지 판별
+                        if (chatRoomList.get(i).getUser().getUid().equals(chatRoom.getUser().getUid()) &&
+                            chatRoomList.get(i).getKey().equals(chatRoom.getKey())) {
+                            cond = false;
                             break;
                         }
-                        for (int i = 0 ; i < chatRoomList.size(); i++) {
-                            if (chatRoomList.get(i).getUser().getUid().equals(chatRoom.getUser().getUid()) &&
-                                chatRoomList.get(i).getKey().equals(chatRoom.getKey())) {
-                                chatRoomList.remove(i);
-                                chatRoomList.add(0, chatRoom);
-                                snapshot.getRef().child(chatRoom.getKey()).child("firstUp").setValue(false);
-                                cond = false;
-                                break;
-                            }
-                        }
-
                     }
+
 
                     if (cond) {
-                        if (!(chatRoom.isLeaveChatRoom())) {
-                            chatRoomList.add(0, chatRoom);
-                        }
+                        // chatRoomList에 이번 chatRoom이 존재하지 않음
+                        chatRoomList.add(chatRoom);
+                    } else {
+                        // chatRoomList에 이번 chatRoom이 존재함
                     }
                 }
+
                 chatRooms.setValue(chatRoomList);
-                Log.d("변경", snapshot.getKey().toString());
-                Log.d("변경2" , snapshot.getRef().toString());
+                for (int i = 0; i < chatRoomList.size(); i++) {
+                    System.out.println(i + "번째 아이템 " + chatRoomList.get(i).getKey());
+                }
+
+
             }
 
             @Override
