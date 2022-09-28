@@ -420,11 +420,15 @@ public class ChatRepository {
                     }
 
                     boolean cond = true;
+                    int position = -1;
                     for (int i = 0; i < chatRoomList.size(); i++) {
                         // chatRoomList에 이번 chatRoom이 존재하는지 판별
                         if (chatRoomList.get(i).getUser().getUid().equals(chatRoom.getUser().getUid()) &&
                             chatRoomList.get(i).getKey().equals(chatRoom.getKey())) {
+
                             cond = false;
+                            position = i;
+                            
                             break;
                         }
                     }
@@ -432,9 +436,19 @@ public class ChatRepository {
 
                     if (cond) {
                         // chatRoomList에 이번 chatRoom이 존재하지 않음
-                        chatRoomList.add(chatRoom);
+                        if (chatRoom.getLastMessage().getMessage().length() > 0) {
+                            // 메시지가 존재해야 채팅방에 표시
+                            chatRoomList.add(0, chatRoom);
+                        }
+
                     } else {
                         // chatRoomList에 이번 chatRoom이 존재함
+                        if (chatRoom.isFirstUp()) {
+                            // 메시지 도착
+                            chatRoomList.remove(position);
+                            chatRoomList.add(0, chatRoom);
+                            snapshot1.getRef().child("firstUp").setValue(false);
+                        }
                     }
                 }
 
