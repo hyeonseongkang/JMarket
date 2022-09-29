@@ -137,6 +137,9 @@ public class ItemRepository {
                 tempItems.clear();
                 for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                     Item item = snapshot1.getValue(Item.class);
+                    // 거래 완료 아이템은 제외
+                    if (item.isSalesComplete())
+                        continue;
                     tempItems.add(item);
                 }
                 items.setValue(tempItems);

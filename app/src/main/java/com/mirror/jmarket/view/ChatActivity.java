@@ -318,6 +318,13 @@ public class ChatActivity extends AppCompatActivity {
     public void onPause() {
         super.onPause();
         Log.d(TAG, "onPause");
+        chatViewModel.setVisited(user.getUid(), uid, itemKey, false);
+    }
+
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        chatViewModel.setVisited(user.getUid(), uid, itemKey, true);
     }
 
     @Override
