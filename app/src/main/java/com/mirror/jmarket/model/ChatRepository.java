@@ -336,41 +336,6 @@ public class ChatRepository {
         chatRoomsRef.removeValue();
     }
 
-//    public void getMyChatRooms(String myUid) {
-//        chatRoomsRef.child(myUid).addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-//                // userUid
-//                chatRoomList.clear();
-//                for (DataSnapshot snapshot1: snapshot.getChildren()){
-//
-//                    // itemKey
-//                    for (DataSnapshot snapshot2: snapshot1.getChildren()) {
-//                        ChatRoom chatRoom = snapshot2.getValue(ChatRoom.class);
-//
-//                        if (!chatRoom.isLeaveChatRoom()) {
-//                            if (chatRoom.getLastMessage().getMessage().length() > 0) {
-//                                if (chatRoom.isFirstUp()) {
-//                                    snapshot2.getRef().child("firstUp").setValue(false);
-//                                    chatRoomList.add(0, chatRoom);
-//
-//                                } else {
-//                                    chatRoomList.add(chatRoom);
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//                chatRooms.setValue(chatRoomList);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull @NotNull DatabaseError error) {
-//
-//            }
-//        });
-//    }
-
     public void getMyChatRooms(String myUid) {
         chatRoomsRef.child(myUid).addChildEventListener(new ChildEventListener() {
             @Override
@@ -380,7 +345,9 @@ public class ChatRepository {
                     ChatRoom chatRoom = snapshot1.getValue(ChatRoom.class);
                     Log.d("snapshot1.key ", snapshot1.getKey());
                     if (chatRoom.getLastMessage().getMessage().length() > 0) {
-                        chatRoomList.add(0, chatRoom);
+                        if (!chatRoom.isLeaveChatRoom()) {
+                            chatRoomList.add(0, chatRoom);
+                        }
                     }
                 }
                 chatRooms.setValue(chatRoomList);
@@ -445,12 +412,13 @@ public class ChatRepository {
                         }
                     }
 
-
+                    boolean addChatRoom = false;
                     if (cond) {
                         // chatRoomList에 이번 chatRoom이 존재하지 않음
                         if (chatRoom.getLastMessage().getMessage().length() > 0) {
                             // 메시지가 존재해야 채팅방에 표시
                             chatRoomList.add(0, chatRoom);
+                            addChatRoom = true;
                         }
 
                     } else {
@@ -460,6 +428,19 @@ public class ChatRepository {
                             chatRoomList.remove(position);
                             chatRoomList.add(0, chatRoom);
                             snapshot1.getRef().child("firstUp").setValue(false);
+                            addChatRoom = true;
+                        }
+                    }
+
+                    if (addChatRoom) {
+                        // 채팅방이 추가 되었다면
+                        if (!chatRoom.getVisited()) {
+                            // 내가 채팅방을 열고 있지 않다면
+                            String userName = chatRoom.getUser().getNickName().length() > 0 ? chatRoom.getUser().getNickName() : chatRoom.getUser().getEmail();
+                            if (!(chatRoom.getLastMessage().getChecked())) {
+                                snapshot1.getRef().child("lastMessage").child("checked").setValue(true);
+                                showChatNoti(userName, chatRoom.getLastMessage().getMessage());
+                            }
                         }
                     }
                 }
