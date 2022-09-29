@@ -368,10 +368,14 @@ public class ChatRepository {
             @Override
             public void onChildAdded(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
 
-
-                Log.d("ㅇㅕ기요!", snapshot.getValue().toString());
-                Log.d("추가1", snapshot.getKey().toString());
-                Log.d("추가2" , snapshot.getRef().toString());
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                    ChatRoom chatRoom = snapshot1.getValue(ChatRoom.class);
+                    Log.d("snapshot1.key ", snapshot1.getKey());
+                    if (chatRoom.getLastMessage().getMessage().length() > 0) {
+                        chatRoomList.add(0, chatRoom);
+                    }
+                }
+                chatRooms.setValue(chatRoomList);
                 /*
                 // 마지막으로 보낸 메시지가 있는 채팅방만 추가
                 for (DataSnapshot snapshot1 : snapshot.getChildren()) {
