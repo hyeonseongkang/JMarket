@@ -52,6 +52,9 @@ public class ChatRepository {
     private MutableLiveData<List<HashMap<List<String>, List<Chat>>>> myChats;
     private List<HashMap<List<String>, List<Chat>>> myChatList;
 
+    private MutableLiveData<List<Chat>> chats;
+    private List<Chat> chatList;
+
     private MutableLiveData<List<ChatRoom>> chatRooms;
     private List<ChatRoom> chatRoomList;
 
@@ -73,6 +76,9 @@ public class ChatRepository {
         myChats = new MutableLiveData<>();
         myChatList = new ArrayList<>();
 
+        chats = new MutableLiveData<>();
+        chatList = new ArrayList<>();
+
         chatRooms = new MutableLiveData<>();
         chatRoomList = new ArrayList<>();
 
@@ -91,6 +97,8 @@ public class ChatRepository {
     public MutableLiveData<List<HashMap<List<String>, List<Chat>>>> getMyChats() {
         return myChats;
     }
+
+    public MutableLiveData<List<Chat>> getChats() { return chats; }
 
     public MutableLiveData<List<ChatRoom>> getMyChatRooms() {
         return chatRooms;
@@ -728,7 +736,7 @@ public class ChatRepository {
         // 보내는 사람은 lastMessage checked -> true
         lastMessage.setChecked(true);
         chatRoomsRef.child(sender).child(receiver).child(itemKey).child("lastMessage").setValue(lastMessage);
-
+        chatRoomsRef.child(sender).child(receiver).child(itemKey).child("firstUp").setValue(true);
     }
     /*
         public void sendMessage(String sender, String receiver, Chat chat, String lastSendUser) {
@@ -803,6 +811,25 @@ public class ChatRepository {
             }
         });
 
+    }
+
+    public void getMyChats(String myUid, String userUid, String itemKey) {
+        chatsRef.child(myUid).child(userUid).child(itemKey).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                chatList.clear();
+                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                    Chat chat = snapshot1.getValue(Chat.class);
+                    chatList.add(chat);
+                }
+                chats.setValue(chatList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
     }
 
 

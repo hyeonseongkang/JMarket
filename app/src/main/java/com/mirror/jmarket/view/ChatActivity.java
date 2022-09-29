@@ -133,6 +133,16 @@ public class ChatActivity extends AppCompatActivity {
         });
 
         chatViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ChatViewModel.class);
+        chatViewModel.getMyChats(user.getUid(), uid, itemKey);
+        chatViewModel.getChats().observe(this, new Observer<List<Chat>>() {
+            @Override
+            public void onChanged(List<Chat> chats) {
+                adapter.setChats(chats, user.getUid(), uid, userPhoto);
+                binding.recyclerView.scrollToPosition(chats.size() - 1);
+            }
+        });
+
+        /*
         chatViewModel.getMyChats(user.getUid());
         chatViewModel.getMyChats().observe(this, new Observer<List<HashMap<List<String>, List<Chat>>>>() {
             @Override
@@ -149,6 +159,8 @@ public class ChatActivity extends AppCompatActivity {
                 }
             }
         });
+
+         */
         /*
         chatViewModel.getMyChats().observe(this, new Observer<List<HashMap<String, List<Chat>>>>() {
             @Override
