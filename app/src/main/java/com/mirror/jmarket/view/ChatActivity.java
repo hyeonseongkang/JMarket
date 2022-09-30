@@ -299,7 +299,7 @@ public class ChatActivity extends AppCompatActivity {
 
                         } else if (data.equals("out")) {
                             // 채팅방 나가기
-                            chatViewModel.setLeaveChatRoom(user.getUid(), uid);
+                            chatViewModel.setLeaveChatRoom(user.getUid(), uid, itemKey);
                         }
 
                     }

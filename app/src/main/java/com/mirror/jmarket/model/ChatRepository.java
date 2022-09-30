@@ -112,9 +112,7 @@ public class ChatRepository {
         return visited;
     }
 
-    public MutableLiveData<HashMap<List<String>, Integer>> getUnReadChatCount() {
-        return unReadChatCount;
-    }
+    public MutableLiveData<HashMap<List<String>, Integer>> getUnReadChatCount() { return unReadChatCount; }
 
     public MutableLiveData<Boolean> getLeaveChatRoom() {
         return leaveChatRoom;
@@ -138,7 +136,6 @@ public class ChatRepository {
                     boolean visit = snapshot.getValue(Boolean.class);
                     visited.setValue(visit);
                 }
-
             }
 
             @Override
@@ -234,54 +231,6 @@ public class ChatRepository {
     public void setUnReadChatCount(String myUid, String userUid, String itemKey, int unReadChatCount) {
         chatRoomsRef.child(myUid).child(userUid).child(itemKey).child("unReadChatCount").setValue(unReadChatCount);
     }
-
-
-    /*
-    public void setChatRoom(String uid, String sellerUid, ChatRoom chatRoom, User myUser, User otherUser) {
-
-        if (uid.equals(sellerUid))
-            return;
-
-        chatRoomsRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                boolean alreadyUser = false;
-                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-                    if (snapshot1.getKey().equals(sellerUid))
-                        alreadyUser = true;
-                }
-
-                if (!alreadyUser) {
-                    ChatRoom chatRoom1 = new ChatRoom();
-                    chatRoom1.setItem(chatRoom.getItem());
-                    chatRoom1.setLastMessage(chatRoom.getLastMessage());
-                    chatRoom1.setUser(otherUser);
-                    chatRoom1.setVisited(true);
-                    ChatRoom chatRoom2 = new ChatRoom();
-                    chatRoom2.setItem(chatRoom.getItem());
-                    chatRoom2.setLastMessage(chatRoom.getLastMessage());
-                    chatRoom2.setUser(myUser);
-                    chatRoomsRef.child(uid).child(sellerUid).setValue(chatRoom1);
-                    chatRoomsRef.child(sellerUid).child(uid).setValue(chatRoom2).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull @NotNull Task<Void> task) {
-                            if (task.isSuccessful()) createChatRoom.setValue(true);
-                            else createChatRoom.setValue(false);
-                        }
-                    });
-                } else {
-                    createChatRoom.setValue(false);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull @NotNull DatabaseError error) {
-
-            }
-        });
-    }
-
-     */
 
 
     // version 2
@@ -852,8 +801,8 @@ public class ChatRepository {
 
     }
 
-    public void setLeaveChatRoom(String myUid, String userUid) {
-        chatRoomsRef.child(myUid).child(userUid).child("leaveChatRoom").setValue(true).addOnCompleteListener(new OnCompleteListener<Void>() {
+    public void setLeaveChatRoom(String myUid, String userUid, String itemKey) {
+        chatRoomsRef.child(myUid).child(userUid).child(itemKey).child("leaveChatRoom").setValue(true).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<Void> task) {
                 if (task.isSuccessful()) {
