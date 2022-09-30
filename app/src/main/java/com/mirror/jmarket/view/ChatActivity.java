@@ -205,7 +205,8 @@ public class ChatActivity extends AppCompatActivity {
 
 
         chatViewModel.allMessageChecked(user.getUid(), uid, itemKey);
-        chatViewModel.setVisited(user.getUid(), uid, itemKey, true);
+        if (!leaveChatRoom)
+            chatViewModel.setVisited(user.getUid(), uid, itemKey, true);
         chatViewModel.getVisited(uid, user.getUid(), itemKey);
         chatViewModel.getVisited().observe(this, new Observer<Boolean>() {
             @Override
@@ -311,26 +312,30 @@ public class ChatActivity extends AppCompatActivity {
     public void onStop() {
         super.onStop();
         Log.d(TAG, "onStop");
-        chatViewModel.setVisited(user.getUid(), uid, itemKey, false);
+        if (!leaveChatRoom)
+            chatViewModel.setVisited(user.getUid(), uid, itemKey, false);
     }
 
     @Override
     public void onPause() {
         super.onPause();
         Log.d(TAG, "onPause");
-        chatViewModel.setVisited(user.getUid(), uid, itemKey, false);
+        if (!leaveChatRoom)
+            chatViewModel.setVisited(user.getUid(), uid, itemKey, false);
     }
 
     @Override
     public void onRestart() {
         super.onRestart();
-        chatViewModel.setVisited(user.getUid(), uid, itemKey, true);
+        if (!leaveChatRoom)
+            chatViewModel.setVisited(user.getUid(), uid, itemKey, true);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy");
-        chatViewModel.setVisited(user.getUid(), uid, itemKey, false);
+        if (!leaveChatRoom)
+            chatViewModel.setVisited(user.getUid(), uid, itemKey, false);
     }
 }
