@@ -295,7 +295,7 @@ public class ItemRepository {
     }
 
     // review 작성
-    public void setReview(String userUid, Review review) {
+    public void setReview(String myUid, String userUid, Review review) {
 
         reviewsRef.child(userUid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -304,8 +304,10 @@ public class ItemRepository {
                 for (DataSnapshot snapshot1: snapshot.getChildren()) {
                     Review tempReview = snapshot1.getValue(Review.class);
                     if (tempReview.getItem().getKey().equals(review.getItem().getKey())) {
-                        reviewComplete.setValue(false);
-                        alreadyReview = true;
+                        if (tempReview.getWriter().equals(myUid)) {
+                            reviewComplete.setValue(false);
+                            alreadyReview = true;
+                        }
                     }
                 }
 
@@ -318,6 +320,8 @@ public class ItemRepository {
                             }
                         }
                     });
+
+                    reviewsRef.child(myUid).push().setValue(review);
                 }
 
             }

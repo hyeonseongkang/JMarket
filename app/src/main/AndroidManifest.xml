@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.JMarket">
-        <activity android:name=".view.MyBuyListActivity"></activity>
+        <activity android:name=".view.MyReviewListActivity"></activity>
+        <activity android:name=".view.MyBuyListActivity" />
         <activity android:name=".view.MySalesListActivity" />
         <activity android:name=".view.MyInterestListActivity" />
         <activity android:name=".view.ReviewActivity" />

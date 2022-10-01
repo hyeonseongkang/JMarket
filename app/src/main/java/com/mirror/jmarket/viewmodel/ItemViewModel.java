@@ -97,7 +97,7 @@ public class ItemViewModel extends AndroidViewModel {
 
     public void getComplete(String userUid, String myUid, String itemKey) { repository.getComplete(userUid, myUid, itemKey); }
 
-    public void setReview(String userUid, Review review) { repository.setReview(userUid, review);}
+    public void setReview(String myUid, String userUid, Review review) { repository.setReview(myUid, userUid, review);}
 
     public void getReviews(String myUid) { repository.getReviews(myUid);}
 

@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseUser;
 import com.mirror.jmarket.R;
 import com.mirror.jmarket.classes.Item;
 import com.mirror.jmarket.classes.Review;
@@ -28,6 +29,8 @@ public class ReviewActivity extends AppCompatActivity {
 
     // view model
     private ItemViewModel itemViewModel;
+
+    private FirebaseUser user = MainActivity.USER;
 
     private String itemKey;
     private String userUid; // 상대 uid
@@ -90,8 +93,8 @@ public class ReviewActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(reviewText))
                     return;
 
-                Review review = new Review(currentItem, reviewText);
-                itemViewModel.setReview(userUid, review);
+                Review review = new Review(currentItem, reviewText, user.getUid());
+                itemViewModel.setReview(user.getUid(), userUid, review);
             }
         });
 
