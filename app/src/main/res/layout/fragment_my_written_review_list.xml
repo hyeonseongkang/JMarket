@@ -8,11 +8,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:listitem="@layout/adapter_home_item"
-        tools:itemCount="5"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/adapter_reivew_item"
+        android:layout_marginTop="20dp"
         android:paddingBottom="30dp"
         android:clipToPadding="false"/>
 </RelativeLayout>

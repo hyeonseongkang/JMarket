@@ -1,6 +1,7 @@
 package com.mirror.jmarket.view;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.mirror.jmarket.adapter.HomeItemAdapter;
+import com.mirror.jmarket.adapter.ReviewItemAdapter;
 import com.mirror.jmarket.classes.Review;
 import com.mirror.jmarket.databinding.FragmentMyReceivedReviewListBinding;
 import com.mirror.jmarket.viewmodel.ItemViewModel;
@@ -30,7 +32,7 @@ public class MyReceivedReviewListFragment extends Fragment {
     private ItemViewModel itemViewModel;
 
     // apdater
-    // private ReviewAdapter adapter;
+    private ReviewItemAdapter adapter;
 
     private FirebaseUser user;
 
@@ -51,20 +53,24 @@ public class MyReceivedReviewListFragment extends Fragment {
         user = MainActivity.USER;
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.recyclerView.setHasFixedSize(true);
-        //adapter = new ReviewAdapter();
-        //binding.recyclerView.setAdapter(adapter);
+        adapter = new ReviewItemAdapter();
+        binding.recyclerView.setAdapter(adapter);
 
         itemViewModel = new ViewModelProvider(requireActivity()).get(ItemViewModel.class);
-        itemViewModel.getReviews(user.getUid(), "Received");
         itemViewModel.getReviews().observe(getActivity(), new Observer<List<Review>>() {
             @Override
             public void onChanged(List<Review> reviews) {
+                Log.d("MyReceived", String.valueOf(reviews.size()));
+                adapter.setReviews(reviews);
                 if (reviews != null) {
-                    // adapter.setReviews(reviews)
+
+
                 }
 
             }
         });
+        itemViewModel.getReviews(user.getUid(), "Received");
+
 
     }
 

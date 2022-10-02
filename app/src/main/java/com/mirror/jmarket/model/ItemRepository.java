@@ -340,15 +340,20 @@ public class ItemRepository {
                 reviewList.clear();
                 for (DataSnapshot snapshot1: snapshot.getChildren()) {
                     Review review = snapshot1.getValue(Review.class);
+                    //Log.d(TAG, review.getReview());
                     if (state.equals("Received")) {
                         // 내가 받은 리뷰
+
                         if (!(review.getWriter().equals(myUid))) {
                             reviewList.add(review);
+                            Log.d("Received", review.getReview());
                         }
                     } else {
                         // 내가 작성한 리뷰
+
                         if (review.getWriter().equals(myUid)) {
                             reviewList.add(review);
+                            Log.d("Written", review.getReview());
                         }
                     }
 

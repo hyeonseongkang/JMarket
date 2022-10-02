@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseUser;
 import com.mirror.jmarket.R;
 import com.mirror.jmarket.adapter.HomeItemPhotoAdapter;
@@ -68,7 +69,6 @@ public class MyPageFragment extends Fragment {
 
         loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
         user = MainActivity.USER;
-
 
         userManagerViewModel = new ViewModelProvider(requireActivity()).get(UserManagerViewModel.class);
         userManagerViewModel.getUserProfile(user.getUid());
@@ -137,13 +137,40 @@ public class MyPageFragment extends Fragment {
             }
         });
 
-        binding.reviewButton.setOnClickListener(new View.OnClickListener() {
+        // fragment
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.myPageContainer, new MyReceivedReviewListFragment()).commit();
+        binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), MyReviewListActivity.class);
-                startActivity(intent);
+            public void onTabSelected(TabLayout.Tab tab) {
+                int position = tab.getPosition();
+
+                if (position == 0) {
+                    // 내가 받은 리뷰
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.myPageContainer, new MyReceivedReviewListFragment()).commit();
+                } else if (position == 1) {
+                    // 내가 작성한 리뷰
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.myPageContainer, new MyWrittenReviewListFragment()).commit();
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
             }
         });
+
+//        binding.reviewButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(getActivity(), MyReviewListActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
 
 

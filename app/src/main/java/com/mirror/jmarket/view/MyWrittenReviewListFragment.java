@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.firebase.auth.FirebaseUser;
+import com.mirror.jmarket.adapter.ReviewItemAdapter;
 import com.mirror.jmarket.classes.Review;
 import com.mirror.jmarket.databinding.FragmentMyReceivedReviewListBinding;
 import com.mirror.jmarket.databinding.FragmentMyWrittenReviewListBinding;
@@ -30,7 +31,7 @@ public class MyWrittenReviewListFragment extends Fragment {
     private ItemViewModel itemViewModel;
 
     // apdater
-    // private ReviewAdapter adapter;
+    private ReviewItemAdapter adapter;
 
     private FirebaseUser user;
 
@@ -51,20 +52,21 @@ public class MyWrittenReviewListFragment extends Fragment {
         user = MainActivity.USER;
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.recyclerView.setHasFixedSize(true);
-        //adapter = new ReviewAdapter();
-        //binding.recyclerView.setAdapter(adapter);
+        adapter = new ReviewItemAdapter();
+        binding.recyclerView.setAdapter(adapter);
 
         itemViewModel = new ViewModelProvider(requireActivity()).get(ItemViewModel.class);
-        itemViewModel.getReviews(user.getUid(), "Written");
         itemViewModel.getReviews().observe(getActivity(), new Observer<List<Review>>() {
             @Override
             public void onChanged(List<Review> reviews) {
                 if (reviews != null) {
-                    // adapter.setReviews(reviews)
+                    adapter.setReviews(reviews);
                 }
 
             }
         });
+        itemViewModel.getReviews(user.getUid(), "Written");
+
 
     }
 
