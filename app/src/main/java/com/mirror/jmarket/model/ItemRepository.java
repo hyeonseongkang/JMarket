@@ -333,14 +333,25 @@ public class ItemRepository {
         });
     }
 
-    public void getReviews(String myUid) {
+    public void getReviews(String myUid, String state) {
         reviewsRef.child(myUid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 reviewList.clear();
                 for (DataSnapshot snapshot1: snapshot.getChildren()) {
                     Review review = snapshot1.getValue(Review.class);
-                    reviewList.add(review);
+                    if (state.equals("Received")) {
+                        // 내가 받은 리뷰
+                        if (!(review.getWriter().equals(myUid))) {
+                            reviewList.add(review);
+                        }
+                    } else {
+                        // 내가 작성한 리뷰
+                        if (review.getWriter().equals(myUid)) {
+                            reviewList.add(review);
+                        }
+                    }
+
                 }
                 reviews.setValue(reviewList);
             }

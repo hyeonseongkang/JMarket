@@ -99,7 +99,7 @@ public class ItemViewModel extends AndroidViewModel {
 
     public void setReview(String myUid, String userUid, Review review) { repository.setReview(myUid, userUid, review);}
 
-    public void getReviews(String myUid) { repository.getReviews(myUid);}
+    public void getReviews(String myUid, String state) { repository.getReviews(myUid, state);}
 
     public void getMyInterestItems(String myUid) { repository.getMyInterestItems(myUid); }
 
