@@ -4,32 +4,46 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.LoginActivity"
-    android:background="@color/black">
-
-    <TextView
-        android:id="@+id/loginTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="로그인"
-        android:textColor="#FFFFFF"
-        android:textSize="20dp"
-        android:fontFamily="@font/scd5"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"/>
+    tools:context=".view.LoginActivity">
 
     <LinearLayout
+        android:id="@+id/topLayout"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="#FFFFFF"
-        android:layout_below="@+id/loginTextView"
-        android:layout_marginTop="10dp"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="13dp"
+            android:layout_marginRight="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:fontFamily="@font/scd5"
+                android:text="로그인"
+                android:textColor="#000000"
+                android:textSize="18dp" />
+
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/topLayout"
+            android:layout_marginTop="10dp"
+            android:background="#000000" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_centerInParent="true">
+        android:layout_below="@+id/topLayout">
 
 <!--        <ImageView-->
 <!--            android:layout_width="50dp"-->
@@ -60,7 +74,7 @@
                 android:layout_width="23dp"
                 android:layout_height="23dp"
                 android:background="@drawable/email_logo"
-                android:backgroundTint="#FFFFFF"
+                android:backgroundTint="#000000"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="15dp"/>
 
@@ -69,8 +83,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:background="@null"
-                android:textColor="#FFFFFF"
-                android:textColorHint="#FFFFFF"
+                android:textColor="#000000"
                 android:hint="Email"
                 android:layout_toRightOf="@+id/email_logo"
                 android:layout_marginLeft="15dp"
@@ -94,7 +107,7 @@
                 android:layout_width="23dp"
                 android:layout_height="23dp"
                 android:background="@drawable/password_logo"
-                android:backgroundTint="#FFFFFF"
+                android:backgroundTint="#000000"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="15dp"
                 android:scaleType="fitXY"/>
@@ -104,8 +117,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:background="@null"
-                android:textColor="#FFFFFF"
-                android:textColorHint="#FFFFFF"
+                android:textColor="#000000"
                 android:hint="Password"
                 android:layout_toRightOf="@+id/password_logo"
                 android:layout_marginLeft="15dp"
@@ -124,9 +136,10 @@
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
             android:layout_marginTop="30dp"
-            android:text="Login"
+            android:text="로그인"
+            android:textStyle="bold"
             android:textAllCaps="false"
-            android:textColor="#FFFFFF"
+            android:textColor="#000000"
             android:fontFamily="@font/scd5"/>
 
         <TextView
@@ -135,7 +148,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="회원가입"
-            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:textColor="#000000"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:paddingLeft="30dp"
