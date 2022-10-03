@@ -1,7 +1,7 @@
 # 전북대 중고마켓
 
 ## 프로젝트 소개
-전북대 학생들을 위한 중고 거래 앱
+전북대 학생들을 위한 중고마켓 앱
 
 ## 프로젝트 기간
 ### 제작
@@ -15,7 +15,7 @@
 ### 로그인 및 회원가입
 | 로그인 | 회원가입 |
 |:-:|:-:|
-|<img src="https://user-images.githubusercontent.com/68272971/193617306-11dd3bce-dae8-48f7-9b74-16f33309d43d.png" height=600px>|<img src="https://user-images.githubusercontent.com/68272971/193615959-fd0acfdd-1869-44b0-8618-b5b7a4b7427c.png" height=600px>|
+|<img src="https://user-images.githubusercontent.com/68272971/193633384-80ce29ce-8014-4c7f-a0f2-67d5be555c0f.png" height=600px>|<img src="https://user-images.githubusercontent.com/68272971/193615959-fd0acfdd-1869-44b0-8618-b5b7a4b7427c.png" height=600px>|
 
 ### 홈
 
@@ -25,7 +25,7 @@
 
 | 중고 아이템 리스트(2) | 중고 아이템 상세페이지(1) | 중고 아이템 상세페이지(2) |
 |:-:|:-:|:-:|
-|<img src="https://user-images.githubusercontent.com/68272971/193620621-ab22a8b5-7c8d-4a9c-8eac-84ff84abcdbb.png" height=600px>|<img src="https://user-images.githubusercontent.com/68272971/193620034-05c8d05b-287a-4d56-b3d0-4a62df441da9.png" height=600px>|<img src="https://user-images.githubusercontent.com/68272971/193620256-afc3c9fb-11e0-4e02-a666-3a25440f4f53.png" height=600px>|
+|<img src="https://user-images.githubusercontent.com/68272971/193620621-ab22a8b5-7c8d-4a9c-8eac-84ff84abcdbb.png" height=600px>|<img src="https://user-images.githubusercontent.com/68272971/193620034-05c8d05b-287a-4d56-b3d0-4a62df441da9.png" height=600px>|<img src="https://user-images.githubusercontent.com/68272971/193633467-2c54654b-4dd7-4452-9bfb-2c767f71aa54.png" height=600px>|
 
 ### 채팅
 
