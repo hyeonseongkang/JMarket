@@ -1,14 +1,18 @@
 package com.mirror.jmarket.adapter;
 
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.mirror.jmarket.R;
+import com.mirror.jmarket.classes.Item;
 import com.mirror.jmarket.classes.Review;
 
 import org.jetbrains.annotations.NotNull;
@@ -31,7 +35,14 @@ public class ReviewItemAdapter extends RecyclerView.Adapter<ReviewItemAdapter.My
     @Override
     public void onBindViewHolder(@NonNull @NotNull MyViewHolder holder, int position) {
         Review review = reviews.get(position);
+        Item item = review.getItem();
         holder.review.setText(review.getReview());
+        holder.userNickName.setText(item.getSellerName());
+
+        Glide.with(holder.itemView.getContext())
+                .load(Uri.parse(item.getFirstPhotoUri()))
+                .into(holder.photo);
+
     }
 
     @Override
@@ -44,11 +55,16 @@ public class ReviewItemAdapter extends RecyclerView.Adapter<ReviewItemAdapter.My
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
+        private ImageView photo;
         private TextView review;
+        private TextView userNickName;
 
         public MyViewHolder(View itemView) {
             super(itemView);
+
+            photo = itemView.findViewById(R.id.photo);
             review = itemView.findViewById(R.id.review);
+            userNickName = itemView.findViewById(R.id.userNickName);
         }
     }
 

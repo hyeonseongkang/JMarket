@@ -86,7 +86,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        binding.tempUserUid.setText(MainActivity.USER.getUid());
+        //binding.tempUserUid.setText(MainActivity.USER.getUid());
 
 
 //        binding.search.setOnClickListener(new View.OnClickListener() {

@@ -9,23 +9,35 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.JMarket">
-        <activity android:name=".view.MyReviewListActivity"></activity>
+
         <activity android:name=".view.MyBuyListActivity" />
+
         <activity android:name=".view.MySalesListActivity" />
+
         <activity android:name=".view.MyInterestListActivity" />
+
         <activity android:name=".view.ReviewActivity" />
+
         <activity
             android:name=".view.ChatMenuActivity"
             android:theme="@style/Transparent" />
+
         <activity android:name=".view.LoginActivity" />
+
         <activity android:name=".view.ChatActivity" />
+
         <activity
             android:name=".view.DetailItemActivity"
             android:exported="true" />
+
         <activity android:name=".view.CreateItemActivity" />
+
         <activity android:name=".view.EditProfileActivity" />
+
         <activity android:name=".view.SignUpActivity" />
+
         <activity android:name=".view.MainActivity" />
+
         <activity
             android:name=".view.LoadingActivity"
             android:exported="true">

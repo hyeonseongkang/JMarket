@@ -164,14 +164,6 @@ public class MyPageFragment extends Fragment {
             }
         });
 
-//        binding.reviewButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getActivity(), MyReviewListActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-
 
 
         binding.logout.setOnClickListener(new View.OnClickListener() {
