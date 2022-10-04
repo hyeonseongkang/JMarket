@@ -56,16 +56,23 @@ public class LoginRepository {
             Toast.makeText(application, "입력사항을 확인해 주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        // 이메일 로그인 요청
         mAuth.signInWithEmailAndPassword(user.getEmail(), user.getPassword())
                 .addOnCompleteListener(application.getMainExecutor(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            /*
+                            로그인 성공
+                            FirebaseUser에 현재 user정보 넣고 loginValid에 true를 할당해 loginActivity에서 MainActivity로 넘어갈 수 있도록 함
+                             */
                             mUser = mAuth.getCurrentUser();
                             firebaseUser.setValue(mUser);
                             loginValid.setValue(true);
                             Log.d(TAG, "로그인 성공");
                         } else {
+                            // 로그인 실패
                             loginValid.setValue(false);
                             Log.d(TAG, "로그인 실패");
                         }
@@ -89,12 +96,17 @@ public class LoginRepository {
             Toast.makeText(application, "전북대 메일로만 가입할 수 있습니다.", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        // 이메일 회원가입 요청
         mAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword())
                 .addOnCompleteListener(application.getMainExecutor(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // 가입 성공
+                            /*
+                            회원가입 성공 시 FirebaseUser에 현재 user정보 할당 및 Firebase Database Users Ref에 인자값으로 온 User정보 저장
+                             */
                             mUser = mAuth.getCurrentUser();
                             firebaseUser.setValue(mUser);
                             // String uid, String email, String password, String nickName, String photoUri

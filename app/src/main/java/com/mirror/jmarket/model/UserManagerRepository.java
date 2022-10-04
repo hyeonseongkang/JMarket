@@ -33,9 +33,6 @@ public class UserManagerRepository {
     private MutableLiveData<User> userProfile;
     private MutableLiveData<User> otherUserProfile;
 
-    private MutableLiveData<User> chatUserProfile;
-    private MutableLiveData<User> chatMyProfile;
-
     private MutableLiveData<List<User>> usersProfile;
     private List<User> users;
 
@@ -64,8 +61,15 @@ public class UserManagerRepository {
     public MutableLiveData<Boolean> getUpdateValid() { return updateValid; }
 
 
+    // user profile 업데이트
     public void updateUserProfile(User user) {
         String uid = user.getUid();
+        /*
+        1. 인자값으로 넘어온 user의 getPhotoUri를 통해 Firebase Store에 사진을 먼저 저장한다.
+        2. 사진 저장이 완료 됐다면 저장된 사진의 uri를 다운받은 뒤 해당 uri 값을 인자값으로 넘어온 user객체의 photoUri에 할당한다.
+        3. users Ref 아래 자신의 uid 아래에 2번까지 완료한 user 객체를 저장한다.
+        4. 값이 성공적으로 업데이트 됐다면 updateValid에 true를 할당하여 update가 완료됐음을 view에서 확인한다.
+         */
         StorageReference storage = FirebaseStorage.getInstance().getReference().child("profiles/" + uid + ".jpg");
         UploadTask uploadTask = storage.putFile(Uri.parse(user.getPhotoUri()));
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -91,6 +95,7 @@ public class UserManagerRepository {
         });
     }
 
+    // users Ref 아래에 인자값으로 넘어온 uid의 User 정보를 가져옴 (내 userProfile)
     public void getUserProfile(String uid) {
         myRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -106,6 +111,7 @@ public class UserManagerRepository {
         });
     }
 
+    // users Ref 아래에 인자값으로 넘어온 uid의 User 정보를 가져옴 (상대 userProfile)
     public void getOtherUserProfile(String uid) {
         myRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -121,6 +127,7 @@ public class UserManagerRepository {
         });
     }
 
+    // users Ref 아래 있는 모든 User 정보를 가져옴
     public void getUsersProfile(List<String> uids) {
         users.clear();
         for (String uid: uids) {

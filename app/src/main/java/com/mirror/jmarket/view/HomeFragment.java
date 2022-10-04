@@ -80,7 +80,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onChanged(List<Item> items) {
                 binding.progress.setVisibility(View.VISIBLE);
-                
+
                 if (items != null) {
                     adapter.setItems(items, false);
                     binding.progress.setVisibility(View.GONE);
