@@ -60,7 +60,7 @@ public class HomeFragment extends Fragment {
 
         loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
 
-        binding.progress.setVisibility(View.VISIBLE);
+
 
         binding.search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,8 +79,12 @@ public class HomeFragment extends Fragment {
         itemViewModel.getItems().observe(getActivity(), new Observer<List<Item>>() {
             @Override
             public void onChanged(List<Item> items) {
+                binding.progress.setVisibility(View.VISIBLE);
+                
                 if (items != null) {
                     adapter.setItems(items, false);
+                    binding.progress.setVisibility(View.GONE);
+                } else {
                     binding.progress.setVisibility(View.GONE);
                 }
             }

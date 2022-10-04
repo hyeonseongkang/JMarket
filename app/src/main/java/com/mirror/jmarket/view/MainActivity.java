@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
         loginViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(LoginViewModel.class);
         loginViewModel.loginCheck();
+        //loginViewModel.logout();
         USER = loginViewModel.getFirebaseUser().getValue();
 
 

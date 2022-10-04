@@ -88,8 +88,7 @@ public class ChatFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
-        chatBinding.tempUserUid.setText(MainActivity.USER.getUid());
+        
         /*
 
         Firebase에 chatItems Reference 만들고 하위 Item으로
