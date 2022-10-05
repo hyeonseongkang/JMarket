@@ -115,6 +115,7 @@ public class ItemRepository {
     }
 
 
+    // key에 해당하는 item 정보를 items Ref 에서 가져옴
     public void getItem(String key) {
         itemRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -130,6 +131,7 @@ public class ItemRepository {
         });
     }
 
+    // 거래 완료된 아이템은 제외하고 item Ref 아래에 있는 모든 아이템들을 가져옴
     public void getHomeItems() {
         itemRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -152,11 +154,17 @@ public class ItemRepository {
         });
     }
 
+    // 아이템 좋아요
     public void setLike(String key, String uid) {
         // key = item
         // uid = 좋아요 누른 사람 uid
 
-        //ArrayList<String> likes = myRef.child(key).child("likes");
+        /*
+        1. item Ref / key / likes의 값들을 모두 가져온다.
+        2. likes에는 해당 아이템의 좋아요를 누른 사람들의 uid가 저장되어있다.
+        3. 해당 아이템의 좋아요를 누른 uid 리스트에 인자값으로 넘어온 uid(현재 아이템의 좋아요를 누른사람)가 없다면 해당 아이템에 대해 처음 좋아요를 누른 사람이므로 likes ref list에 uid를 추가한다.
+        4. 만약 리스트에 uid가 있다면 좋아요를 취소한 것으로 해당 uid를 삭제한다.
+         */
         itemRef.child(key).child("likes").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
@@ -188,7 +196,9 @@ public class ItemRepository {
         });
     }
 
+    // 좋아요 가져오기
     public void getLike(String key, String uid) {
+        // 인자값으로 넘어온 uid가 key에 해당하는 아이템의 좋아요를 눌렀다면 화면에 빨간색 하트를 표시하기 위해 사용
         itemRef.child(key).child("likes").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
@@ -214,7 +224,8 @@ public class ItemRepository {
         });
     }
 
-    // String id, String title, String price, String content, ArrayList<String> photoKeys, String key, String firstPhotoUri
+
+    // 아이템 생성
     public void createItem(Item item) {
         String id = item.getId();
         String title = item.getTitle();
@@ -228,11 +239,17 @@ public class ItemRepository {
         String sellerName = item.getSellerName();
         ArrayList<String> likes = item.getLikes();
 
+        // 사진을 한장도 추가 안했다면 return
         if (photoKeys.size() == 0) {
             Toast.makeText(application, "이미지를 하나 이상 추가해 주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        /*
+        1. 모든 photo를 firebase store에 저장시도
+        2. 저장 성공시 uri를 다운받아 tempPhotoKey에 저장
+        3. 마지막 Photo를 store에 저장하기를 성공했다면 item Ref / item 저장
+         */
         ArrayList<String> tempPhotokeys = new ArrayList<>();
         for (int i = 0; i < photoKeys.size(); i++) {
             String photoKey = itemRef.push().getKey();
