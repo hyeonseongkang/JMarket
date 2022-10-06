@@ -46,7 +46,6 @@ public class ChatRepository {
     private Application application;
 
     private DatabaseReference chatsRef;
-    private DatabaseReference usersRef;
     private DatabaseReference chatRoomsRef;
 
     private MutableLiveData<List<HashMap<List<String>, List<Chat>>>> myChats;
@@ -70,7 +69,6 @@ public class ChatRepository {
     public ChatRepository(Application application) {
         this.application = application;
         chatsRef = FirebaseDatabase.getInstance().getReference("chats");
-        usersRef = FirebaseDatabase.getInstance().getReference("users");
         chatRoomsRef = FirebaseDatabase.getInstance().getReference("chatRooms");
 
         myChats = new MutableLiveData<>();
@@ -123,6 +121,7 @@ public class ChatRepository {
     }
 
 
+    // 채팅방에 들어갔을 때 true
     public void setVisited(String myUid, String userUid, String itemKey, boolean visit) {
         chatRoomsRef.child(myUid).child(userUid).child(itemKey).child("visited").setValue(visit);
     }
@@ -190,6 +189,7 @@ public class ChatRepository {
     // 읽지 않은 채팅 수
     public void getUnReadChatCount(String myUid) {
         HashMap<List<String>, Integer> hashMap = new LinkedHashMap<>();
+        // chats / myUid / .. 값들에 변경사항이 일어나면 호출
         chatsRef.child(myUid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
@@ -233,21 +233,42 @@ public class ChatRepository {
     }
 
 
-    // version 2
-    public void setChatRoom(String uid, String sellerUid, String itemKey, ChatRoom chatRoom, User myUser, User otherUser) {
+    // 채팅방 만들기
+    /*
+    채팅방 db 구조
 
+    chatRooms
+              내 uid
+                     상대 uid(1)
+                               itemKey(1)
+                                            ChatRoom
+                               itemKey(2)
+                                            ChatRoom
+                               ....
+
+                     상대 uid(2)
+                               itemKey(1)
+                                            ChatRoom
+                               .....
+
+     위와 같이 db 구조를 설계한 이유는 상대가 여러 아이템을 판매할 수 있고 아이템 하나당 하나의 채팅방이 생성돼야 하기 때문에 내 uid 하위에 상대 uid를 놓고 상대 uid 하위에 상대가 판매하는 itemKey들을 넣음
+     */
+    public void setChatRoom(String uid, String sellerUid, String itemKey, ChatRoom chatRoom, User myUser, User otherUser) {
+        // uid와 sellerUid가 같다면 return
         if (uid.equals(sellerUid))
             return;
 
         chatRoomsRef.child(uid).child(sellerUid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                // 인자 값으로 넘어온 itemKey로 채팅방이 이미 만들어져 있나 확인
                 boolean alreadyItemChatRoom = false;
                 for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                     if (snapshot1.getKey().equals(itemKey))
                         alreadyItemChatRoom = true;
                 }
 
+                // itemKey에 해당하는 채팅방이 만들어져 있지 않다면
                 if (!alreadyItemChatRoom) {
                     ChatRoom chatRoom1 = new ChatRoom();
                     chatRoom1.setKey(itemKey);
@@ -260,6 +281,8 @@ public class ChatRepository {
                     chatRoom2.setItem(chatRoom.getItem());
                     chatRoom2.setLastMessage(chatRoom.getLastMessage());
                     chatRoom2.setUser(myUser);
+
+                    // 채팅방 db에 저장
                     chatRoomsRef.child(uid).child(sellerUid).child(itemKey).setValue(chatRoom1);
                     chatRoomsRef.child(sellerUid).child(uid).child(itemKey).setValue(chatRoom2).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -285,14 +308,19 @@ public class ChatRepository {
         chatRoomsRef.removeValue();
     }
 
+    // 내 채팅방 리스트 가져오기
     public void getMyChatRooms(String myUid) {
+        // chatRooms / myUid / 하위 Ref들에 추가, 변경, 삭제등이 감지되면 호출
         chatRoomsRef.child(myUid).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
 
+                // 채팅방이 추가 됐을 때
                 for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                     ChatRoom chatRoom = snapshot1.getValue(ChatRoom.class);
                     Log.d("snapshot1.key ", snapshot1.getKey());
+
+                    // 채팅방을 만들고 실제 메시지를 남겼을 경우에만 추가
                     if (chatRoom.getLastMessage().getMessage().length() > 0) {
                         // 채팅방을 나가지 않았다면 채팅방 추가하기
                         if (!chatRoom.isLeaveChatRoom()) {
@@ -319,10 +347,10 @@ public class ChatRepository {
                 위와 같은 구조에서 userUid1/itemKey1가 변경되면 userUid1이 snapshot으로 들어옴
 
                  */
-                Log.d("onChildChanged", snapshot.getRef().toString());
+                //Log.d("onChildChanged", snapshot.getRef().toString());
 
                 for (DataSnapshot snapshot1: snapshot.getChildren()) {
-                    Log.d("onChildChanged/", snapshot1.getRef().toString());
+                    //Log.d("onChildChanged/", snapshot1.getRef().toString());
                     ChatRoom chatRoom = snapshot1.getValue(ChatRoom.class);
 
                     boolean leaveChatRoom = false;
@@ -334,12 +362,17 @@ public class ChatRepository {
 
                     boolean cond = true;
                     int position = -1;
+
+
                     for (int i = 0; i < chatRoomList.size(); i++) {
-                        // chatRoomList에 이번 chatRoom이 존재하는지 판별
+                        // 채팅방 리스트에서 이번에 변경된 채팅방이 존재하는지 판별
                         if (chatRoomList.get(i).getUser().getUid().equals(chatRoom.getUser().getUid()) &&
                             chatRoomList.get(i).getKey().equals(chatRoom.getKey())) {
+
+                            // 만약 채팅방을 나갔다면
                             if (chatRoom.isLeaveChatRoom())
                                 leaveChatRoom = true;
+
                             cond = false;
                             position = i;
                             
@@ -347,22 +380,26 @@ public class ChatRepository {
                         }
                     }
 
+                    // 채팅방을 나갔다면 채팅방 리스트에서 현재 채팅방에 해당하는 position을 삭제
                     if (leaveChatRoom) {
                         chatRoomList.remove(position);
                         continue;
                     }
 
                     boolean addChatRoom = false;
+
+                    // cond == true -> 채팅방 리스트에 이번에 변경된 채팅방이 존재하지 않음
                     if (cond) {
-                        // chatRoomList에 이번 chatRoom이 존재하지 않음
+
                         if (chatRoom.getLastMessage().getMessage().length() > 0) {
-                            // 메시지가 존재해야 채팅방에 표시
+                            // 마지막을 보낸 메시지가 있다면 채팅방 리스트 가장 위쪽에 추가
                             chatRoomList.add(0, chatRoom);
                             addChatRoom = true;
                         }
 
                     } else {
-                        // chatRoomList에 이번 chatRoom이 존재함
+                        // 채팅방 리스트에 이번에 변경된 채팅방이 존재함
+                        // A와 채팅을 하는 여러 사람들 중 가장 최근 A에게 메시지를 보낸 사람이 A의 채팅방 리스트의 가장 상단에 보여주는 부분
                         if (chatRoom.isFirstUp()) {
                             // 메시지 도착
                             chatRoomList.remove(position);
@@ -373,9 +410,9 @@ public class ChatRepository {
                     }
 
                     if (addChatRoom) {
-                        // 채팅방이 추가 되었다면
+                        // 채팅방이 추가 되었다면 알림을 보냄
                         if (!chatRoom.getVisited()) {
-                            // 내가 채팅방을 열고 있지 않다면
+                            // 내가 채팅방을 열고 있지 않을 경우에만 알림을 보냄
                             String userName = chatRoom.getUser().getNickName().length() > 0 ? chatRoom.getUser().getNickName() : chatRoom.getUser().getEmail();
                             if (!(chatRoom.getLastMessage().getChecked())) {
                                 snapshot1.getRef().child("lastMessage").child("checked").setValue(true);
@@ -411,6 +448,29 @@ public class ChatRepository {
     }
 
 
+    // 메시지 보내기
+    /*
+    채팅 db 구조
+    chats
+            myUid
+                    userUid
+                            itemKey(1)
+                                        push(1)
+                                                Chat
+                                        push(2)
+                                                Chat
+                                        push(3)
+                                                Chat
+                                        ....
+                            itemKey(2)
+                                        push(1)
+                                                Chat
+                                        push(2)
+                                                Chat
+                                        push(3)
+                                                Chat
+                                        ....
+     */
     public void sendMessage(String sender, String receiver, String itemKey, Chat chat, String lastSendUser) {
         String[] dateTime = getDate().split(" ");
         chat.setDate(dateTime[0]);
@@ -430,26 +490,7 @@ public class ChatRepository {
         chatRoomsRef.child(sender).child(receiver).child(itemKey).child("lastMessage").setValue(lastMessage);
         chatRoomsRef.child(sender).child(receiver).child(itemKey).child("firstUp").setValue(true);
     }
-    /*
-        public void sendMessage(String sender, String receiver, Chat chat, String lastSendUser) {
-        String[] dateTime = getDate().split(" ");
-        chat.setDate(dateTime[0]);
-        chat.setTime(dateTime[1]);
 
-        chatsRef.child(sender).child(receiver).push().setValue(chat);
-        chatsRef.child(receiver).child(sender).push().setValue(chat);
-
-        // String message, String user, String time
-        boolean checked = chat.getChecked();
-        LastMessage lastMessage = new LastMessage(chat.getMessage(), lastSendUser, dateTime[0], dateTime[1], checked);
-        chatRoomsRef.child(receiver).child(sender).child("lastMessage").setValue(lastMessage);
-
-        // 보내는 사람은 lastMessage checked -> true
-        lastMessage.setChecked(true);
-        chatRoomsRef.child(sender).child(receiver).child("lastMessage").setValue(lastMessage);
-
-    }
-     */
 
           /*
         Service 부분으로 넘어가서 백그라운드에서 계속 동작돼야 하는 메서드임
@@ -479,20 +520,7 @@ public class ChatRepository {
                         hashMap.put(keys, chats);
                         myChatList.add(hashMap);
                     }
-
-                    /*
-                    Chat chat = chats.get(chats.size() - 1);
-                    // 메시지를 받는 사람이 나라면
-                    if (chat.getReceiver().equals(myUid)) {
-                        showChatNoti(chat.getMyNickName(), chat.getMessage());
-                        System.out.println(chat.getMyNickName() + "님이 " + chat.getReceiver() + "님에게 " + chat.getMessage() + "라고 메시지를 보냈습니다.");
-                    }
-
-                     */
-
-
                 }
-
                 myChats.setValue(myChatList);
 
             }
@@ -563,6 +591,7 @@ public class ChatRepository {
 
     }
 
+    // 채팅방 나가기
     public void setLeaveChatRoom(String myUid, String userUid, String itemKey) {
         chatRoomsRef.child(myUid).child(userUid).child(itemKey).child("leaveChatRoom").setValue(true).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -574,6 +603,7 @@ public class ChatRepository {
         });
     }
 
+    // 채팅방 나갔는지 확인
     public void getLeaveChatRoom(String userUid, String myUid, String itemKey) {
         chatRoomsRef.child(userUid).child(myUid).child(itemKey).child("leaveChatRoom").addValueEventListener(new ValueEventListener() {
             @Override
