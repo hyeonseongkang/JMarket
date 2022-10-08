@@ -75,7 +75,7 @@ public class MyPageFragment extends Fragment {
         userManagerViewModel.getUserProfile().observe(getActivity(), new Observer<User>() {
             @Override
             public void onChanged(User user) {
-                Log.d(TAG, "Hello!@!@" + user.getPhotoUri() + " " + user.getNickName());
+                //Log.d(TAG, "Hello!@!@" + user.getPhotoUri() + " " + user.getNickName());
                 if (!(user.getPhotoUri().equals(""))) {
                     photoUri = user.getPhotoUri();
                     try {
@@ -104,6 +104,7 @@ public class MyPageFragment extends Fragment {
 
         binding.userEmail.setText(user.getEmail());
 
+        // 프로필 수정
         binding.editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -113,6 +114,7 @@ public class MyPageFragment extends Fragment {
             }
         });
 
+        // 판매 리스트
         binding.mySalesList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -121,6 +123,7 @@ public class MyPageFragment extends Fragment {
             }
         });
 
+        // 구매 리스트
         binding.myBuyList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -129,6 +132,7 @@ public class MyPageFragment extends Fragment {
             }
         });
 
+        // 관심 목록 리스트
         binding.myInterestList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

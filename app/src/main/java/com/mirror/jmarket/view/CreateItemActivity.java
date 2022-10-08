@@ -116,6 +116,7 @@ public class CreateItemActivity extends AppCompatActivity {
         adapter = new HomeItemPhotoAdapter();
         binding.photoItemRecyclerView.setAdapter(adapter);
 
+        // 아이템 사진 추가 했다가 취소
         adapter.setOnItemClickListener(new HomeItemPhotoAdapter.onItemClickListener() {
             @Override
             public void onItemClick( int position) {
@@ -147,6 +148,7 @@ public class CreateItemActivity extends AppCompatActivity {
             }
         });
 
+        // 아이템 사진 추가
         binding.gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -158,6 +160,7 @@ public class CreateItemActivity extends AppCompatActivity {
         });
 
 
+        // 아이템 생성
         binding.okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -193,6 +196,7 @@ public class CreateItemActivity extends AppCompatActivity {
                         Intent intent = result.getData();
                         tempPhotoUri = intent.getData();
 
+                        // 갤러리에서 사진 데이터를 가져와서 null check 후 값이 있다면 itemPhotos에 담음 후에 아이템 생성할 때 itemPhotos를 photo key로 바꿔 저장함
                         if (tempPhotoUri != null) {
                             itemPhotos.add(tempPhotoUri.toString());
                             adapter.setPhotoUris(itemPhotos);

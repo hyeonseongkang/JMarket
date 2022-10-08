@@ -34,9 +34,7 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
 
     // viewModel
-    private LoginViewModel loginViewModel;
     private ItemViewModel itemViewModel;
-    private ChatViewModel chatViewModel;
 
     // Adapter
     private HomeItemAdapter adapter;
@@ -56,19 +54,13 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        chatViewModel = new ViewModelProvider(requireActivity()).get(ChatViewModel.class);
-
-        loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
-
-
-
         binding.search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                chatViewModel.testDelete();
             }
         });
 
+        // recyclerview adapter 연결
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.recyclerView.setHasFixedSize(true);
         adapter = new HomeItemAdapter();
@@ -89,16 +81,6 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
-
-        //binding.tempUserUid.setText(MainActivity.USER.getUid());
-
-
-//        binding.search.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                loginViewModel.logout();
-//            }
-//        });
 
         adapter.setOnItemClickListener(new HomeItemAdapter.onItemClickListener() {
             @Override

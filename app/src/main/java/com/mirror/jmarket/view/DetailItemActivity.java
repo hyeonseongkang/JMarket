@@ -99,20 +99,22 @@ public class DetailItemActivity extends AppCompatActivity {
                 chatButton
                  */
                 // title, content, price, photoList
-                sellerUid = item.getId();
+                sellerUid = item.getId(); // 판매자 uid
                 binding.title.setText(item.getTitle());
                 binding.content.setText(item.getContent());
                 binding.price.setText(item.getPrice() + "원");
                 binding.userName.setText(item.getSellerName());
 
-                userManagerViewModel.getOtherUserProfile(sellerUid);
+                userManagerViewModel.getOtherUserProfile(sellerUid); // 판매자 profile 가져옴
 
                 String sellerProfielUri = item.getSellerProfileUri();
 
-                if (!(sellerProfielUri.equals("null")))
+                // 판매자 profile 사진이 있으면 가져오고 아니면 기본 이미지
+                if (!(sellerProfielUri.equals("null"))) {
                     Glide.with(DetailItemActivity.this)
-                    .load(sellerProfielUri)
-                    .into(binding.sellerProfile);
+                            .load(sellerProfielUri)
+                            .into(binding.sellerProfile);
+                }
 
 
                 boolean priceOffer = item.isPriceOffer();
@@ -129,11 +131,12 @@ public class DetailItemActivity extends AppCompatActivity {
             }
         });
 
+        // 현재 아이템을 누른 uid가 아이템의 좋아요를 눌렀는지 확인
         itemViewModel.getLike(key, user.getUid());
         itemViewModel.getLike().observe(DetailItemActivity.this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
-                Log.d(TAG, aBoolean.toString());
+                //Log.d(TAG, aBoolean.toString());
                 if (aBoolean)
                     binding.like.setBackgroundResource(R.drawable.red_heart);
                 else
@@ -142,6 +145,8 @@ public class DetailItemActivity extends AppCompatActivity {
         });
 
         chatViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ChatViewModel.class);
+
+        // 채팅방이 만들어지면 ChatActivity로 이동
         chatViewModel.getCreateChatRoom().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
@@ -157,6 +162,7 @@ public class DetailItemActivity extends AppCompatActivity {
             }
         });
 
+        // horizontal recyclerview
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
         binding.recyclerView.setLayoutManager(linearLayoutManager);
@@ -168,11 +174,9 @@ public class DetailItemActivity extends AppCompatActivity {
         binding.chatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 LastMessage lastMessage = new LastMessage("", "", "", "", false);
                 ChatRoom chatRoom = new ChatRoom(key, null, currentItem, lastMessage, true, 0, false, false);
                 chatViewModel.setChatRoom(user.getUid(), sellerUid, currentItem.getKey(), chatRoom, myUser, otherUser);
-
             }
         });
 

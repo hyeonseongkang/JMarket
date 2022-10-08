@@ -88,9 +88,9 @@ public class ChatActivity extends AppCompatActivity {
         adapter = new ChatItemAdapter();
         binding.recyclerView.setAdapter(adapter);
 
-        binding.userNickName.setText(userNickName);
+        binding.userNickName.setText(userNickName); // 채팅 상대방 닉네임
 
-        // viewModel
+        // item viewModel
         itemViewModel = new ViewModelProvider(this ,new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ItemViewModel.class);
         itemViewModel.getItem(itemKey);
         itemViewModel.getItem().observe(this, new Observer<Item>() {
@@ -99,11 +99,13 @@ public class ChatActivity extends AppCompatActivity {
                 currentItem = item;
             }
         });
+
         itemViewModel.getComplete(uid, user.getUid(), itemKey);
         itemViewModel.getComplete().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
                 if (aBoolean) {
+                    // 거래 완료
                     completeDeal = 1;
                     binding.completeLayout.setVisibility(View.VISIBLE);
                     binding.completeDealLayout.setVisibility(View.GONE);
@@ -116,6 +118,7 @@ public class ChatActivity extends AppCompatActivity {
                     binding.itemTitle.setText(currentItem.getTitle());
                     binding.itemPrice.setText(currentItem.getPrice());
                 } else {
+                    // 거래 완료 요청
                     completeDeal = 2;
                     binding.completeLayout.setVisibility(View.VISIBLE);
                     binding.itemInfoLayout.setVisibility(View.GONE);
@@ -142,42 +145,6 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        /*
-        chatViewModel.getMyChats(user.getUid());
-        chatViewModel.getMyChats().observe(this, new Observer<List<HashMap<List<String>, List<Chat>>>>() {
-            @Override
-            public void onChanged(List<HashMap<List<String>, List<Chat>>> hashMaps) {
-                for (HashMap<List<String>, List<Chat>> map : hashMaps) {
-                    for (List<String> keys: map.keySet()) {
-                        if (keys.contains(itemKey)) {
-                            List<Chat> chat = map.get(keys);
-                            adapter.setChats(chat, user.getUid(), uid, userPhoto);
-                            binding.recyclerView.scrollToPosition(chat.size() - 1);
-                            break;
-                        }
-                    }
-                }
-            }
-        });
-
-         */
-        /*
-        chatViewModel.getMyChats().observe(this, new Observer<List<HashMap<String, List<Chat>>>>() {
-            @Override
-            public void onChanged(List<HashMap<String, List<Chat>>> hashMaps) {
-                for (HashMap<String, List<Chat>> map : hashMaps) {
-                    if (map.containsKey(uid)) {
-                        List<Chat> chat = map.get(uid);
-                        adapter.setChats(chat, user.getUid(), uid, userPhoto);
-                        binding.recyclerView.scrollToPosition(chat.size() - 1);
-                        break;
-                    }
-                }
-            }
-        });
-
-         */
-
         // 상대방이 채팅방을 나간경우
         chatViewModel.getLeaveChatRoom(uid, user.getUid(), itemKey);
         chatViewModel.getLeaveChatRoom().observe(this, new Observer<Boolean>() {
@@ -203,10 +170,13 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-
+        // 메시지 읽음 처리
         chatViewModel.allMessageChecked(user.getUid(), uid, itemKey);
+
+        // 채팅방을 나가지 않았으면 현재 해당 채팅방에 방문하고 있다는 표시
         if (!leaveChatRoom)
             chatViewModel.setVisited(user.getUid(), uid, itemKey, true);
+
         chatViewModel.getVisited(uid, user.getUid(), itemKey);
         chatViewModel.getVisited().observe(this, new Observer<Boolean>() {
             @Override
