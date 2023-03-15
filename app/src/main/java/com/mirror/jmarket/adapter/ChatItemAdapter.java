@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.mirror.jmarket.R;
-import com.mirror.jmarket.classes.Chat;
+import com.mirror.jmarket.model.Chat;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -35,7 +35,7 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.MyView
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View itemView;
-
+        // 채팅 보낸 사람에 따라 layout 나눔
         if (viewType == 1) {
             itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.adapter_my_chat_item, parent, false);
@@ -49,6 +49,7 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.MyView
 
     @Override
     public int getItemViewType(int position) {
+        // 내가 보낸 채팅이면 1 아니면 2
         if(chats.get(position).getSender().equals(myUid)) {
             return 1;
         } else {
@@ -63,6 +64,7 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.MyView
         Chat prevChat;
         Chat nextChat;
 
+        // 날짜 표시 visible
         holder.dateLayout.setVisibility(View.VISIBLE);
         holder.date.setVisibility(View.VISIBLE);
         String[] date = chat.getDate().split("-");

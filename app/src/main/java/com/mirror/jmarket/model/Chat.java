@@ -1,4 +1,4 @@
-package com.mirror.jmarket.classes;
+package com.mirror.jmarket.model;
 
 import android.util.Log;
 

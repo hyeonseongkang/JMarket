@@ -1,4 +1,4 @@
-package com.mirror.jmarket.classes;
+package com.mirror.jmarket.model;
 
 public class ChatRoom {
     private String key;

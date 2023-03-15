@@ -1,19 +1,13 @@
 package com.mirror.jmarket.viewmodel;
 
 import android.app.Application;
-import android.net.Uri;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.mirror.jmarket.classes.User;
-import com.mirror.jmarket.model.LoginRepository;
-import com.mirror.jmarket.model.UserManagerRepository;
+import com.mirror.jmarket.model.User;
+import com.mirror.jmarket.repository.UserManagerRepository;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class UserManagerViewModel extends AndroidViewModel {

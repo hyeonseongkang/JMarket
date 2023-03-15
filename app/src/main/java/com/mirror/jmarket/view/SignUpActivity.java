@@ -5,12 +5,9 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
-import android.widget.Toast;
 
-import com.mirror.jmarket.R;
-import com.mirror.jmarket.classes.User;
+import com.mirror.jmarket.model.User;
 import com.mirror.jmarket.databinding.ActivitySignUpBinding;
 import com.mirror.jmarket.viewmodel.LoginViewModel;
 

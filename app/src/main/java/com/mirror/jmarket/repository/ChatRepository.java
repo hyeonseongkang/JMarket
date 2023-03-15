@@ -1,4 +1,4 @@
-package com.mirror.jmarket.model;
+package com.mirror.jmarket.repository;
 
 import android.app.Application;
 import android.app.Notification;
@@ -12,7 +12,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.MutableLiveData;
 
@@ -25,11 +24,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mirror.jmarket.R;
-import com.mirror.jmarket.classes.Chat;
-import com.mirror.jmarket.classes.ChatRoom;
-import com.mirror.jmarket.classes.LastMessage;
-import com.mirror.jmarket.classes.User;
-import com.mirror.jmarket.view.MyPageFragment;
+import com.mirror.jmarket.model.Chat;
+import com.mirror.jmarket.model.ChatRoom;
+import com.mirror.jmarket.model.LastMessage;
+import com.mirror.jmarket.model.User;
 
 import org.jetbrains.annotations.NotNull;
 

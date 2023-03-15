@@ -8,17 +8,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseUser;
 import com.mirror.jmarket.R;
 import com.mirror.jmarket.adapter.DetailPhotoItemAdapter;
-import com.mirror.jmarket.classes.ChatRoom;
-import com.mirror.jmarket.classes.Item;
-import com.mirror.jmarket.classes.LastMessage;
-import com.mirror.jmarket.classes.User;
+import com.mirror.jmarket.model.ChatRoom;
+import com.mirror.jmarket.model.Item;
+import com.mirror.jmarket.model.LastMessage;
+import com.mirror.jmarket.model.User;
 import com.mirror.jmarket.databinding.ActivityDetailItemBinding;
 import com.mirror.jmarket.viewmodel.ChatViewModel;
 import com.mirror.jmarket.viewmodel.ItemViewModel;

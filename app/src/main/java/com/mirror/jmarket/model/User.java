@@ -1,4 +1,4 @@
-package com.mirror.jmarket.classes;
+package com.mirror.jmarket.model;
 
 public class User {
     private String uid;

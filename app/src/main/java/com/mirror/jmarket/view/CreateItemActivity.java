@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -18,18 +17,14 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseUser;
 import com.mirror.jmarket.R;
 import com.mirror.jmarket.adapter.HomeItemPhotoAdapter;
-import com.mirror.jmarket.classes.Item;
-import com.mirror.jmarket.classes.User;
+import com.mirror.jmarket.model.Item;
+import com.mirror.jmarket.model.User;
 import com.mirror.jmarket.databinding.ActivityCreateItemBinding;
 import com.mirror.jmarket.viewmodel.ItemViewModel;
-import com.mirror.jmarket.viewmodel.LoginViewModel;
 import com.mirror.jmarket.viewmodel.UserManagerViewModel;
 
 import java.text.DecimalFormat;

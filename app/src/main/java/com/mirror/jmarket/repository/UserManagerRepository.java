@@ -1,4 +1,4 @@
-package com.mirror.jmarket.model;
+package com.mirror.jmarket.repository;
 
 import android.app.Application;
 import android.net.Uri;
@@ -17,7 +17,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.mirror.jmarket.classes.User;
+import com.mirror.jmarket.model.User;
 
 import org.jetbrains.annotations.NotNull;
 

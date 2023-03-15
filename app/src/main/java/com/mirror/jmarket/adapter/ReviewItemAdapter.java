@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.mirror.jmarket.R;
-import com.mirror.jmarket.classes.Item;
-import com.mirror.jmarket.classes.Review;
+import com.mirror.jmarket.model.Item;
+import com.mirror.jmarket.model.Review;
 
 import org.jetbrains.annotations.NotNull;
 

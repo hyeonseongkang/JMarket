@@ -1,4 +1,4 @@
-package com.mirror.jmarket.model;
+package com.mirror.jmarket.repository;
 
 import android.app.Application;
 import android.text.TextUtils;
@@ -6,7 +6,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -16,7 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.mirror.jmarket.classes.User;
+import com.mirror.jmarket.model.User;
 
 import org.jetbrains.annotations.NotNull;
 

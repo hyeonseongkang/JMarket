@@ -8,8 +8,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.firebase.auth.FirebaseUser;
-import com.mirror.jmarket.classes.User;
-import com.mirror.jmarket.model.LoginRepository;
+import com.mirror.jmarket.model.User;
+import com.mirror.jmarket.repository.LoginRepository;
 
 import org.jetbrains.annotations.NotNull;
 

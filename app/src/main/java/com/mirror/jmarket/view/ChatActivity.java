@@ -20,14 +20,13 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseUser;
 import com.mirror.jmarket.R;
 import com.mirror.jmarket.adapter.ChatItemAdapter;
-import com.mirror.jmarket.classes.Chat;
-import com.mirror.jmarket.classes.CompleteUser;
-import com.mirror.jmarket.classes.Item;
+import com.mirror.jmarket.model.Chat;
+import com.mirror.jmarket.model.CompleteUser;
+import com.mirror.jmarket.model.Item;
 import com.mirror.jmarket.databinding.ActivityChatBinding;
 import com.mirror.jmarket.viewmodel.ChatViewModel;
 import com.mirror.jmarket.viewmodel.ItemViewModel;
 
-import java.util.HashMap;
 import java.util.List;
 
 public class ChatActivity extends AppCompatActivity {

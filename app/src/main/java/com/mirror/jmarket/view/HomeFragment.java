@@ -10,19 +10,14 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mirror.jmarket.R;
 import com.mirror.jmarket.adapter.HomeItemAdapter;
-import com.mirror.jmarket.adapter.HomeItemPhotoAdapter;
-import com.mirror.jmarket.classes.Item;
+import com.mirror.jmarket.model.Item;
 import com.mirror.jmarket.databinding.FragmentHomeBinding;
-import com.mirror.jmarket.viewmodel.ChatViewModel;
 import com.mirror.jmarket.viewmodel.ItemViewModel;
-import com.mirror.jmarket.viewmodel.LoginViewModel;
 
 import java.util.List;
 

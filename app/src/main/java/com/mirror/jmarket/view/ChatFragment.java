@@ -1,28 +1,23 @@
 package com.mirror.jmarket.view;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.mirror.jmarket.adapter.ChatListItemAdapter;
-import com.mirror.jmarket.classes.Chat;
-import com.mirror.jmarket.classes.ChatRoom;
-import com.mirror.jmarket.classes.Item;
-import com.mirror.jmarket.classes.User;
+import com.mirror.jmarket.model.ChatRoom;
+import com.mirror.jmarket.model.User;
 import com.mirror.jmarket.databinding.FragmentChatBinding;
 import com.mirror.jmarket.viewmodel.ChatViewModel;
 import com.mirror.jmarket.viewmodel.UserManagerViewModel;

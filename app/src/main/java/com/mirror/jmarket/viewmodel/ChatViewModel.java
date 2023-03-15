@@ -7,11 +7,10 @@ import androidx.annotation.RequiresApi;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.mirror.jmarket.classes.Chat;
-import com.mirror.jmarket.classes.ChatRoom;
-import com.mirror.jmarket.classes.User;
-import com.mirror.jmarket.model.ChatRepository;
-import com.mirror.jmarket.view.MyPageFragment;
+import com.mirror.jmarket.model.Chat;
+import com.mirror.jmarket.model.ChatRoom;
+import com.mirror.jmarket.model.User;
+import com.mirror.jmarket.repository.ChatRepository;
 
 import java.util.HashMap;
 import java.util.List;

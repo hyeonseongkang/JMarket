@@ -21,9 +21,8 @@ import android.util.Log;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
-import com.google.firebase.auth.FirebaseUser;
 import com.mirror.jmarket.R;
-import com.mirror.jmarket.classes.User;
+import com.mirror.jmarket.model.User;
 import com.mirror.jmarket.databinding.ActivityEditProfileBinding;
 import com.mirror.jmarket.viewmodel.UserManagerViewModel;
 

@@ -1,9 +1,8 @@
-package com.mirror.jmarket.model;
+package com.mirror.jmarket.repository;
 
 import android.app.Application;
 import android.net.Uri;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,9 +19,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.mirror.jmarket.classes.CompleteUser;
-import com.mirror.jmarket.classes.Item;
-import com.mirror.jmarket.classes.Review;
+import com.mirror.jmarket.model.CompleteUser;
+import com.mirror.jmarket.model.Item;
+import com.mirror.jmarket.model.Review;
 
 import org.jetbrains.annotations.NotNull;
 

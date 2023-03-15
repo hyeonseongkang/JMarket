@@ -7,19 +7,16 @@ import androidx.lifecycle.ViewModelProvider;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseUser;
 import com.mirror.jmarket.R;
-import com.mirror.jmarket.classes.Item;
-import com.mirror.jmarket.classes.Review;
+import com.mirror.jmarket.model.Item;
+import com.mirror.jmarket.model.Review;
 import com.mirror.jmarket.databinding.ActivityReviewBinding;
 import com.mirror.jmarket.viewmodel.ItemViewModel;
-
-import java.util.List;
 
 public class ReviewActivity extends AppCompatActivity {
 

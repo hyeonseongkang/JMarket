@@ -6,10 +6,10 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.mirror.jmarket.classes.CompleteUser;
-import com.mirror.jmarket.classes.Item;
-import com.mirror.jmarket.classes.Review;
-import com.mirror.jmarket.model.ItemRepository;
+import com.mirror.jmarket.model.CompleteUser;
+import com.mirror.jmarket.model.Item;
+import com.mirror.jmarket.model.Review;
+import com.mirror.jmarket.repository.ItemRepository;
 
 import org.jetbrains.annotations.NotNull;
 

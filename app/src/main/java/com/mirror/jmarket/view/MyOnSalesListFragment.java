@@ -1,6 +1,5 @@
 package com.mirror.jmarket.view;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,18 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseUser;
-import com.mirror.jmarket.R;
-import com.mirror.jmarket.adapter.ChatListItemAdapter;
 import com.mirror.jmarket.adapter.HomeItemAdapter;
-import com.mirror.jmarket.classes.ChatRoom;
-import com.mirror.jmarket.classes.Item;
-import com.mirror.jmarket.classes.User;
-import com.mirror.jmarket.databinding.FragmentHomeBinding;
+import com.mirror.jmarket.model.Item;
 import com.mirror.jmarket.databinding.FragmentMyOnSalesListBinding;
-import com.mirror.jmarket.viewmodel.ChatViewModel;
 import com.mirror.jmarket.viewmodel.ItemViewModel;
-import com.mirror.jmarket.viewmodel.LoginViewModel;
-import com.mirror.jmarket.viewmodel.UserManagerViewModel;
 
 import java.util.List;
 

@@ -14,11 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseUser;
-import com.mirror.jmarket.R;
 import com.mirror.jmarket.adapter.HomeItemAdapter;
-import com.mirror.jmarket.classes.Item;
+import com.mirror.jmarket.model.Item;
 import com.mirror.jmarket.databinding.FragmentMyCompleteSalesListBinding;
-import com.mirror.jmarket.databinding.FragmentMyOnSalesListBinding;
 import com.mirror.jmarket.viewmodel.ItemViewModel;
 
 import java.util.List;

@@ -5,14 +5,13 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.mirror.jmarket.R;
 import com.mirror.jmarket.adapter.HomeItemAdapter;
-import com.mirror.jmarket.classes.Item;
+import com.mirror.jmarket.model.Item;
 import com.mirror.jmarket.databinding.ActivityMyBuyListBinding;
 import com.mirror.jmarket.viewmodel.ItemViewModel;
 
