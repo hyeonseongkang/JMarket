@@ -2,6 +2,7 @@ package com.mirror.jmarket.repository;
 
 import android.app.Application;
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
@@ -62,9 +63,37 @@ public class UserManagerRepository {
 
 
     // user profile 업데이트
-    public void updateUserProfile(User user) {
+    public void updateUserProfile(@NotNull User user) {
         String uid = user.getUid();
-        /*
+
+        Log.d(TAG, "1 " + user.getPhotoUri());
+        if (user.getPhotoUri().length() == 0) {
+            // 사진이 없는 경우, nickName만 update하기 위해 uid에 해당 하는 user정보에서 photoUri만 인자로 들어온 user의 setPhotoUri에 update하고
+            // 해당 user로 update함
+            myRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                    User localUser = snapshot.getValue(User.class);
+                    user.setPhotoUri(localUser.getPhotoUri());
+                    myRef.child(uid).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull @NotNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                updateValid.setValue(true);
+                            } else {
+                                updateValid.setValue(false);
+                            }
+                        }
+                    });
+                }
+                @Override
+                public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+                }
+            });
+
+        } else {
+               /*
         1. 인자값으로 넘어온 user의 getPhotoUri를 통해 Firebase Store에 사진을 먼저 저장한다.
         2. 사진 저장이 완료 됐다면 저장된 사진의 uri를 다운받은 뒤 해당 uri 값을 인자값으로 넘어온 user객체의 photoUri에 할당한다.
         3. users Ref 아래 자신의 uid 아래에 2번까지 완료한 user 객체를 저장한다.
@@ -93,6 +122,7 @@ public class UserManagerRepository {
                 });
             }
         });
+        }
     }
 
     // users Ref 아래에 인자값으로 넘어온 uid의 User 정보를 가져옴 (내 userProfile)

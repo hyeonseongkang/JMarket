@@ -17,6 +17,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.mirror.jmarket.R;
@@ -75,6 +76,7 @@ public class CreateItemActivity extends AppCompatActivity {
             public void onChanged(Boolean aBoolean) {
                 binding.progress.setVisibility(View.GONE);
                 if (aBoolean) {
+                    Toast.makeText(CreateItemActivity.this, "등록완료", Toast.LENGTH_SHORT).show();
                     finish();
                     overridePendingTransition(R.anim.none, R.anim.fadeout_left);
                 }

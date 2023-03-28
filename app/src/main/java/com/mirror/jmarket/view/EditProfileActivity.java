@@ -85,9 +85,9 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onChanged(User user) {
                 if (!(user.getPhotoUri().equals(""))) {
-                    tempPhotoUri = Uri.parse(user.getPhotoUri());
+                    //tempPhotoUri = Uri.parse(user.getPhotoUri());
                     Glide.with(EditProfileActivity.this)
-                            .load(tempPhotoUri)
+                            .load(Uri.parse(user.getPhotoUri()))
                             .into(binding.userPhoto);
                 }
 
@@ -121,6 +121,9 @@ public class EditProfileActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(nickName))
                     return;
 
+                if (tempPhotoUri == null) {
+                    tempPhotoUri = Uri.parse("");
+                }
                 // String uid, String email, String password, String nickName, String photoUri
                 userManagerViewModel.updateUserProfile(new User(uid, email, pw, nickName, tempPhotoUri.toString()));
                 binding.progress.setVisibility(View.VISIBLE);
