@@ -113,14 +113,13 @@ public class LoginRepository {
                                 @Override
                                 public void onComplete(@NonNull @NotNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-                                        Log.d(TAG, "user 데이터 저장 성공");
+                                        loginValid.setValue(true);
                                     } else {
                                         Log.d(TAG, "user 데이터 저장 실패");
                                     }
                                 }
                             });
-                            loginValid.setValue(true);
-                            Log.d(TAG, "회원가입 성공");
+
                         } else {
                             // 가입 실패
                             loginValid.setValue(false);
