@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.HomeFragment"
+    tools:context=".view.fragment.HomeFragment"
     android:orientation="vertical">
 
     <LinearLayout
@@ -36,13 +36,13 @@
                     android:textColor="#000000"
                     android:textSize="18dp" />
 
-                <ImageButton
-                    android:id="@+id/search"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:background="@drawable/search"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"/>
+<!--                <ImageButton-->
+<!--                    android:id="@+id/search"-->
+<!--                    android:layout_width="22dp"-->
+<!--                    android:layout_height="22dp"-->
+<!--                    android:background="@drawable/search"-->
+<!--                    android:layout_alignParentRight="true"-->
+<!--                    android:layout_centerVertical="true"/>-->
 
             </RelativeLayout>
 

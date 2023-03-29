@@ -1,4 +1,4 @@
-package com.mirror.jmarket.view;
+package com.mirror.jmarket.view.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +17,8 @@ import android.view.ViewGroup;
 import com.mirror.jmarket.adapter.HomeItemAdapter;
 import com.mirror.jmarket.model.Item;
 import com.mirror.jmarket.databinding.FragmentHomeBinding;
+import com.mirror.jmarket.view.activity.CreateItemActivity;
+import com.mirror.jmarket.view.activity.DetailItemActivity;
 import com.mirror.jmarket.viewmodel.ItemViewModel;
 
 import java.util.List;
@@ -49,11 +51,11 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            }
-        });
+//        binding.search.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//            }
+//        });
 
         // recyclerview adapter 연결
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

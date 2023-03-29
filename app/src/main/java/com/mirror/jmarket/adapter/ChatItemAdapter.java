@@ -78,6 +78,10 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.MyView
         holder.time.setVisibility(View.VISIBLE);
         holder.userPhoto.setVisibility(View.VISIBLE);
 
+        Glide.with(holder.itemView.getContext())
+                .load(R.drawable.basic_profile_photo)
+                .into(holder.userPhoto);
+
         if (userPhoto.length() > 0) {
             Glide.with(holder.itemView.getContext())
                     .load(Uri.parse(userPhoto))

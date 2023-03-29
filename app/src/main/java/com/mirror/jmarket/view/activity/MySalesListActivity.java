@@ -1,7 +1,6 @@
-package com.mirror.jmarket.view;
+package com.mirror.jmarket.view.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.view.View;
@@ -9,7 +8,8 @@ import android.view.View;
 import com.google.android.material.tabs.TabLayout;
 import com.mirror.jmarket.R;
 import com.mirror.jmarket.databinding.ActivityMySalesListBinding;
-import com.mirror.jmarket.viewmodel.ItemViewModel;
+import com.mirror.jmarket.view.fragment.MyCompleteSalesListFragment;
+import com.mirror.jmarket.view.fragment.MyOnSalesListFragment;
 
 public class MySalesListActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.mirror.jmarket.view;
+package com.mirror.jmarket.view.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +19,8 @@ import com.mirror.jmarket.adapter.ChatListItemAdapter;
 import com.mirror.jmarket.model.ChatRoom;
 import com.mirror.jmarket.model.User;
 import com.mirror.jmarket.databinding.FragmentChatBinding;
+import com.mirror.jmarket.view.activity.ChatActivity;
+import com.mirror.jmarket.view.activity.MainActivity;
 import com.mirror.jmarket.viewmodel.ChatViewModel;
 import com.mirror.jmarket.viewmodel.UserManagerViewModel;
 

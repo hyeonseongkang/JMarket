@@ -1,4 +1,4 @@
-package com.mirror.jmarket.view;
+package com.mirror.jmarket.view.fragment;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.mirror.jmarket.adapter.ReviewItemAdapter;
 import com.mirror.jmarket.model.Review;
 import com.mirror.jmarket.databinding.FragmentMyReceivedReviewListBinding;
+import com.mirror.jmarket.view.activity.MainActivity;
 import com.mirror.jmarket.viewmodel.ItemViewModel;
 
 import java.util.List;

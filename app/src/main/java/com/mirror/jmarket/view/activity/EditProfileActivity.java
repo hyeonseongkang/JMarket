@@ -1,4 +1,4 @@
-package com.mirror.jmarket.view;
+package com.mirror.jmarket.view.activity;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;

@@ -1,4 +1,4 @@
-package com.mirror.jmarket.view;
+package com.mirror.jmarket.view.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -7,9 +7,7 @@ import androidx.lifecycle.ViewModelProvider;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
-import com.mirror.jmarket.R;
 import com.mirror.jmarket.model.User;
 import com.mirror.jmarket.databinding.ActivityLoginBinding;
 import com.mirror.jmarket.viewmodel.LoginViewModel;

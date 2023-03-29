@@ -281,7 +281,8 @@ public class ChatRepository {
                                             ChatRoom
                                .....
 
-     위와 같이 db 구조를 설계한 이유는 상대가 여러 아이템을 판매할 수 있고 아이템 하나당 하나의 채팅방이 생성돼야 하기 때문에 내 uid 하위에 상대 uid를 놓고 상대 uid 하위에 상대가 판매하는 itemKey들을 넣음
+     위와 같이 db 구조를 설계한 이유는 상대가 여러 아이템을 판매할 수 있고 아이템 하나당 하나의 채팅방이 생성돼야 하기 때문에
+     내 uid 하위에 상대 uid를 놓고 상대 uid 하위에 상대가 판매하는 itemKey들을 넣음
      */
     public void setChatRoom(String uid, String sellerUid, String itemKey, ChatRoom chatRoom, User myUser, User otherUser) {
         // uid와 sellerUid가 같다면 return

@@ -1,4 +1,4 @@
-package com.mirror.jmarket.view;
+package com.mirror.jmarket.view.fragment;
 
 import android.os.Bundle;
 
@@ -16,17 +16,18 @@ import android.view.ViewGroup;
 import com.google.firebase.auth.FirebaseUser;
 import com.mirror.jmarket.adapter.HomeItemAdapter;
 import com.mirror.jmarket.model.Item;
-import com.mirror.jmarket.databinding.FragmentMyCompleteSalesListBinding;
+import com.mirror.jmarket.databinding.FragmentMyOnSalesListBinding;
+import com.mirror.jmarket.view.activity.MainActivity;
 import com.mirror.jmarket.viewmodel.ItemViewModel;
 
 import java.util.List;
 
 
-public class MyCompleteSalesListFragment extends Fragment {
+public class MyOnSalesListFragment extends Fragment {
 
-    private static final String TAG = "MyCompleteSalesListFragment";
+    private static final String TAG = "MyOnSalesListFragment";
 
-    private FragmentMyCompleteSalesListBinding binding;
+    private FragmentMyOnSalesListBinding binding;
 
     // viewModel
     private ItemViewModel itemViewModel;
@@ -36,7 +37,7 @@ public class MyCompleteSalesListFragment extends Fragment {
 
     private FirebaseUser user;
 
-    public MyCompleteSalesListFragment() {
+    public MyOnSalesListFragment() {
         // Required empty public constructor
     }
 
@@ -44,7 +45,7 @@ public class MyCompleteSalesListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentMyCompleteSalesListBinding.inflate(inflater, container, false);
+        binding = FragmentMyOnSalesListBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -60,8 +61,8 @@ public class MyCompleteSalesListFragment extends Fragment {
         binding.recyclerView.setAdapter(adapter);
 
         itemViewModel = new ViewModelProvider(requireActivity()).get(ItemViewModel.class);
-        itemViewModel.getMyCompleteSalesItems(user.getUid());
-        itemViewModel.getMyCompleteSalesItems().observe(getActivity(), new Observer<List<Item>>() {
+        itemViewModel.getMyOnSalesItems(user.getUid());
+        itemViewModel.getMyOnSalesItems().observe(getActivity(), new Observer<List<Item>>() {
             @Override
             public void onChanged(List<Item> items) {
                 if (items != null) {

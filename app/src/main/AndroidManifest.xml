@@ -10,36 +10,36 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.JMarket">
 
-        <activity android:name=".view.MyBuyListActivity" />
+        <activity android:name=".view.activity.MyBuyListActivity" />
 
-        <activity android:name=".view.MySalesListActivity" />
+        <activity android:name=".view.activity.MySalesListActivity" />
 
-        <activity android:name=".view.MyInterestListActivity" />
+        <activity android:name=".view.activity.MyInterestListActivity" />
 
-        <activity android:name=".view.ReviewActivity" />
+        <activity android:name=".view.activity.ReviewActivity" />
 
         <activity
-            android:name=".view.ChatMenuActivity"
+            android:name=".view.activity.ChatMenuActivity"
             android:theme="@style/Transparent" />
 
-        <activity android:name=".view.LoginActivity" />
+        <activity android:name=".view.activity.LoginActivity" />
 
-        <activity android:name=".view.ChatActivity" />
+        <activity android:name=".view.activity.ChatActivity" />
 
         <activity
-            android:name=".view.DetailItemActivity"
+            android:name=".view.activity.DetailItemActivity"
             android:exported="true" />
 
-        <activity android:name=".view.CreateItemActivity" />
+        <activity android:name=".view.activity.CreateItemActivity" />
 
-        <activity android:name=".view.EditProfileActivity" />
+        <activity android:name=".view.activity.EditProfileActivity" />
 
-        <activity android:name=".view.SignUpActivity" />
+        <activity android:name=".view.activity.SignUpActivity" />
 
-        <activity android:name=".view.MainActivity" />
+        <activity android:name=".view.activity.MainActivity" />
 
         <activity
-            android:name=".view.LoadingActivity"
+            android:name=".view.activity.LoadingActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

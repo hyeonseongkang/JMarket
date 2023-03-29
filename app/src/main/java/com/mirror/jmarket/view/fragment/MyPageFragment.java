@@ -1,4 +1,4 @@
-package com.mirror.jmarket.view;
+package com.mirror.jmarket.view.fragment;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -24,6 +24,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.mirror.jmarket.R;
 import com.mirror.jmarket.model.User;
 import com.mirror.jmarket.databinding.FragmentMypageBinding;
+import com.mirror.jmarket.view.activity.EditProfileActivity;
+import com.mirror.jmarket.view.activity.LoginActivity;
+import com.mirror.jmarket.view.activity.MainActivity;
+import com.mirror.jmarket.view.activity.MyBuyListActivity;
+import com.mirror.jmarket.view.activity.MyInterestListActivity;
+import com.mirror.jmarket.view.activity.MySalesListActivity;
 import com.mirror.jmarket.viewmodel.LoginViewModel;
 import com.mirror.jmarket.viewmodel.UserManagerViewModel;
 
