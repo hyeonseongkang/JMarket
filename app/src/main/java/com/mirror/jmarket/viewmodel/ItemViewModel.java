@@ -78,7 +78,7 @@ public class ItemViewModel extends AndroidViewModel {
 
     public MutableLiveData<List<Review>> getReviews() { return reviews; }
 
-    public void getHomeItems() { repository.getHomeItems(); }
+    public void getHomeItems(String findText) { repository.getHomeItems(findText); }
 
     public void createItem(Item item) {
         repository.createItem(item);

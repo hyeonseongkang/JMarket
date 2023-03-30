@@ -161,7 +161,7 @@ public class ItemRepository {
     }
 
     // 거래 완료된 아이템은 제외하고 item Ref 아래에 있는 모든 아이템들을 가져옴
-    public void getHomeItems() {
+    public void getHomeItems(String findText) {
         itemRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
@@ -171,7 +171,9 @@ public class ItemRepository {
                     // 거래 완료 아이템은 제외
                     if (item.isSalesComplete())
                         continue;
-                    tempItems.add(item);
+
+                    if (findText.equals("") || item.getTitle().contains(findText))
+                        tempItems.add(item);
                 }
                 items.setValue(tempItems);
             }
