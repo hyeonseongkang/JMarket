@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,6 +83,7 @@ public class ChatFragment extends Fragment {
                 intent.putExtra("myNickName", myNickName);
                 intent.putExtra("userNickName", user.getNickName().length() > 0 ? user.getNickName() : user.getEmail());
                 intent.putExtra("userPhoto", user.getPhotoUri());
+                Log.d(TAG, user.getPhotoUri() + " 보낸 userphoto");
                 startActivity(intent);
             }
         });
@@ -95,10 +97,18 @@ public class ChatFragment extends Fragment {
         추가 하고 chatItems references 가져오기
 
          */
+        // chatViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(requireActivity().getApplication())).get(ChatViewModel.class);
+       // requireActivity() -> viewmodel 공유
+        /*
+getActivity()는 Fragment가 연결된 Activity가 없는 상태에서 호출되면 null을 반환하기 때문에, Fragment의 생명주기에 따라 null이 반환될 가능성이 있습니다. 따라서 Fragment에서 Activity의 참조를 사용할 때는 getActivity()의 반환값이 null인지 확인하고 사용해야 합니다.
+requireActivity()는 이와 달리 Fragment가 연결된 Activity가 없는 경우에는 예외(IllegalStateException)를 발생시키므로, Activity의 참조를 안전하게 가져올 수 있습니다. 따라서 requireActivity()를 사용하는 것이 안전한 방법입니다.
+         */
+
         chatViewModel = new ViewModelProvider(requireActivity()).get(ChatViewModel.class);
         chatViewModel.getMyChatRooms().observe(getActivity(), new Observer<List<ChatRoom>>() {
             @Override
             public void onChanged(List<ChatRoom> chatRooms) {
+                Log.d(TAG, "getMyChatRooms");
                 adapter.setChatRooms(chatRooms);
             }
         });

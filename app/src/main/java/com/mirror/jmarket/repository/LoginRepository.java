@@ -23,7 +23,25 @@ public class LoginRepository {
 
     public final static String TAG = "LoginRepository";
 
+
     private Application application;
+
+//    private static LoginRepository instance;
+//
+//    public static synchronized LoginRepository getInstance(Application application) {
+//        if (instance == null) {
+//            instance = new LoginRepository(application);
+//        }
+//        return instance;
+//    }
+//
+//    private LoginRepository(Application application) {
+//        this.application = application;
+//        mAuth = FirebaseAuth.getInstance();
+//        firebaseUser = new MutableLiveData<>();
+//        loginValid = new MutableLiveData<>();
+//        myRef = FirebaseDatabase.getInstance().getReference("users");
+//    }
 
     private MutableLiveData<Boolean> loginValid;
 

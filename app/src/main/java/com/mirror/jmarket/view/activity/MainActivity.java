@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.android.material.badge.BadgeDrawable;
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         // chat view model
         chatViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ChatViewModel.class);
         //chatViewModel.testDelete();
-        chatViewModel.getMyChats(USER.getUid()); // 내 채팅 가져오기
+        //chatViewModel.getMyChats(USER.getUid()); // 내 채팅 가져오기
         chatViewModel.getMyChatRooms(USER.getUid()); // 내 채팅방 가져오기
         chatViewModel.getUnReadChatCount(USER.getUid()); // 읽지 않은 채팅 갯수 가져오기
 
@@ -72,12 +73,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(HashMap<List<String>, Integer> hashMap) {
                 int count = 0;
-
+                Log.d(TAG, "getUnReadChatCount");
                 for (List<String> keys: hashMap.keySet()) {
                     // keys.get(0) -> 상대 uid, keys.get(1) -> itemKey
                     // hashMap.get(keys) -> count
 
                     // 상대 uid, itemKey를 활용해 채팅방 마다 읽지 않은 채팅 수 나타내기
+                    Log.d(TAG, keys.toString() + "!@!@!@ @ " + hashMap.get(keys));
                     chatViewModel.setUnReadChatCount(USER.getUid(), keys.get(0), keys.get(1), hashMap.get(keys));
                     count += hashMap.get(keys);
                 }

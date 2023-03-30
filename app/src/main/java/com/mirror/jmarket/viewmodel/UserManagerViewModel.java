@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.mirror.jmarket.model.User;
+import com.mirror.jmarket.repository.ItemRepository;
 import com.mirror.jmarket.repository.UserManagerRepository;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class UserManagerViewModel extends AndroidViewModel {
     public UserManagerViewModel(Application application) {
         super(application);
         repository = new UserManagerRepository(application);
+        //repository = UserManagerRepository.getInstance(application);
         userProfile = repository.getUserProfile();
         otherUserProfile = repository.getOtherUserProfile();
         usersProfile = repository.getUsersProfile();

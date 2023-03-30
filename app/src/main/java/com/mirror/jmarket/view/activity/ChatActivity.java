@@ -139,6 +139,9 @@ public class ChatActivity extends AppCompatActivity {
         chatViewModel.getChats().observe(this, new Observer<List<Chat>>() {
             @Override
             public void onChanged(List<Chat> chats) {
+                if (userPhoto == null || userPhoto.equals("null")) {
+                    userPhoto = "null";
+                }
                 adapter.setChats(chats, user.getUid(), uid, userPhoto);
                 binding.recyclerView.scrollToPosition(chats.size() - 1);
             }

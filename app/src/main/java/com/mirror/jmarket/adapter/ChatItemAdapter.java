@@ -2,6 +2,7 @@ package com.mirror.jmarket.adapter;
 
 import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,7 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.MyView
     private List<Chat> chats = new ArrayList<>();
     private String myUid = new String();
     private String userUid = new String(); // 상대방 uid
-    private String userPhoto = new String(); // 상대방 profile photo
+    private String userPhoto; // 상대방 profile photo
 
     private String[] days = {"월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"};
 
@@ -78,11 +79,12 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.MyView
         holder.time.setVisibility(View.VISIBLE);
         holder.userPhoto.setVisibility(View.VISIBLE);
 
+
         Glide.with(holder.itemView.getContext())
                 .load(R.drawable.basic_profile_photo)
                 .into(holder.userPhoto);
 
-        if (userPhoto.length() > 0) {
+        if (userPhoto.length() > 0 && !userPhoto.equals("null")) {
             Glide.with(holder.itemView.getContext())
                     .load(Uri.parse(userPhoto))
                     .into(holder.userPhoto);
@@ -132,6 +134,7 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.MyView
         this.myUid = myUid;
         this.userUid = userUid;
         this.userPhoto = userPhoto;
+        Log.d("ChatAdapterIte", userPhoto + " q받은 userphoto");
         notifyDataSetChanged();
     }
 

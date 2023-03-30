@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.mirror.jmarket.model.User;
+import com.mirror.jmarket.repository.ItemRepository;
 import com.mirror.jmarket.repository.LoginRepository;
 
 import org.jetbrains.annotations.NotNull;
@@ -22,6 +23,7 @@ public class LoginViewModel extends AndroidViewModel {
     public LoginViewModel(@NonNull @NotNull Application application) {
         super(application);
         repository = new LoginRepository(application);
+        //repository = LoginRepository.getInstance(application);
         firebaseUser = repository.getFirebaseUser();
         loginValid = repository.getLoginValid();
     }

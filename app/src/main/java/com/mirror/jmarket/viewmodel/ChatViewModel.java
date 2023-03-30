@@ -2,6 +2,7 @@ package com.mirror.jmarket.viewmodel;
 
 import android.app.Application;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.AndroidViewModel;
@@ -36,6 +37,7 @@ public class ChatViewModel extends AndroidViewModel {
 
     public ChatViewModel(Application application) {
         super(application);
+        //repository = ChatRepository.getInstance(application);
         repository = new ChatRepository(application);
         myChats = repository.getMyChats();
         chatRooms = repository.getMyChatRooms();

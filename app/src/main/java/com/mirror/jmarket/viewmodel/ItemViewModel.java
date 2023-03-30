@@ -42,6 +42,7 @@ public class ItemViewModel extends AndroidViewModel {
     public ItemViewModel(@NonNull @NotNull Application application) {
         super(application);
         repository = new ItemRepository(application);
+        //repository = ItemRepository.getInstance(application);
         itemSave = repository.getItemSave();
         items = repository.getItems();
         myInterestItems = repository.getMyInterestItems();

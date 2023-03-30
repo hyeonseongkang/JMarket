@@ -41,7 +41,41 @@ import java.util.List;
 public class ChatRepository {
     public static final String TAG = "ChatRepository";
 
+    private static ChatRepository instance;
+
     private Application application;
+//
+//    private ChatRepository(Application application) {
+//        this.application = application;
+//        chatsRef = FirebaseDatabase.getInstance().getReference("chats");
+//        chatRoomsRef = FirebaseDatabase.getInstance().getReference("chatRooms");
+//
+//        myChats = new MutableLiveData<>();
+//        myChatList = new ArrayList<>();
+//
+//        chats = new MutableLiveData<>();
+//        chatList = new ArrayList<>();
+//
+//        chatRooms = new MutableLiveData<>();
+//        chatRoomList = new ArrayList<>();
+//
+//        visited = new MutableLiveData<>();
+//
+//        createChatRoom = new MutableLiveData<>();
+//
+//        unReadChatCount = new MutableLiveData<>();
+//
+//        leaveChatRoom = new MutableLiveData<>();
+//
+//        myLeaveChatRoom = new MutableLiveData<>();
+//    }
+//
+//    public static synchronized ChatRepository getInstance(Application application) {
+//        if (instance == null) {
+//            instance = new ChatRepository(application);
+//        }
+//        return instance;
+//    }
 
     private DatabaseReference chatsRef;
     private DatabaseReference chatRoomsRef;
@@ -63,6 +97,7 @@ public class ChatRepository {
 
     private MutableLiveData<Boolean> leaveChatRoom;
     private MutableLiveData<Boolean> myLeaveChatRoom;
+
 
     public ChatRepository(Application application) {
         this.application = application;
@@ -454,11 +489,6 @@ public class ChatRepository {
                 }
 
                 chatRooms.setValue(chatRoomList);
-                for (int i = 0; i < chatRoomList.size(); i++) {
-                    System.out.println(i + "번째 아이템 " + chatRoomList.get(i).getKey());
-                }
-
-
             }
 
             @Override
