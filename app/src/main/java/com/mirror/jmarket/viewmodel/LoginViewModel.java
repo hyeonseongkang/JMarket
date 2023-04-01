@@ -17,20 +17,24 @@ import org.jetbrains.annotations.NotNull;
 public class LoginViewModel extends AndroidViewModel {
 
     private LoginRepository repository;
-    private MutableLiveData<FirebaseUser> firebaseUser;
-    private MutableLiveData<Boolean> loginValid;
+    private LiveData<FirebaseUser> firebaseUser;
+    private LiveData<Boolean> loginValid;
+    private LiveData<Boolean> signUpValid;
 
     public LoginViewModel(@NonNull @NotNull Application application) {
         super(application);
-        repository = new LoginRepository(application);
-        //repository = LoginRepository.getInstance(application);
+        //repository = new LoginRepository(application);
+        repository = LoginRepository.getInstance(application);
         firebaseUser = repository.getFirebaseUser();
         loginValid = repository.getLoginValid();
+        signUpValid = repository.getSignUpValid();
     }
 
     public LiveData<FirebaseUser> getFirebaseUser() { return firebaseUser;}
 
     public LiveData<Boolean> getLoginValid() { return loginValid; }
+
+    public LiveData<Boolean> getSignUpValid() { return signUpValid; }
 
     public void login(User user) { repository.login(user); }
 

@@ -29,9 +29,10 @@ public class SignUpActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.fadein_left, R.anim.none);
 
         loginViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(LoginViewModel.class);
-        loginViewModel.getLoginValid().observe(this, new Observer<Boolean>() {
+        loginViewModel.getSignUpValid().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
+                signUpBinding.progress.setVisibility(View.GONE);
                 if (aBoolean) {
                     Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
                     startActivity(intent);
@@ -48,7 +49,7 @@ public class SignUpActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String email = signUpBinding.userEmail.getText().toString();
                 String password = signUpBinding.userPassword.getText().toString();
-
+                signUpBinding.progress.setVisibility(View.VISIBLE);
                 loginViewModel.signUp(new User(email, password));
             }
         });

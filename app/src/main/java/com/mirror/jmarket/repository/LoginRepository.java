@@ -26,24 +26,26 @@ public class LoginRepository {
 
     private Application application;
 
-//    private static LoginRepository instance;
-//
-//    public static synchronized LoginRepository getInstance(Application application) {
-//        if (instance == null) {
-//            instance = new LoginRepository(application);
-//        }
-//        return instance;
-//    }
-//
-//    private LoginRepository(Application application) {
-//        this.application = application;
-//        mAuth = FirebaseAuth.getInstance();
-//        firebaseUser = new MutableLiveData<>();
-//        loginValid = new MutableLiveData<>();
-//        myRef = FirebaseDatabase.getInstance().getReference("users");
-//    }
+    private static LoginRepository instance;
+
+    public static synchronized LoginRepository getInstance(Application application) {
+        if (instance == null) {
+            instance = new LoginRepository(application);
+        }
+        return instance;
+    }
+
+    private LoginRepository(Application application) {
+        this.application = application;
+        mAuth = FirebaseAuth.getInstance();
+        firebaseUser = new MutableLiveData<>();
+        loginValid = new MutableLiveData<>();
+        signUpValid = new MutableLiveData<>();
+        myRef = FirebaseDatabase.getInstance().getReference("users");
+    }
 
     private MutableLiveData<Boolean> loginValid;
+    private MutableLiveData<Boolean> signUpValid;
 
     // Firebase
     private FirebaseAuth mAuth;
@@ -53,17 +55,11 @@ public class LoginRepository {
     // Firebase Database
     private DatabaseReference myRef;
 
-    public LoginRepository(Application application) {
-        this.application = application;
-        mAuth = FirebaseAuth.getInstance();
-        firebaseUser = new MutableLiveData<>();
-        loginValid = new MutableLiveData<>();
-        myRef = FirebaseDatabase.getInstance().getReference("users");
-    }
-
     public MutableLiveData<FirebaseUser> getFirebaseUser() { return firebaseUser; }
 
     public MutableLiveData<Boolean> getLoginValid() { return loginValid; }
+
+    public MutableLiveData<Boolean> getSignUpValid() { return signUpValid; }
 
     public void login(User user) {
         String email = user.getEmail();
@@ -131,7 +127,7 @@ public class LoginRepository {
                                 @Override
                                 public void onComplete(@NonNull @NotNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-                                        loginValid.setValue(true);
+                                        signUpValid.setValue(true);
                                     } else {
                                         Log.d(TAG, "user 데이터 저장 실패");
                                     }
@@ -140,7 +136,7 @@ public class LoginRepository {
 
                         } else {
                             // 가입 실패
-                            loginValid.setValue(false);
+                            signUpValid.setValue(false);
                             Log.d(TAG, "회원가입 실패");
                         }
                     }
