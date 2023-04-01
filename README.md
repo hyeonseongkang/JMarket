@@ -1,16 +1,47 @@
 # 전북대 중고마켓
 
-## 프로젝트 소개
+## 🙋‍♂️ 프로젝트 소개
 전북대 학생들을 위한 중고마켓 앱
 
-## 프로젝트 기간
+## 🗓 프로젝트 기간
 #### 제작 
 2022.09.04 ~ 2022.10.04 / <strong>31일</strong> 
 
 #### 관리 및 업데이트
 2022.10.04 ~ 
 
-## 기능 소개
+## 🛠️ 기술 스택
+
+#### Language
+- Java(Jdk 1.8)
+
+#### Design Pattern
+- MVVM, Repository
+
+#### Database
+- Firebase Realtime Database
+
+#### Authentication
+- Firebase Authentication
+
+#### Storage
+- Firebase Storage
+
+#### Library
+- Glide, LiveData, ViewModel, RxJava
+
+#### Ide
+- Android Studio
+
+## ✏️ 프로젝트를 통해 배운점
+
+### [MVVM pattern](https://velog.io/@hyeonseongkang/%EC%95%88%EB%93%9C%EB%A1%9C%EC%9D%B4%EB%93%9C-MVVM-%ED%8C%A8%ED%84%B4)
+### [RxJava](https://velog.io/@hyeonseongkang/RxJava)
+
+## 🎞 시연영상
+### [전북대 중고마켓 시연영상](https://youtu.be/l5GDLKzskfY)
+
+## 👀 기능 소개
 
 ### 로그인 및 회원가입
 | 로그인 | 회원가입 |
@@ -58,30 +89,3 @@
 | 작성한 리뷰 |
 |:-:|
 |<img src="https://user-images.githubusercontent.com/68272971/193629365-ee4f3ae7-87e4-4219-8216-911c9fc1dc99.png" height=600px>|
-
-## 담당 역할
-
-#### 전체
-
-## 기술 스택
-
-#### Front-End
-- android studio(java)
-
-#### Back-End
-- firebase
-
-## 디자인 패턴
-
-#### MVVM Pattern
-
-
-## 사용 라이브러리
-- firebase-database:20.0.5
-- firebase-auth:21.0.7
-- firebase-storage:20.0.1
-- lifecycle-viewmodel:2.5.0
-- lifecycle-livedata:2.5.0
-- glide:4.11.0
-
-## 새롭게 알게 된 점
