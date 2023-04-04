@@ -25,8 +25,8 @@ public class UserManagerViewModel extends AndroidViewModel {
 
     public UserManagerViewModel(Application application) {
         super(application);
-        repository = new UserManagerRepository(application);
-        //repository = UserManagerRepository.getInstance(application);
+        //repository = new UserManagerRepository(application);
+        repository = UserManagerRepository.getInstance(application);
         userProfile = repository.getUserProfile();
         otherUserProfile = repository.getOtherUserProfile();
         usersProfile = repository.getUsersProfile();

@@ -25,6 +25,7 @@ public class LoginActivity extends AppCompatActivity {
         loginBinding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(loginBinding.getRoot());
 
+
         loginViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(LoginViewModel.class);
         loginViewModel.getLoginValid().observe(this, new Observer<Boolean>() {
             @Override
@@ -64,4 +65,10 @@ public class LoginActivity extends AppCompatActivity {
 //        super.onStart();
 //        loginViewModel.loginCheck();
 //    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        loginViewModel.getLoginValid().removeObservers(this);
+    }
 }

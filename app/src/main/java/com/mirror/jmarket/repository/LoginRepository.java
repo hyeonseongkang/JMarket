@@ -23,7 +23,6 @@ public class LoginRepository {
 
     public final static String TAG = "LoginRepository";
 
-
     private Application application;
 
     private static LoginRepository instance;
@@ -37,6 +36,7 @@ public class LoginRepository {
 
     private LoginRepository(Application application) {
         this.application = application;
+        Log.d(TAG, "생성자입니다.");
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = new MutableLiveData<>();
         loginValid = new MutableLiveData<>();
@@ -148,6 +148,7 @@ public class LoginRepository {
     }
 
     public void loginCheck() {
+        Log.d(TAG, "loginCheck" + " " + application);
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             firebaseUser.setValue(currentUser);

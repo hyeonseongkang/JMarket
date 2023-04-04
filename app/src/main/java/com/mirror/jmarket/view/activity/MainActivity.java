@@ -9,9 +9,11 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.mirror.jmarket.R;
 import com.mirror.jmarket.databinding.ActivityMainBinding;
@@ -47,11 +49,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(mainBinding.getRoot());
 
         // login view model
+        //loginViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(LoginViewModel.class);
         loginViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(LoginViewModel.class);
         loginViewModel.loginCheck();
-        //loginViewModel.logout();
         USER = loginViewModel.getFirebaseUser().getValue();
 
+        Log.d(TAG, "onCreate");
+        //loginViewModel.logout();
 
         // bottom navigation 채팅 아이콘에 badge 달기
         badgeDrawable = mainBinding.bottomNavigation.getOrCreateBadge(R.id.chat);
@@ -65,8 +69,8 @@ public class MainActivity extends AppCompatActivity {
         chatViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ChatViewModel.class);
         //chatViewModel.testDelete();
         //chatViewModel.getMyChats(USER.getUid()); // 내 채팅 가져오기
-        chatViewModel.getMyChatRooms(USER.getUid()); // 내 채팅방 가져오기
-        chatViewModel.getUnReadChatCount(USER.getUid()); // 읽지 않은 채팅 갯수 가져오기
+        chatViewModel.getMyChatRooms(FirebaseAuth.getInstance().getUid()); // 내 채팅방 가져오기
+        chatViewModel.getUnReadChatCount(FirebaseAuth.getInstance().getUid()); // 읽지 않은 채팅 갯수 가져오기
 
         // observe 통해 view model - model(repository)의 LiveData unReadChatCount를 관찰하다 변경이 생기면 호출됨
         chatViewModel.getUnReadChatCount().observe(this, new Observer<HashMap<List<String>, Integer>>() {
@@ -80,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
                     // 상대 uid, itemKey를 활용해 채팅방 마다 읽지 않은 채팅 수 나타내기
                     Log.d(TAG, keys.toString() + "!@!@!@ @ " + hashMap.get(keys));
-                    chatViewModel.setUnReadChatCount(USER.getUid(), keys.get(0), keys.get(1), hashMap.get(keys));
+                    chatViewModel.setUnReadChatCount(FirebaseAuth.getInstance().getUid(), keys.get(0), keys.get(1), hashMap.get(keys));
                     count += hashMap.get(keys);
                 }
 
@@ -119,4 +123,34 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     };
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume");
+    }
 }

@@ -1,9 +1,11 @@
 package com.mirror.jmarket.viewmodel;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -42,5 +44,9 @@ public class LoginViewModel extends AndroidViewModel {
 
     public void logout() { repository.logout(); }
 
-    public void loginCheck() { repository.loginCheck(); }
+    public void loginCheck() {
+        Log.d("하하하", "ㄴㅇㅁㄴㅇㅇㅁㅇㅁㄴ");
+        repository.loginCheck(); }
+
+
 }

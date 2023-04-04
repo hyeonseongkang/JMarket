@@ -31,24 +31,24 @@ public class UserManagerRepository {
 
     public Application application;
 
-//    private static UserManagerRepository instance;
-//
-//    public static synchronized UserManagerRepository getInstance(Application application) {
-//        if (instance == null) {
-//            instance = new UserManagerRepository(application);
-//        }
-//        return instance;
-//    }
-//
-//    private UserManagerRepository(Application application) {
-//        this.application = application;
-//        userProfile = new MutableLiveData<>();
-//        usersProfile = new MutableLiveData<>();
-//        users = new ArrayList<>();
-//        updateValid = new MutableLiveData<>();
-//        otherUserProfile = new MutableLiveData<>();
-//        myRef = FirebaseDatabase.getInstance().getReference("users");
-//    }
+    private static UserManagerRepository instance;
+
+    public static synchronized UserManagerRepository getInstance(Application application) {
+        if (instance == null) {
+            instance = new UserManagerRepository(application);
+        }
+        return instance;
+    }
+
+    private UserManagerRepository(Application application) {
+        this.application = application;
+        userProfile = new MutableLiveData<>();
+        usersProfile = new MutableLiveData<>();
+        users = new ArrayList<>();
+        updateValid = new MutableLiveData<>();
+        otherUserProfile = new MutableLiveData<>();
+        myRef = FirebaseDatabase.getInstance().getReference("users");
+    }
 
     private MutableLiveData<User> userProfile;
     private MutableLiveData<User> otherUserProfile;
@@ -62,15 +62,15 @@ public class UserManagerRepository {
     // Firebase Database
     private DatabaseReference myRef;
 
-    public UserManagerRepository(Application application) {
-        this.application = application;
-        userProfile = new MutableLiveData<>();
-        usersProfile = new MutableLiveData<>();
-        users = new ArrayList<>();
-        updateValid = new MutableLiveData<>();
-        otherUserProfile = new MutableLiveData<>();
-        myRef = FirebaseDatabase.getInstance().getReference("users");
-    }
+//    public UserManagerRepository(Application application) {
+//        this.application = application;
+//        userProfile = new MutableLiveData<>();
+//        usersProfile = new MutableLiveData<>();
+//        users = new ArrayList<>();
+//        updateValid = new MutableLiveData<>();
+//        otherUserProfile = new MutableLiveData<>();
+//        myRef = FirebaseDatabase.getInstance().getReference("users");
+//    }
 
     public MutableLiveData<User> getUserProfile() { return userProfile; }
 
