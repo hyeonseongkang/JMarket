@@ -35,34 +35,34 @@ public class ItemRepository {
 
     private Application application;
 
-//    private static ItemRepository instance;
-//
-//    public static synchronized ItemRepository getInstance(Application application) {
-//        if (instance == null) {
-//            instance = new ItemRepository(application);
-//        }
-//        return instance;
-//    }
-//
-//    private ItemRepository(Application application) {
-//        this.application = application;
-//        itemRef = FirebaseDatabase.getInstance().getReference("items");
-//        completeRef = FirebaseDatabase.getInstance().getReference("completeItems");
-//        reviewsRef = FirebaseDatabase.getInstance().getReference("reviews");
-//        itemSave = new MutableLiveData<>();
-//        items = new MutableLiveData<>();
-//        myInterestItems = new MutableLiveData<>();
-//        myOnSalesItems = new MutableLiveData<>();
-//        myCompleteSalesItems = new MutableLiveData<>();
-//        myBuyItems = new MutableLiveData<>();
-//        tempItems = new ArrayList<>();
-//        item = new MutableLiveData<>();
-//        like = new MutableLiveData<>();
-//        complete = new MutableLiveData<>();
-//        reviewComplete = new MutableLiveData<>();
-//        reviews = new MutableLiveData<>();
-//        reviewList = new ArrayList<>();
-//    }
+    private static ItemRepository instance;
+
+    public static synchronized ItemRepository getInstance(Application application) {
+        if (instance == null) {
+            instance = new ItemRepository(application);
+        }
+        return instance;
+    }
+
+    private ItemRepository(Application application) {
+        this.application = application;
+        itemRef = FirebaseDatabase.getInstance().getReference("items");
+        completeRef = FirebaseDatabase.getInstance().getReference("completeItems");
+        reviewsRef = FirebaseDatabase.getInstance().getReference("reviews");
+        itemSave = new MutableLiveData<>();
+        items = new MutableLiveData<>();
+        myInterestItems = new MutableLiveData<>();
+        myOnSalesItems = new MutableLiveData<>();
+        myCompleteSalesItems = new MutableLiveData<>();
+        myBuyItems = new MutableLiveData<>();
+        tempItems = new ArrayList<>();
+        item = new MutableLiveData<>();
+        like = new MutableLiveData<>();
+        complete = new MutableLiveData<>();
+        reviewComplete = new MutableLiveData<>();
+        reviews = new MutableLiveData<>();
+        reviewList = new ArrayList<>();
+    }
 
     private DatabaseReference itemRef;
     private DatabaseReference completeRef;
@@ -91,25 +91,25 @@ public class ItemRepository {
     private MutableLiveData<List<Review>> reviews;
     private List<Review> reviewList;
 
-    public ItemRepository(Application application) {
-        this.application = application;
-        itemRef = FirebaseDatabase.getInstance().getReference("items");
-        completeRef = FirebaseDatabase.getInstance().getReference("completeItems");
-        reviewsRef = FirebaseDatabase.getInstance().getReference("reviews");
-        itemSave = new MutableLiveData<>();
-        items = new MutableLiveData<>();
-        myInterestItems = new MutableLiveData<>();
-        myOnSalesItems = new MutableLiveData<>();
-        myCompleteSalesItems = new MutableLiveData<>();
-        myBuyItems = new MutableLiveData<>();
-        tempItems = new ArrayList<>();
-        item = new MutableLiveData<>();
-        like = new MutableLiveData<>();
-        complete = new MutableLiveData<>();
-        reviewComplete = new MutableLiveData<>();
-        reviews = new MutableLiveData<>();
-        reviewList = new ArrayList<>();
-    }
+//    public ItemRepository(Application application) {
+//        this.application = application;
+//        itemRef = FirebaseDatabase.getInstance().getReference("items");
+//        completeRef = FirebaseDatabase.getInstance().getReference("completeItems");
+//        reviewsRef = FirebaseDatabase.getInstance().getReference("reviews");
+//        itemSave = new MutableLiveData<>();
+//        items = new MutableLiveData<>();
+//        myInterestItems = new MutableLiveData<>();
+//        myOnSalesItems = new MutableLiveData<>();
+//        myCompleteSalesItems = new MutableLiveData<>();
+//        myBuyItems = new MutableLiveData<>();
+//        tempItems = new ArrayList<>();
+//        item = new MutableLiveData<>();
+//        like = new MutableLiveData<>();
+//        complete = new MutableLiveData<>();
+//        reviewComplete = new MutableLiveData<>();
+//        reviews = new MutableLiveData<>();
+//        reviewList = new ArrayList<>();
+//    }
 
     public MutableLiveData<Boolean> getItemSave() {
         return itemSave;
