@@ -44,38 +44,38 @@ public class ChatRepository {
     private static ChatRepository instance;
 
     private Application application;
-//
-//    private ChatRepository(Application application) {
-//        this.application = application;
-//        chatsRef = FirebaseDatabase.getInstance().getReference("chats");
-//        chatRoomsRef = FirebaseDatabase.getInstance().getReference("chatRooms");
-//
-//        myChats = new MutableLiveData<>();
-//        myChatList = new ArrayList<>();
-//
-//        chats = new MutableLiveData<>();
-//        chatList = new ArrayList<>();
-//
-//        chatRooms = new MutableLiveData<>();
-//        chatRoomList = new ArrayList<>();
-//
-//        visited = new MutableLiveData<>();
-//
-//        createChatRoom = new MutableLiveData<>();
-//
-//        unReadChatCount = new MutableLiveData<>();
-//
-//        leaveChatRoom = new MutableLiveData<>();
-//
-//        myLeaveChatRoom = new MutableLiveData<>();
-//    }
-//
-//    public static synchronized ChatRepository getInstance(Application application) {
-//        if (instance == null) {
-//            instance = new ChatRepository(application);
-//        }
-//        return instance;
-//    }
+
+    private ChatRepository(Application application) {
+        this.application = application;
+        chatsRef = FirebaseDatabase.getInstance().getReference("chats");
+        chatRoomsRef = FirebaseDatabase.getInstance().getReference("chatRooms");
+
+        myChats = new MutableLiveData<>();
+        myChatList = new ArrayList<>();
+
+        chats = new MutableLiveData<>();
+        chatList = new ArrayList<>();
+
+        chatRooms = new MutableLiveData<>();
+        chatRoomList = new ArrayList<>();
+
+        visited = new MutableLiveData<>();
+
+        createChatRoom = new MutableLiveData<>();
+
+        unReadChatCount = new MutableLiveData<>();
+
+        leaveChatRoom = new MutableLiveData<>();
+
+        myLeaveChatRoom = new MutableLiveData<>();
+    }
+
+    public static synchronized ChatRepository getInstance(Application application) {
+        if (instance == null) {
+            instance = new ChatRepository(application);
+        }
+        return instance;
+    }
 
     private DatabaseReference chatsRef;
     private DatabaseReference chatRoomsRef;
@@ -99,31 +99,31 @@ public class ChatRepository {
     private MutableLiveData<Boolean> myLeaveChatRoom;
 
 
-    public ChatRepository(Application application) {
-        this.application = application;
-        chatsRef = FirebaseDatabase.getInstance().getReference("chats");
-        chatRoomsRef = FirebaseDatabase.getInstance().getReference("chatRooms");
-
-        myChats = new MutableLiveData<>();
-        myChatList = new ArrayList<>();
-
-        chats = new MutableLiveData<>();
-        chatList = new ArrayList<>();
-
-        chatRooms = new MutableLiveData<>();
-        chatRoomList = new ArrayList<>();
-
-        visited = new MutableLiveData<>();
-
-        createChatRoom = new MutableLiveData<>();
-
-        unReadChatCount = new MutableLiveData<>();
-
-        leaveChatRoom = new MutableLiveData<>();
-
-        myLeaveChatRoom = new MutableLiveData<>();
-
-    }
+//    public ChatRepository(Application application) {
+//        this.application = application;
+//        chatsRef = FirebaseDatabase.getInstance().getReference("chats");
+//        chatRoomsRef = FirebaseDatabase.getInstance().getReference("chatRooms");
+//
+//        myChats = new MutableLiveData<>();
+//        myChatList = new ArrayList<>();
+//
+//        chats = new MutableLiveData<>();
+//        chatList = new ArrayList<>();
+//
+//        chatRooms = new MutableLiveData<>();
+//        chatRoomList = new ArrayList<>();
+//
+//        visited = new MutableLiveData<>();
+//
+//        createChatRoom = new MutableLiveData<>();
+//
+//        unReadChatCount = new MutableLiveData<>();
+//
+//        leaveChatRoom = new MutableLiveData<>();
+//
+//        myLeaveChatRoom = new MutableLiveData<>();
+//
+//    }
 
     public MutableLiveData<List<HashMap<List<String>, List<Chat>>>> getMyChats() {
         return myChats;

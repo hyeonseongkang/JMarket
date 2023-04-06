@@ -37,8 +37,8 @@ public class ChatViewModel extends AndroidViewModel {
 
     public ChatViewModel(Application application) {
         super(application);
-        //repository = ChatRepository.getInstance(application);
-        repository = new ChatRepository(application);
+        repository = ChatRepository.getInstance(application);
+        //repository = new ChatRepository(application);
         myChats = repository.getMyChats();
         chatRooms = repository.getMyChatRooms();
         visited = repository.getVisited();
