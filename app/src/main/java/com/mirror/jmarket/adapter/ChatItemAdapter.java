@@ -66,7 +66,6 @@ public class ChatItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         DayOfWeek dayOfWeek = localDate.getDayOfWeek();
         int dayOfWeekNum = dayOfWeek.getValue();
 
-
         if (holder.getItemViewType() == 1) {
             MyChatViewHolder myChatViewHolder = (MyChatViewHolder) holder;
             myChatViewHolder.dateLayout.setVisibility(View.VISIBLE);

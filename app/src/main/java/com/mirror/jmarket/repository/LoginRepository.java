@@ -38,9 +38,9 @@ public class LoginRepository {
         this.application = application;
         Log.d(TAG, "생성자입니다.");
         mAuth = FirebaseAuth.getInstance();
-        firebaseUser = new MutableLiveData<>();
-        loginValid = new MutableLiveData<>();
-        signUpValid = new MutableLiveData<>();
+      //  firebaseUser = new MutableLiveData<>();
+      //  loginValid = new MutableLiveData<>();
+      //  signUpValid = new MutableLiveData<>();
         myRef = FirebaseDatabase.getInstance().getReference("users");
     }
 
@@ -55,11 +55,26 @@ public class LoginRepository {
     // Firebase Database
     private DatabaseReference myRef;
 
-    public MutableLiveData<FirebaseUser> getFirebaseUser() { return firebaseUser; }
+    public MutableLiveData<FirebaseUser> getFirebaseUser() {
+        if (firebaseUser == null) {
+            firebaseUser = new MutableLiveData<>();
+        }
+        return firebaseUser; }
 
-    public MutableLiveData<Boolean> getLoginValid() { return loginValid; }
+    public MutableLiveData<Boolean> getLoginValid() {
+        if (loginValid == null) {
+            loginValid = new MutableLiveData<>();
+        }
+        return loginValid;
+    }
 
-    public MutableLiveData<Boolean> getSignUpValid() { return signUpValid; }
+    public MutableLiveData<Boolean> getSignUpValid() {
+        if (signUpValid == null) {
+            signUpValid = new MutableLiveData<>();
+        }
+        return signUpValid;
+    }
+
 
     public void login(User user) {
         String email = user.getEmail();

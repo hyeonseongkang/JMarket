@@ -27,16 +27,28 @@ public class LoginViewModel extends AndroidViewModel {
         super(application);
         //repository = new LoginRepository(application);
         repository = LoginRepository.getInstance(application);
-        firebaseUser = repository.getFirebaseUser();
-        loginValid = repository.getLoginValid();
-        signUpValid = repository.getSignUpValid();
+      //  firebaseUser = repository.getFirebaseUser();
+      //  loginValid = repository.getLoginValid();
+       // signUpValid = repository.getSignUpValid();
     }
 
-    public LiveData<FirebaseUser> getFirebaseUser() { return firebaseUser;}
+    public LiveData<FirebaseUser> getFirebaseUser() {
+        if (firebaseUser == null) {
+            firebaseUser = repository.getFirebaseUser();
+        }
+        return firebaseUser;}
 
-    public LiveData<Boolean> getLoginValid() { return loginValid; }
+    public LiveData<Boolean> getLoginValid() {
+        if (loginValid == null) {
+            loginValid = repository.getLoginValid();
+        }
+        return loginValid; }
 
-    public LiveData<Boolean> getSignUpValid() { return signUpValid; }
+    public LiveData<Boolean> getSignUpValid() {
+        if (signUpValid == null) {
+            signUpValid = repository.getSignUpValid();
+        }
+        return signUpValid; }
 
     public void login(User user) { repository.login(user); }
 
@@ -45,8 +57,12 @@ public class LoginViewModel extends AndroidViewModel {
     public void logout() { repository.logout(); }
 
     public void loginCheck() {
-        Log.d("하하하", "ㄴㅇㅁㄴㅇㅇㅁㅇㅁㄴ");
+        if (loginValid == null ) {
+            loginValid = repository.getLoginValid();
+        }
+
+        if (firebaseUser == null) {
+            firebaseUser = repository.getFirebaseUser();
+        }
         repository.loginCheck(); }
-
-
 }
