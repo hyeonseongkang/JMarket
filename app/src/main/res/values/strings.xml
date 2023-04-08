@@ -2,4 +2,11 @@
     <string name="app_name">JMarket</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="Monday">월요일</string>
+    <string name="Tuesday">화요일</string>
+    <string name="Wednesday">수요일</string>
+    <string name="Thursday">목요일</string>
+    <string name="Friday">금요일</string>
+    <string name="Saturday">토요일</string>
+    <string name="Sunday">일용일</string>
 </resources>

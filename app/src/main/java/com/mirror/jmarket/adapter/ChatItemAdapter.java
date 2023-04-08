@@ -33,7 +33,14 @@ public class ChatItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private String userUid = new String(); // 상대방 uid
     private String userPhoto; // 상대방 profile photo
 
-    private String[] days = {"월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"};
+    private String[] days = {
+            String.valueOf(R.string.Monday),
+            String.valueOf(R.string.Tuesday),
+            String.valueOf(R.string.Wednesday),
+            String.valueOf(R.string.Thursday),
+            String.valueOf(R.string.Friday),
+            String.valueOf(R.string.Saturday),
+            String.valueOf(R.string.Sunday)};
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
