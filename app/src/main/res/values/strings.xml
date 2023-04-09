@@ -9,4 +9,9 @@
     <string name="Friday">금요일</string>
     <string name="Saturday">토요일</string>
     <string name="Sunday">일용일</string>
+    <string name="year">년 </string>
+    <string name="month">월 </string>
+    <string name="day">일 </string>
+    <string name="inputMessage">메시지를 입력해 주세요.</string>
+    <string name="outOther">상대방이 채팅방을 나갔습니다.</string>
 </resources>

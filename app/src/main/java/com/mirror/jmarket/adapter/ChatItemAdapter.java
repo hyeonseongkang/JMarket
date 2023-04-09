@@ -78,7 +78,7 @@ public class ChatItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             myChatViewHolder.dateLayout.setVisibility(View.VISIBLE);
             myChatViewHolder.date.setVisibility(View.VISIBLE);
             myChatViewHolder.time.setVisibility(View.VISIBLE);
-            myChatViewHolder.date.setText(date[0] + "년 " + date[1] + "월 " + date[2] + "일 " + days[dayOfWeekNum - 1]);
+            myChatViewHolder.date.setText(date[0] + R.string.year + date[1] + R.string.month + date[2] + R.string.day + days[dayOfWeekNum - 1]);
 
             // 채팅 데이터가 1개 이상일때
             if (position > 0) {
@@ -111,7 +111,7 @@ public class ChatItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             otherChatViewHolder.date.setVisibility(View.VISIBLE);
             otherChatViewHolder.userNickName.setVisibility(View.VISIBLE);
             otherChatViewHolder.time.setVisibility(View.VISIBLE);
-            otherChatViewHolder.date.setText(date[0] + "년 " + date[1] + "월 " + date[2] + "일 " + days[dayOfWeekNum - 1]);
+            otherChatViewHolder.date.setText(date[0] + R.string.year + date[1] + R.string.month + date[2] + R.string.day + days[dayOfWeekNum - 1]);
 
             otherChatViewHolder.userPhoto.setVisibility(View.VISIBLE);
 
