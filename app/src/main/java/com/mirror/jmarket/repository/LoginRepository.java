@@ -98,11 +98,9 @@ public class LoginRepository {
                             mUser = mAuth.getCurrentUser();
                             firebaseUser.setValue(mUser);
                             loginValid.setValue(true);
-                            Log.d(TAG, "로그인 성공");
                         } else {
                             // 로그인 실패
                             loginValid.setValue(false);
-                            Log.d(TAG, "로그인 실패");
                         }
                     }
                 });
@@ -145,6 +143,17 @@ public class LoginRepository {
                                         signUpValid.setValue(true);
                                     } else {
                                         Log.d(TAG, "user 데이터 저장 실패");
+                                        myRef.child(mUser.getUid()).setValue(new User(mUser.getUid(), email, password, "", "")).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull @NotNull Task<Void> task) {
+                                                if (!task.isSuccessful()) {
+                                                    FirebaseAuth.getInstance().signOut();
+                                                    signUpValid.setValue(false);
+                                                } else {
+                                                    signUpValid.setValue(true);
+                                                }
+                                            }
+                                        });
                                     }
                                 }
                             });
@@ -152,7 +161,6 @@ public class LoginRepository {
                         } else {
                             // 가입 실패
                             signUpValid.setValue(false);
-                            Log.d(TAG, "회원가입 실패");
                         }
                     }
                 });
@@ -163,7 +171,6 @@ public class LoginRepository {
     }
 
     public void loginCheck() {
-        Log.d(TAG, "loginCheck" + " " + application);
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             firebaseUser.setValue(currentUser);
