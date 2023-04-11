@@ -537,8 +537,24 @@ public class ChatRepository {
         chat.setDate(dateTime[0]);
         chat.setTime(dateTime[1]);
 
-        chatsRef.child(sender).child(receiver).child(itemKey).push().setValue(chat);
-        chatsRef.child(receiver).child(sender).child(itemKey).push().setValue(chat);
+        String pushKey1 = chatsRef.push().getKey();
+        String pushKey2 = chatsRef.push().getKey() ;
+        chatsRef.child(sender).child(receiver).child(itemKey).child(pushKey1).setValue(chat).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    chatsRef.child(receiver).child(sender).child(itemKey).child(pushKey2).setValue(chat).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull @NotNull Task<Void> task) {
+                            if (!task.isSuccessful()) {
+                                chatsRef.child(sender).child(receiver).child(itemKey).child(pushKey1).removeValue();
+                            }
+                        }
+                    });
+                }
+            }
+        });
+
 
         // String message, String user, String time
         boolean checked = chat.getChecked();
