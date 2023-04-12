@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.mirror.jmarket.model.User;
@@ -30,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
         loginViewModel.getLoginValid().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
+                Log.d(TAG, "HELLO!!!!!!!!");
                 if (aBoolean) {
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);

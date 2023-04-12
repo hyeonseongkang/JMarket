@@ -171,12 +171,13 @@ public class LoginRepository {
     }
 
     public void loginCheck() {
+        Log.d(TAG, application.toString());
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            firebaseUser.setValue(currentUser);
-            loginValid.setValue(true);
+           firebaseUser.postValue(currentUser);
+           loginValid.postValue(true);
         } else {
-            loginValid.setValue(false);
+           loginValid.postValue(false);
         }
     }
 

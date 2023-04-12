@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                     // hashMap.get(keys) -> count
 
                     // 상대 uid, itemKey를 활용해 채팅방 마다 읽지 않은 채팅 수 나타내기
-                    Log.d(TAG, keys.toString() + "!@!@!@ @ " + hashMap.get(keys));
+                 //   Log.d(TAG, keys.toString() + "!@!@!@ @ " + hashMap.get(keys));
                     chatViewModel.setUnReadChatCount(FirebaseAuth.getInstance().getUid(), keys.get(0), keys.get(1), hashMap.get(keys));
                     count += hashMap.get(keys);
                 }
