@@ -546,26 +546,26 @@ public class ChatRepository {
                     chatsRef.child(receiver).child(sender).child(itemKey).child(pushKey2).setValue(chat).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull @NotNull Task<Void> task) {
-                            if (!task.isSuccessful()) {
+                            if (task.isSuccessful()) {
+                                // String message, String user, String time
+                                boolean checked = chat.getChecked();
+                                LastMessage lastMessage = new LastMessage(chat.getMessage(), lastSendUser, dateTime[0], dateTime[1], checked);
+                                chatRoomsRef.child(receiver).child(sender).child(itemKey).child("lastMessage").setValue(lastMessage);
+                                chatRoomsRef.child(receiver).child(sender).child(itemKey).child("firstUp").setValue(true);
+
+                                // 보내는 사람은 lastMessage checked -> true
+                                lastMessage.setChecked(true);
+                                chatRoomsRef.child(sender).child(receiver).child(itemKey).child("lastMessage").setValue(lastMessage);
+                                chatRoomsRef.child(sender).child(receiver).child(itemKey).child("firstUp").setValue(true);
+                            } else {
                                 chatsRef.child(sender).child(receiver).child(itemKey).child(pushKey1).removeValue();
+                                return;
                             }
                         }
                     });
                 }
             }
         });
-
-
-        // String message, String user, String time
-        boolean checked = chat.getChecked();
-        LastMessage lastMessage = new LastMessage(chat.getMessage(), lastSendUser, dateTime[0], dateTime[1], checked);
-        chatRoomsRef.child(receiver).child(sender).child(itemKey).child("lastMessage").setValue(lastMessage);
-        chatRoomsRef.child(receiver).child(sender).child(itemKey).child("firstUp").setValue(true);
-
-        // 보내는 사람은 lastMessage checked -> true
-        lastMessage.setChecked(true);
-        chatRoomsRef.child(sender).child(receiver).child(itemKey).child("lastMessage").setValue(lastMessage);
-        chatRoomsRef.child(sender).child(receiver).child(itemKey).child("firstUp").setValue(true);
     }
 
 
@@ -701,37 +701,5 @@ public class ChatRepository {
             }
         });
     }
-
-    /*
-    private class GetMyChatUsersTask extends AsyncTask<String, Void, Void> {
-
-        @Override
-        protected Void doInBackground(String... uid) {
-            Log.d("TASK", "2");
-            usersRef.child(uid[0]).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                    User tempUser = snapshot.getValue(User.class);
-                    Log.d("TASK", tempUser.getEmail());
-                    myChatUsers.add(tempUser);
-                }
-
-
-                @Override
-                public void onCancelled(@NonNull @NotNull DatabaseError error) {
-
-                }
-            });
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void val) {
-            super.onPostExecute(val);
-            Log.d("TASK", "END");
-        }
-    }
-    */
 }
 
