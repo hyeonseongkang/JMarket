@@ -14,4 +14,9 @@
     <string name="day">일 </string>
     <string name="inputMessage">메시지를 입력해 주세요.</string>
     <string name="outOther">상대방이 채팅방을 나갔습니다.</string>
+    <string name="completeDeal">거래 완료 요청</string>
+    <string name="outChat">채팅방 나가기</string>
+    <string name="backButton">취소</string>
+
+
 </resources>

@@ -349,14 +349,23 @@ public class ChatRepository {
                     chatRoom2.setUser(myUser);
 
                     // 채팅방 db에 저장
-                    chatRoomsRef.child(uid).child(sellerUid).child(itemKey).setValue(chatRoom1);
-                    chatRoomsRef.child(sellerUid).child(uid).child(itemKey).setValue(chatRoom2).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    chatRoomsRef.child(uid).child(sellerUid).child(itemKey).setValue(chatRoom1).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull @NotNull Task<Void> task) {
-                            if (task.isSuccessful()) createChatRoom.setValue(true);
-                            else createChatRoom.setValue(false);
+                            if (task.isSuccessful()) {
+                                chatRoomsRef.child(sellerUid).child(uid).child(itemKey).setValue(chatRoom2).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull @NotNull Task<Void> task) {
+                                        if (task.isSuccessful()) createChatRoom.setValue(true);
+                                        else createChatRoom.setValue(false);
+                                    }
+                                });
+                            } else {
+                                chatRoomsRef.child(uid).child(sellerUid).child(itemKey).removeValue();
+                            }
                         }
                     });
+
                 } else {
                     createChatRoom.setValue(false);
                 }

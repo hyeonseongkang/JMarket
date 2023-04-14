@@ -18,7 +18,7 @@
             android:id="@+id/completeDeal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="거래 완료 요청"
+            android:text="@string/completeDeal"
             android:textColor="#00FF71"
             android:fontFamily="@font/scd5"
             android:background="#FFFFFF"/>
@@ -27,7 +27,7 @@
             android:id="@+id/outChat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="채팅방 나가기"
+            android:text="@string/outChat"
             android:fontFamily="@font/scd5"
             android:textColor="#FF0000"
             android:background="#FFFFFF"/>
@@ -36,7 +36,7 @@
             android:id="@+id/backButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="취소"
+            android:text="@string/backButton"
             android:fontFamily="@font/scd5"
             android:background="#FFFFFF"
             android:textColor="#000000"/>
