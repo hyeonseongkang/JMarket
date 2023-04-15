@@ -27,9 +27,9 @@ public class LoginViewModel extends AndroidViewModel {
         super(application);
         //repository = new LoginRepository(application);
         repository = LoginRepository.getInstance(application);
-      //  firebaseUser = repository.getFirebaseUser();
-      //  loginValid = repository.getLoginValid();
-       // signUpValid = repository.getSignUpValid();
+        //  firebaseUser = repository.getFirebaseUser();
+        //  loginValid = repository.getLoginValid();
+        // signUpValid = repository.getSignUpValid();
     }
 
     public LiveData<FirebaseUser> getFirebaseUser() {

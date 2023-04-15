@@ -8,11 +8,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.mirror.jmarket.R;
+import com.mirror.jmarket.factory.LoginViewModelFactory;
+import com.mirror.jmarket.repository.LoginRepository;
 import com.mirror.jmarket.viewmodel.LoginViewModel;
 
-public class LoadingActivity extends AppCompatActivity {
+public class SplashActivity extends AppCompatActivity {
 
     public static String TAG = "LoadingActivity";
 
@@ -21,13 +24,15 @@ public class LoadingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_loading);
+        setContentView(R.layout.activity_splash);
 
         mHandler = new Handler();
-        loginViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(LoginViewModel.class);
+       loginViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(LoginViewModel.class);
+//        LoginRepository loginRepository = LoginRepository.getInstance(getApplication());
+//        LoginViewModelFactory loginViewModelFactory = new LoginViewModelFactory(loginRepository);
+//        loginViewModel = new ViewModelProvider(this, loginViewModelFactory).get(LoginViewModel.class);
 
         startLoading();
-
     }
 
     @Override
@@ -41,17 +46,20 @@ public class LoadingActivity extends AppCompatActivity {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                loginViewModel.getLoginValid().observe(LoadingActivity.this, new Observer<Boolean>() {
+                loginViewModel.getLoginValid().observe(SplashActivity.this, new Observer<Boolean>() {
                     @Override
                     public void onChanged(Boolean aBoolean) {
                         Log.d(TAG, "problem!!!!!!!!!@!@!@!!!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
                         if (aBoolean) {
-                            Intent intent = new Intent(LoadingActivity.this, MainActivity.class);
+                            loginViewModel.getLoginValid().removeObservers(SplashActivity.this);
+                            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                             startActivity(intent);
                             finish();
+
                            // mHandler.removeCallbacksAndMessages(null);
                         } else {
-                            Intent intent = new Intent(LoadingActivity.this, LoginActivity.class);
+                            loginViewModel.getLoginValid().removeObservers(SplashActivity.this);
+                            Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
                             startActivity(intent);
                             finish();
                            // mHandler.removeCallbacksAndMessages(null);
@@ -65,7 +73,9 @@ public class LoadingActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mHandler.removeCallbacksAndMessages(null);
+        Toast.makeText(this, "Destroy", Toast.LENGTH_SHORT).show();
+        //loginViewModel.getLoginValid().removeObservers(this);
+        //mHandler.removeCallbacksAndMessages(null);
         mHandler = null;
     }
 }

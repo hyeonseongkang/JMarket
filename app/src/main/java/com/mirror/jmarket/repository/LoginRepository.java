@@ -55,6 +55,7 @@ public class LoginRepository {
     // Firebase Database
     private DatabaseReference myRef;
 
+
     public MutableLiveData<FirebaseUser> getFirebaseUser() {
         if (firebaseUser == null) {
             firebaseUser = new MutableLiveData<>();
@@ -172,12 +173,15 @@ public class LoginRepository {
 
     public void loginCheck() {
         Log.d(TAG, application.toString());
+        Log.d("LoginRepository입니다.", application.getMainExecutor().toString());
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
            firebaseUser.postValue(currentUser);
+           Log.d(TAG, "true");
            loginValid.postValue(true);
         } else {
-           loginValid.postValue(false);
+            Log.d(TAG, "false");
+         //  loginValid.postValue(false);
         }
     }
 

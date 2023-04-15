@@ -17,6 +17,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.mirror.jmarket.R;
 import com.mirror.jmarket.databinding.ActivityMainBinding;
+import com.mirror.jmarket.factory.LoginViewModelFactory;
+import com.mirror.jmarket.repository.LoginRepository;
 import com.mirror.jmarket.view.fragment.ChatFragment;
 import com.mirror.jmarket.view.fragment.HomeFragment;
 import com.mirror.jmarket.view.fragment.MyPageFragment;
@@ -51,8 +53,15 @@ public class MainActivity extends AppCompatActivity {
         // login view model
         //loginViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(LoginViewModel.class);
         loginViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(LoginViewModel.class);
+      //  loginViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(LoginViewModel.class);
         loginViewModel.loginCheck();
-        USER = loginViewModel.getFirebaseUser().getValue();
+     //   loginViewModel.loginValid.
+
+//        LoginRepository loginRepository = LoginRepository.getInstance(getApplication());
+//        LoginViewModelFactory loginViewModelFactory = new LoginViewModelFactory(loginRepository);
+//        LoginViewModel loginViewModel = new ViewModelProvider(this, loginViewModelFactory).get(LoginViewModel.class);
+
+       USER = loginViewModel.getFirebaseUser().getValue();
 
         Log.d(TAG, "onCreate");
         //loginViewModel.logout();
