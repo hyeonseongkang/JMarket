@@ -84,7 +84,7 @@ public class ChatActivity extends AppCompatActivity {
 
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setHasFixedSize(true);
-        adapter = new ChatItemAdapter();
+        adapter = new ChatItemAdapter(this);
         binding.recyclerView.setAdapter(adapter);
 
         binding.userNickName.setText(userNickName); // 채팅 상대방 닉네임

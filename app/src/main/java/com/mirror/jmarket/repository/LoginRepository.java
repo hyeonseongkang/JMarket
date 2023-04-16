@@ -36,7 +36,6 @@ public class LoginRepository {
 
     private LoginRepository(Application application) {
         this.application = application;
-        Log.d(TAG, "생성자입니다.");
         mAuth = FirebaseAuth.getInstance();
       //  firebaseUser = new MutableLiveData<>();
       //  loginValid = new MutableLiveData<>();

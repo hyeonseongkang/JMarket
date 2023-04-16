@@ -1,5 +1,7 @@
 package com.mirror.jmarket.adapter;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
@@ -28,19 +30,27 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChatItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
+    private Context mContext;
     private List<Chat> chats = new ArrayList<>();
     private String myUid = new String();
     private String userUid = new String(); // 상대방 uid
     private String userPhoto; // 상대방 profile photo
 
-    private String[] days = {
-            String.valueOf(R.string.Monday),
-            String.valueOf(R.string.Tuesday),
-            String.valueOf(R.string.Wednesday),
-            String.valueOf(R.string.Thursday),
-            String.valueOf(R.string.Friday),
-            String.valueOf(R.string.Saturday),
-            String.valueOf(R.string.Sunday)};
+    private String[] days;
+
+    public ChatItemAdapter(Context context) {
+        this.mContext = context;
+
+        days = new String[]{
+                mContext.getString(R.string.Monday),
+                mContext.getString(R.string.Tuesday),
+                mContext.getString(R.string.Wednesday),
+                mContext.getString(R.string.Thursday),
+                mContext.getString(R.string.Friday),
+                mContext.getString(R.string.Saturday),
+                mContext.getString(R.string.Sunday)};
+    }
+
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -73,12 +83,16 @@ public class ChatItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         DayOfWeek dayOfWeek = localDate.getDayOfWeek();
         int dayOfWeekNum = dayOfWeek.getValue();
 
+        String year = mContext.getString(R.string.year);
+        String month = mContext.getString(R.string.month);
+        String day = mContext.getString(R.string.day);
+
         if (holder.getItemViewType() == 1) {
             MyChatViewHolder myChatViewHolder = (MyChatViewHolder) holder;
             myChatViewHolder.dateLayout.setVisibility(View.VISIBLE);
             myChatViewHolder.date.setVisibility(View.VISIBLE);
             myChatViewHolder.time.setVisibility(View.VISIBLE);
-            myChatViewHolder.date.setText(date[0] + R.string.year + date[1] + R.string.month + date[2] + R.string.day + days[dayOfWeekNum - 1]);
+            myChatViewHolder.date.setText(date[0] + year + " " + date[1] + month + " " + date[2] + day + " " + days[dayOfWeekNum - 1]);
 
             // 채팅 데이터가 1개 이상일때
             if (position > 0) {
@@ -111,7 +125,7 @@ public class ChatItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             otherChatViewHolder.date.setVisibility(View.VISIBLE);
             otherChatViewHolder.userNickName.setVisibility(View.VISIBLE);
             otherChatViewHolder.time.setVisibility(View.VISIBLE);
-            otherChatViewHolder.date.setText(date[0] + R.string.year + date[1] + R.string.month + date[2] + R.string.day + days[dayOfWeekNum - 1]);
+            otherChatViewHolder.date.setText(date[0] + year + " " + date[1] + month + " " + date[2] + day + " " + days[dayOfWeekNum - 1]);
 
             otherChatViewHolder.userPhoto.setVisibility(View.VISIBLE);
 

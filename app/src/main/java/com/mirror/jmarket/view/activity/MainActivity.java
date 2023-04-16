@@ -50,21 +50,9 @@ public class MainActivity extends AppCompatActivity {
         mainBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(mainBinding.getRoot());
 
-        // login view model
-        //loginViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(LoginViewModel.class);
         loginViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(LoginViewModel.class);
-      //  loginViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(LoginViewModel.class);
         loginViewModel.loginCheck();
-     //   loginViewModel.loginValid.
-
-//        LoginRepository loginRepository = LoginRepository.getInstance(getApplication());
-//        LoginViewModelFactory loginViewModelFactory = new LoginViewModelFactory(loginRepository);
-//        LoginViewModel loginViewModel = new ViewModelProvider(this, loginViewModelFactory).get(LoginViewModel.class);
-
-       USER = loginViewModel.getFirebaseUser().getValue();
-
-        Log.d(TAG, "onCreate");
-        //loginViewModel.logout();
+        USER = loginViewModel.getFirebaseUser().getValue();
 
         // bottom navigation 채팅 아이콘에 badge 달기
         badgeDrawable = mainBinding.bottomNavigation.getOrCreateBadge(R.id.chat);
@@ -87,12 +75,12 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(HashMap<List<String>, Integer> hashMap) {
                 int count = 0;
                 Log.d(TAG, "getUnReadChatCount");
-                for (List<String> keys: hashMap.keySet()) {
+                for (List<String> keys : hashMap.keySet()) {
                     // keys.get(0) -> 상대 uid, keys.get(1) -> itemKey
                     // hashMap.get(keys) -> count
 
                     // 상대 uid, itemKey를 활용해 채팅방 마다 읽지 않은 채팅 수 나타내기
-                 //   Log.d(TAG, keys.toString() + "!@!@!@ @ " + hashMap.get(keys));
+                    //   Log.d(TAG, keys.toString() + "!@!@!@ @ " + hashMap.get(keys));
                     chatViewModel.setUnReadChatCount(FirebaseAuth.getInstance().getUid(), keys.get(0), keys.get(1), hashMap.get(keys));
                     count += hashMap.get(keys);
                 }
@@ -116,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
     NavigationBarView.OnItemSelectedListener onItemSelectedListener = new NavigationBarView.OnItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch(item.getItemId()) {
+            switch (item.getItemId()) {
                 case R.id.home:
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, new HomeFragment()).commit();
                     return true;
