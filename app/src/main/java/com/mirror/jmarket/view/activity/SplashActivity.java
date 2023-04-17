@@ -1,36 +1,38 @@
 package com.mirror.jmarket.view.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.mirror.jmarket.R;
-import com.mirror.jmarket.factory.LoginViewModelFactory;
-import com.mirror.jmarket.repository.LoginRepository;
 import com.mirror.jmarket.viewmodel.LoginViewModel;
+
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.ObservableSource;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Function;
 
 public class SplashActivity extends AppCompatActivity {
 
     public static String TAG = "LoadingActivity";
 
     private LoginViewModel loginViewModel;
-    private Handler mHandler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        mHandler = new Handler();
-       loginViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(LoginViewModel.class);
-//        LoginRepository loginRepository = LoginRepository.getInstance(getApplication());
-//        LoginViewModelFactory loginViewModelFactory = new LoginViewModelFactory(loginRepository);
-//        loginViewModel = new ViewModelProvider(this, loginViewModelFactory).get(LoginViewModel.class);
+        loginViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(LoginViewModel.class);
 
         startLoading();
     }
@@ -42,40 +44,26 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     public void startLoading() {
-
-        mHandler.postDelayed(new Runnable() {
+        loginViewModel.getLoginValid().observe(SplashActivity.this, new Observer<Boolean>() {
             @Override
-            public void run() {
-                loginViewModel.getLoginValid().observe(SplashActivity.this, new Observer<Boolean>() {
-                    @Override
-                    public void onChanged(Boolean aBoolean) {
-                        Log.d(TAG, "problem!!!!!!!!!@!@!@!!!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-                        if (aBoolean) {
-                            loginViewModel.getLoginValid().removeObservers(SplashActivity.this);
-                            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
-
-                           // mHandler.removeCallbacksAndMessages(null);
-                        } else {
-                            loginViewModel.getLoginValid().removeObservers(SplashActivity.this);
-                            Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-                            startActivity(intent);
-                            finish();
-                           // mHandler.removeCallbacksAndMessages(null);
-                        }
-                    }
-                });
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean) {
+                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
             }
-        }, 2000);
+        });
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Toast.makeText(this, "Destroy", Toast.LENGTH_SHORT).show();
-        //loginViewModel.getLoginValid().removeObservers(this);
-        //mHandler.removeCallbacksAndMessages(null);
-        mHandler = null;
+    protected void onPause() {
+        super.onPause();
+        loginViewModel.getLoginValid().removeObservers(SplashActivity.this);
     }
+
 }

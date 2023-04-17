@@ -16,6 +16,8 @@ import com.mirror.jmarket.repository.LoginRepository;
 
 import org.jetbrains.annotations.NotNull;
 
+import io.reactivex.rxjava3.core.Observable;
+
 public class LoginViewModel extends AndroidViewModel {
 
     private LoginRepository repository;
@@ -36,33 +38,43 @@ public class LoginViewModel extends AndroidViewModel {
         if (firebaseUser == null) {
             firebaseUser = repository.getFirebaseUser();
         }
-        return firebaseUser;}
+        return firebaseUser;
+    }
 
     public LiveData<Boolean> getLoginValid() {
         if (loginValid == null) {
             loginValid = repository.getLoginValid();
         }
-        return loginValid; }
+        return loginValid;
+    }
 
     public LiveData<Boolean> getSignUpValid() {
         if (signUpValid == null) {
             signUpValid = repository.getSignUpValid();
         }
-        return signUpValid; }
+        return signUpValid;
+    }
 
-    public void login(User user) { repository.login(user); }
+    public void login(User user) {
+        repository.login(user);
+    }
 
-    public void signUp(User user) { repository.signUp(user); }
+    public void signUp(User user) {
+        repository.signUp(user);
+    }
 
-    public void logout() { repository.logout(); }
+    public void logout() {
+        repository.logout();
+    }
 
     public void loginCheck() {
-        if (loginValid == null ) {
+        if (loginValid == null) {
             loginValid = repository.getLoginValid();
         }
 
         if (firebaseUser == null) {
             firebaseUser = repository.getFirebaseUser();
         }
-        repository.loginCheck(); }
+        repository.loginCheck();
+    }
 }
