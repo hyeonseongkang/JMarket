@@ -102,16 +102,17 @@ public class DetailItemActivity extends AppCompatActivity {
                 binding.title.setText(item.getTitle());
                 binding.content.setText(item.getContent());
                 binding.price.setText(item.getPrice() + "원");
-                binding.userName.setText(item.getSellerName());
+            //    binding.userName.setText(item.getSellerName());
 
                 userManagerViewModel.getOtherUserProfile(sellerUid); // 판매자 profile 가져옴
 
-                String sellerProfielUri = item.getSellerProfileUri();
+               // String sellerProfileUri = item.getSellerProfileUri();
+                String sellerProfileUri = "null";
 
                 // 판매자 profile 사진이 있으면 가져오고 아니면 기본 이미지
-                if (!(sellerProfielUri.equals("null"))) {
+                if (!(sellerProfileUri.equals("null"))) {
                     Glide.with(DetailItemActivity.this)
-                            .load(sellerProfielUri)
+                            .load(sellerProfileUri)
                             .into(binding.sellerProfile);
                 }
 
@@ -155,7 +156,9 @@ public class DetailItemActivity extends AppCompatActivity {
                 intent.putExtra("itemTitle", currentItem.getTitle());
                 intent.putExtra("myNickName",  myUser.getNickName().length() <= 0 ? user.getEmail() : myUser.getNickName());
                 intent.putExtra("userNickName", otherUser.getNickName().length() > 0 ? otherUser.getNickName() : otherUser.getEmail());
-                intent.putExtra("userPhoto", currentItem.getSellerProfileUri());
+//                intent.putExtra("userPhoto", currentItem.sellerProfileUri());
+                intent.putExtra("userPhoto", "null");
+
                 startActivity(intent);
                 finish();
             }

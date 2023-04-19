@@ -37,7 +37,7 @@ public class ReviewItemAdapter extends RecyclerView.Adapter<ReviewItemAdapter.My
         Review review = reviews.get(position);
         Item item = review.getItem();
         holder.review.setText(review.getReview());
-        holder.userNickName.setText(item.getSellerName());
+       // holder.userNickName.setText(item.getSellerName());
 
         Glide.with(holder.itemView.getContext())
                 .load(Uri.parse(item.getFirstPhotoUri()))

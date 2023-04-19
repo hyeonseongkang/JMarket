@@ -58,7 +58,7 @@ public class ReviewActivity extends AppCompatActivity {
             public void onChanged(Item item) {
                 currentItem = item;
                 binding.itemTitle.setText(item.getTitle());
-                binding.seller.setText(item.getSellerName());
+              //  binding.seller.setText(item.getSellerName());
 
                 Glide.with(ReviewActivity.this)
                         .load(item.getFirstPhotoUri())

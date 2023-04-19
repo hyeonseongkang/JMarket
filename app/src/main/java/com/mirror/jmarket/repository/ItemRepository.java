@@ -246,8 +246,7 @@ public class ItemRepository {
         ArrayList<String> photoKeys = item.getPhotoKeys();
         String key = itemRef.push().getKey();
         String firstPhotoUri = item.getFirstPhotoUri();
-        String sellerProfileUri = item.getSellerProfileUri();
-        String sellerName = item.getSellerName();
+        String sellerUid = item.getSellerUid();
         ArrayList<String> likes = item.getLikes();
 
         // 사진을 한장도 추가 안했다면 return
@@ -277,7 +276,7 @@ public class ItemRepository {
 
                             if (finalI == photoKeys.size() - 1) {
                                 // String id, String title, String price, boolean priceOffer, String content, ArrayList<String> photoKeys, String key, String firstPhotoUri, String sellerProfileUri, String sellerName, String likes
-                                Item tempItem = new Item(id, title, price, priceOffer, content, tempPhotokeys, key, tempPhotokeys.get(0), sellerProfileUri, sellerName, likes, false);
+                                Item tempItem = new Item(id, title, price, priceOffer, content, tempPhotokeys, key, tempPhotokeys.get(0), sellerUid, likes, false);
                                // Item item = new Item(id, title, price, priceOffer, content, tempPhotokeys, key, tempPhotokeys.get(0), sellerProfileUri, sellerName, likes);
                                 itemRef.child(key).setValue(tempItem);
                                 itemSave.setValue(true);
