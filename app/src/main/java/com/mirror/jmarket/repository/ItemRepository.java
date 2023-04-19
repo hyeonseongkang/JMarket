@@ -22,6 +22,7 @@ import com.google.firebase.storage.UploadTask;
 import com.mirror.jmarket.model.CompleteUser;
 import com.mirror.jmarket.model.Item;
 import com.mirror.jmarket.model.Review;
+import com.mirror.jmarket.model.User;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -49,6 +50,7 @@ public class ItemRepository {
         itemRef = FirebaseDatabase.getInstance().getReference("items");
         completeRef = FirebaseDatabase.getInstance().getReference("completeItems");
         reviewsRef = FirebaseDatabase.getInstance().getReference("reviews");
+        usersRef = FirebaseDatabase.getInstance().getReference("users");
         itemSave = new MutableLiveData<>();
         items = new MutableLiveData<>();
         myInterestItems = new MutableLiveData<>();
@@ -67,6 +69,7 @@ public class ItemRepository {
     private DatabaseReference itemRef;
     private DatabaseReference completeRef;
     private DatabaseReference reviewsRef;
+    private DatabaseReference usersRef;
 
     private MutableLiveData<Boolean> itemSave;
 
@@ -130,7 +133,20 @@ public class ItemRepository {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 Item tempItem = snapshot.getValue(Item.class);
-                item.setValue(tempItem);
+                usersRef.child(tempItem.getSellerUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                        User user = snapshot.getValue(User.class);
+                        tempItem.setUser(user);
+                        item.setValue(tempItem);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+                    }
+                });
+
             }
 
             @Override

@@ -15,6 +15,7 @@ public class Item {
     private String sellerUid;
     private ArrayList<String> likes;
     private boolean salesComplete;
+    private User user;
 
     public Item() {}
 
@@ -30,6 +31,15 @@ public class Item {
         this.sellerUid = sellerUid;
         this.likes = likes;
         this.salesComplete = salesComplete;
+        this.user = null;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getId() {

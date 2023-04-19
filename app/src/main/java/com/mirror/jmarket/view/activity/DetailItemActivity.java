@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseUser;
@@ -102,19 +103,22 @@ public class DetailItemActivity extends AppCompatActivity {
                 binding.title.setText(item.getTitle());
                 binding.content.setText(item.getContent());
                 binding.price.setText(item.getPrice() + "원");
-            //    binding.userName.setText(item.getSellerName());
 
                 userManagerViewModel.getOtherUserProfile(sellerUid); // 판매자 profile 가져옴
 
-               // String sellerProfileUri = item.getSellerProfileUri();
-                String sellerProfileUri = "null";
+                User sellerUser = item.getUser();
+                if (sellerUser != null) {
+                    String sellerProfileUri = sellerUser.getPhotoUri();
+                    binding.userName.setText(sellerUser.getNickName());
 
-                // 판매자 profile 사진이 있으면 가져오고 아니면 기본 이미지
-                if (!(sellerProfileUri.equals("null"))) {
-                    Glide.with(DetailItemActivity.this)
-                            .load(sellerProfileUri)
-                            .into(binding.sellerProfile);
+                    // 판매자 profile 사진이 있으면 가져오고 아니면 기본 이미지
+                    if (!(sellerProfileUri.equals(""))) {
+                        Glide.with(DetailItemActivity.this)
+                                .load(sellerProfileUri)
+                                .into(binding.sellerProfile);
+                    }
                 }
+
 
 
                 boolean priceOffer = item.isPriceOffer();
