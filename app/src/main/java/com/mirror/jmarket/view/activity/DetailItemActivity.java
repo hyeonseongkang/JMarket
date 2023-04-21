@@ -100,6 +100,10 @@ public class DetailItemActivity extends AppCompatActivity {
                  */
                 // title, content, price, photoList
                 sellerUid = item.getId(); // 판매자 uid
+
+                if (sellerUid.equals(user.getUid())) {
+                    binding.deleteItem.setVisibility(View.VISIBLE);
+                }
                 binding.title.setText(item.getTitle());
                 binding.content.setText(item.getContent());
                 binding.price.setText(item.getPrice() + "원");
