@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -288,8 +289,10 @@ public class ItemRepository {
         3. 마지막 Photo를 store에 저장하기를 성공했다면 item Ref / item 저장
          */
         ArrayList<String> tempPhotokeys = new ArrayList<>();
+        ArrayList<String> tempPhotoUrls = new ArrayList<>();
         for (int i = 0; i < photoKeys.size(); i++) {
             String photoKey = itemRef.push().getKey();
+            tempPhotokeys.add(photoKey);
             StorageReference storage = FirebaseStorage.getInstance().getReference().child("items/" + photoKey + ".jpg");
             UploadTask uploadTask = storage.putFile(Uri.parse(photoKeys.get(i)));
             int finalI = i;
@@ -299,11 +302,11 @@ public class ItemRepository {
                     storage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
-                            tempPhotokeys.add(uri.toString());
+                            tempPhotoUrls.add(uri.toString());
 
                             if (finalI == photoKeys.size() - 1) {
                                 // String id, String title, String price, boolean priceOffer, String content, ArrayList<String> photoKeys, String key, String firstPhotoUri, String sellerProfileUri, String sellerName, String likes
-                                Item tempItem = new Item(id, title, price, priceOffer, content, tempPhotokeys, key, tempPhotokeys.get(0), sellerUid, likes, false);
+                                Item tempItem = new Item(id, title, price, priceOffer, content, tempPhotokeys, tempPhotoUrls, key, tempPhotoUrls.get(0), sellerUid, likes, false);
                                // Item item = new Item(id, title, price, priceOffer, content, tempPhotokeys, key, tempPhotokeys.get(0), sellerProfileUri, sellerName, likes);
                                 itemRef.child(key).setValue(tempItem);
                                 itemSave.setValue(true);
@@ -518,14 +521,41 @@ public class ItemRepository {
     }
 
     public void deleteItem(String itemKey) {
-        itemRef.child(itemKey).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+        itemRef.child(itemKey).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onComplete(@NonNull @NotNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    deleteItemState.setValue(true);
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                Item item = snapshot.getValue(Item.class);
+                ArrayList<String> itemPhotokeys = item.getPhotoKeys();
+                StorageReference storage;
+                Log.d(TAG + "gdgd", itemPhotokeys.toString());
+                for (String itemPhotoKey : itemPhotokeys) {
+                    storage = FirebaseStorage.getInstance().getReference().child("items/" + itemPhotoKey + ".jpg");
+                    storage.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull @NotNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Log.d(TAG, "사진 삭제 성공!!");
+                            }
+                        }
+                    });
                 }
+                itemRef.child(itemKey).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            deleteItemState.setValue(true);
+                        }
+                    }
+                });
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
             }
         });
+
     }
 
 }

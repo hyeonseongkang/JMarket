@@ -158,8 +158,8 @@ public class DetailItemActivity extends AppCompatActivity {
                     binding.priceOffer.setText("가격제안불가능");
 
 
-                ArrayList<String> photoKeys = item.getPhotoKeys();
-                adapter.setPhotoUris(photoKeys);
+                ArrayList<String> photoUrls = item.getPhotoUrls();
+                adapter.setPhotoUris(photoUrls);
 
             }
         });

@@ -10,6 +10,7 @@ public class Item {
     private boolean priceOffer;
     private String content;
     private ArrayList<String> photoKeys;
+    private ArrayList<String> photoUrls;
     private String key;
     private String firstPhotoUri;
     private String sellerUid;
@@ -19,7 +20,7 @@ public class Item {
 
     public Item() {}
 
-    public Item(String id, String title, String price, boolean priceOffer, String content, ArrayList<String> photoKeys, String key, String firstPhotoUri, String sellerUid, ArrayList<String> likes, boolean salesComplete) {
+    public Item(String id, String title, String price, boolean priceOffer, String content, ArrayList<String> photoKeys, ArrayList<String> photoUrls, String key, String firstPhotoUri, String sellerUid, ArrayList<String> likes, boolean salesComplete) {
         this.id = id;
         this.title = title;
         this.price = price;
@@ -28,6 +29,7 @@ public class Item {
         this.photoKeys = photoKeys;
         this.key = key;
         this.firstPhotoUri = firstPhotoUri;
+        this.photoUrls = photoUrls;
         this.sellerUid = sellerUid;
         this.likes = likes;
         this.salesComplete = salesComplete;
@@ -86,5 +88,13 @@ public class Item {
 
     public void setSalesComplete(boolean salesComplete) {
         this.salesComplete = salesComplete;
+    }
+
+    public ArrayList<String> getPhotoUrls() {
+        return photoUrls;
+    }
+
+    public void setPhotoUrls(ArrayList<String> photoUrls) {
+        this.photoUrls = photoUrls;
     }
 }
