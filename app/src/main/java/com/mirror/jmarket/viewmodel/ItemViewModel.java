@@ -39,6 +39,8 @@ public class ItemViewModel extends AndroidViewModel {
 
     private MutableLiveData<List<Review>> reviews;
 
+    private MutableLiveData<Boolean> deleteItemState;
+
     public ItemViewModel(@NonNull @NotNull Application application) {
         super(application);
         //repository = new ItemRepository(application);
@@ -54,6 +56,7 @@ public class ItemViewModel extends AndroidViewModel {
         complete = repository.getComplete();
         reviewComplete= repository.getReviewComplete();
         reviews = repository.getReviews();
+        deleteItemState = repository.getDeleteItemState();
     }
 
     public MutableLiveData<Boolean> getItemSave() { return itemSave; }
@@ -77,6 +80,8 @@ public class ItemViewModel extends AndroidViewModel {
     public MutableLiveData<Boolean> getReviewComplete() { return reviewComplete; }
 
     public MutableLiveData<List<Review>> getReviews() { return reviews; }
+
+    public MutableLiveData<Boolean> getDeleteItemState() { return deleteItemState; }
 
     public void getHomeItems(String findText) { repository.getHomeItems(findText); }
 
@@ -109,4 +114,6 @@ public class ItemViewModel extends AndroidViewModel {
     public void getMyCompleteSalesItems(String myUid) { repository.getMyCompleteSalesItems(myUid); }
 
     public void getMyBuyItems(String myUid) { repository.getMyBuyItems(myUid); }
+
+    public void deleteItem(String itemKey) { repository.deleteItem(itemKey); }
 }

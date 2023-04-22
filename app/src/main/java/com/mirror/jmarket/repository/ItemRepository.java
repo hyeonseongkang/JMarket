@@ -68,6 +68,7 @@ public class ItemRepository {
         reviewComplete = new MutableLiveData<>();
         reviews = new MutableLiveData<>();
         reviewList = new ArrayList<>();
+        deleteItemState = new MutableLiveData<>();
     }
 
     private DatabaseReference itemRef;
@@ -90,6 +91,8 @@ public class ItemRepository {
     private MutableLiveData<Boolean> like;
 
     private MutableLiveData<Boolean> complete;
+
+    private MutableLiveData<Boolean> deleteItemState;
 
     private List<Item> tempItems;
 
@@ -128,6 +131,10 @@ public class ItemRepository {
 
     public MutableLiveData<List<Review>> getReviews() {
         return reviews;
+    }
+
+    public MutableLiveData<Boolean> getDeleteItemState() {
+        return deleteItemState;
     }
 
 
@@ -506,6 +513,17 @@ public class ItemRepository {
             @Override
             public void onCancelled(@NonNull @NotNull DatabaseError error) {
 
+            }
+        });
+    }
+
+    public void deleteItem(String itemKey) {
+        itemRef.child(itemKey).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    deleteItemState.setValue(true);
+                }
             }
         });
     }

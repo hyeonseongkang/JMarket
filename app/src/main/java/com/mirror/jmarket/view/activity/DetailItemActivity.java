@@ -1,11 +1,13 @@
 package com.mirror.jmarket.view.activity;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -82,6 +84,29 @@ public class DetailItemActivity extends AppCompatActivity {
             }
         });
 
+        binding.deleteItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(DetailItemActivity.this)
+                        .setTitle("중고 물건 삭제")
+                        .setMessage(currentItem.getTitle() + "를 삭제 하시겠습니까?")
+                        .setPositiveButton("삭제", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                itemViewModel.deleteItem(currentItem.getKey());
+                            }
+                        })
+                        .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+            }
+        });
+
         itemViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ItemViewModel.class);
         itemViewModel.getItem(key);
         itemViewModel.getItem().observe(this, new Observer<Item>() {
@@ -136,6 +161,17 @@ public class DetailItemActivity extends AppCompatActivity {
                 ArrayList<String> photoKeys = item.getPhotoKeys();
                 adapter.setPhotoUris(photoKeys);
 
+            }
+        });
+
+        // 현재 아이템 삭제했을 경우 종료
+        itemViewModel.getDeleteItemState().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean) {
+                    Toast.makeText(DetailItemActivity.this, "삭제 완료", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
             }
         });
 
