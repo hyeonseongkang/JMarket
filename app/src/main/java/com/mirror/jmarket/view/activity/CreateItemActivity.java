@@ -16,6 +16,7 @@ import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -71,12 +72,15 @@ public class CreateItemActivity extends AppCompatActivity {
         itemPhotos = new ArrayList<>();
 
         itemViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ItemViewModel.class);
+        itemViewModel.getItemSave().setValue(false);
         itemViewModel.getItemSave().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
+                Log.d(TAG, "aaaa" + aBoolean);
                 binding.progress.setVisibility(View.GONE);
                 if (aBoolean) {
                     Toast.makeText(CreateItemActivity.this, "등록완료", Toast.LENGTH_SHORT).show();
+
                     finish();
                     overridePendingTransition(R.anim.none, R.anim.fadeout_left);
                 }
@@ -203,4 +207,41 @@ public class CreateItemActivity extends AppCompatActivity {
                     }
                 }
             });
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d(TAG, "onRestart");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy");
+        //itemViewModel.getItemSave().removeObservers(CreateItemActivity.this);
+    }
 }

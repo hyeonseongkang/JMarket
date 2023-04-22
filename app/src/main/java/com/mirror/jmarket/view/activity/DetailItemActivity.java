@@ -165,6 +165,7 @@ public class DetailItemActivity extends AppCompatActivity {
         });
 
         // 현재 아이템 삭제했을 경우 종료
+        itemViewModel.getDeleteItemState().setValue(false);
         itemViewModel.getDeleteItemState().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
