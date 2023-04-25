@@ -57,6 +57,11 @@ public class ItemViewModel extends AndroidViewModel {
         reviewComplete= repository.getReviewComplete();
         reviews = repository.getReviews();
         deleteItemState = repository.getDeleteItemState();
+
+        itemSave.setValue(false);
+        complete.setValue(false);
+        reviewComplete.setValue(false);
+        deleteItemState.setValue(false);
     }
 
     public MutableLiveData<Boolean> getItemSave() { return itemSave; }

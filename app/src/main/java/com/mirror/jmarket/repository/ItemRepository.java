@@ -527,7 +527,6 @@ public class ItemRepository {
                 Item item = snapshot.getValue(Item.class);
                 ArrayList<String> itemPhotokeys = item.getPhotoKeys();
                 StorageReference storage;
-                Log.d(TAG + "gdgd", itemPhotokeys.toString());
                 for (String itemPhotoKey : itemPhotokeys) {
                     storage = FirebaseStorage.getInstance().getReference().child("items/" + itemPhotoKey + ".jpg");
                     storage.delete().addOnCompleteListener(new OnCompleteListener<Void>() {

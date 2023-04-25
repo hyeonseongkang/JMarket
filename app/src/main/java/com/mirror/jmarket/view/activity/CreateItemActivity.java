@@ -72,7 +72,7 @@ public class CreateItemActivity extends AppCompatActivity {
         itemPhotos = new ArrayList<>();
 
         itemViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ItemViewModel.class);
-        itemViewModel.getItemSave().setValue(false);
+        //itemViewModel.getItemSave().setValue(false);
         itemViewModel.getItemSave().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
