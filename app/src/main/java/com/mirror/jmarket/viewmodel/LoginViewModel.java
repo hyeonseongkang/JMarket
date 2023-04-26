@@ -22,8 +22,8 @@ public class LoginViewModel extends AndroidViewModel {
 
     private LoginRepository repository;
     private LiveData<FirebaseUser> firebaseUser;
-    private LiveData<Boolean> loginValid;
-    private LiveData<Boolean> signUpValid;
+    private MutableLiveData<Boolean> loginValid;
+    private MutableLiveData<Boolean> signUpValid;
 
     public LoginViewModel(@NonNull @NotNull Application application) {
         super(application);
@@ -32,6 +32,9 @@ public class LoginViewModel extends AndroidViewModel {
         //  firebaseUser = repository.getFirebaseUser();
         //  loginValid = repository.getLoginValid();
         // signUpValid = repository.getSignUpValid();
+
+        loginValid.setValue(false);
+        signUpValid.setValue(false);
     }
 
     public LiveData<FirebaseUser> getFirebaseUser() {

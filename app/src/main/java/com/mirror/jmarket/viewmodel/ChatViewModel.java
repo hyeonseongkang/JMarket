@@ -47,6 +47,12 @@ public class ChatViewModel extends AndroidViewModel {
         leaveChatRoom = repository.getLeaveChatRoom();
         myLeaveChatRoom = repository.getMyLeaveChatRoom() ;
         chats = repository.getChats();
+
+
+        visited.setValue(false);
+        createChatRoom.setValue(false);
+        leaveChatRoom.setValue(false);
+        myLeaveChatRoom.setValue(false);
     }
 
     public MutableLiveData<List<HashMap<List<String>, List<Chat>>>> getMyChats() { return myChats; }

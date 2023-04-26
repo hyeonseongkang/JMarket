@@ -32,6 +32,8 @@ public class UserManagerViewModel extends AndroidViewModel {
         usersProfile = repository.getUsersProfile();
         updateValid = repository.getUpdateValid();
 
+        updateValid.setValue(false);
+
     }
 
     public MutableLiveData<User> getUserProfile() {
