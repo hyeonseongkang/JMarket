@@ -56,6 +56,7 @@ public class SplashActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 }
+               // loginViewModel.getLoginValid().removeObservers(SplashActivity.this);
             }
         });
     }

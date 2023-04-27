@@ -112,6 +112,7 @@ public class HomeFragment extends Fragment {
                 .subscribe(s -> {
                     Log.d(RxAndroidUtils.getInstance().getTag(), s);
                     String inputText = binding.search.getText().toString();
+                    Log.d(RxAndroidUtils.getInstance().getTag() + "!@!@", inputText);
                     itemViewModel.getHomeItems(inputText);
                     searchItem = inputText;
                 });
