@@ -2,6 +2,7 @@ package com.mirror.jmarket.view.activity;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -17,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseUser;
 import com.mirror.jmarket.R;
 import com.mirror.jmarket.adapter.DetailPhotoItemAdapter;
+import com.mirror.jmarket.databinding.ActivityMainBinding;
 import com.mirror.jmarket.model.ChatRoom;
 import com.mirror.jmarket.model.Item;
 import com.mirror.jmarket.model.LastMessage;
@@ -57,8 +60,9 @@ public class DetailItemActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityDetailItemBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+//        binding = ActivityDetailItemBinding.inflate(getLayoutInflater());
+//        setContentView(binding.getRoot());
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_detail_item);
 
         overridePendingTransition(R.anim.fadein_left, R.anim.none);
 
@@ -126,12 +130,14 @@ public class DetailItemActivity extends AppCompatActivity {
                 // title, content, price, photoList
                 sellerUid = item.getId(); // 판매자 uid
 
+                binding.setItem(item);
+
                 if (sellerUid.equals(user.getUid())) {
                     binding.deleteItem.setVisibility(View.VISIBLE);
                 }
-                binding.title.setText(item.getTitle());
-                binding.content.setText(item.getContent());
-                binding.price.setText(item.getPrice() + "원");
+              //  binding.title.setText(item.getTitle());
+              //  binding.content.setText(item.getContent());
+              //  binding.price.setText(item.getPrice() + "원");
 
                 userManagerViewModel.getOtherUserProfile(sellerUid); // 판매자 profile 가져옴
 
@@ -195,17 +201,20 @@ public class DetailItemActivity extends AppCompatActivity {
         chatViewModel.getCreateChatRoom().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
-                Intent intent = new Intent(DetailItemActivity.this, ChatActivity.class);
-                intent.putExtra("itemKey", key);
-                intent.putExtra("uid", sellerUid);
-                intent.putExtra("itemTitle", currentItem.getTitle());
-                intent.putExtra("myNickName",  myUser.getNickName().length() <= 0 ? user.getEmail() : myUser.getNickName());
-                intent.putExtra("userNickName", otherUser.getNickName().length() > 0 ? otherUser.getNickName() : otherUser.getEmail());
+                if (aBoolean) {
+                    Intent intent = new Intent(DetailItemActivity.this, ChatActivity.class);
+                    intent.putExtra("itemKey", key);
+                    intent.putExtra("uid", sellerUid);
+                    intent.putExtra("itemTitle", currentItem.getTitle());
+                    intent.putExtra("myNickName",  myUser.getNickName().length() <= 0 ? user.getEmail() : myUser.getNickName());
+                    intent.putExtra("userNickName", otherUser.getNickName().length() > 0 ? otherUser.getNickName() : otherUser.getEmail());
 //                intent.putExtra("userPhoto", currentItem.sellerProfileUri());
-                intent.putExtra("userPhoto", "null");
+                    intent.putExtra("userPhoto", "null");
 
-                startActivity(intent);
-                finish();
+                    startActivity(intent);
+                    finish();
+                }
+
             }
         });
 

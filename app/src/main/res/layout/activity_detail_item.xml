@@ -1,216 +1,226 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".view.activity.DetailItemActivity">
 
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    
+    <data>
+        <variable
+            name="item"
+            type="com.mirror.jmarket.model.Item" />
+    </data>
 
     <RelativeLayout
-        android:id="@+id/top"
-        android:layout_width="match_parent"
-        android:layout_height="300dp">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <ProgressBar
-            android:id="@+id/progress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:visibility="gone" />
-    </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/topLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="18dp"
-            android:layout_marginRight="15dp">
-
-            <ImageButton
-                android:id="@+id/backButton"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_centerVertical="true"
-                android:background="@drawable/back"
-                android:backgroundTint="#FFFFFF" />
-        </RelativeLayout>
-
-    </LinearLayout>
-
-    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/top"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginRight="15dp">
+        tools:context=".view.activity.DetailItemActivity">
+
+
+        <RelativeLayout
+            android:id="@+id/top"
+            android:layout_width="match_parent"
+            android:layout_height="300dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="gone" />
+        </RelativeLayout>
 
         <LinearLayout
+            android:id="@+id/topLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/sellerProfile"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/basic_profile_photo" />
-
-                <TextView
-                    android:id="@+id/userName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_marginLeft="5dp"
-                    android:layout_toRightOf="@+id/sellerProfile"
-                    android:fontFamily="@font/scd5"
-                    android:text="test"
-                    android:textColor="#000000"
-                    android:textSize="17dp" />
+                android:layout_height="30dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="18dp"
+                android:layout_marginRight="15dp">
 
                 <ImageButton
-                    android:id="@+id/deleteItem"
+                    android:id="@+id/backButton"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:background="@drawable/delete"
-                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
-                    android:visibility="gone"/>
-
+                    android:background="@drawable/back"
+                    android:backgroundTint="#FFFFFF" />
             </RelativeLayout>
+
+        </LinearLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/top"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginRight="15dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="15dp"
-                android:background="#CFCECE" />
-
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/scd5"
-                android:text="제목"
-                android:textColor="#000000"
-                android:textSize="20dp" />
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/sellerProfile"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/basic_profile_photo" />
+
+                    <TextView
+                        android:id="@+id/userName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@+id/sellerProfile"
+                        android:fontFamily="@font/scd5"
+                        android:text="@{item.user.nickName}"
+                        android:textColor="#000000"
+                        android:textSize="17dp" />
+
+                    <ImageButton
+                        android:id="@+id/deleteItem"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/delete"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:background="#CFCECE" />
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/scd5"
+                    android:text="@{item.title}"
+                    android:textColor="#000000"
+                    android:textSize="20dp" />
 
 
-            <TextView
-                android:id="@+id/content"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/scd4"
-                android:text="상세내용"
-                android:textColor="#000000"
-                android:textSize="15dp" />
+                <TextView
+                    android:id="@+id/content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/scd4"
+                    android:text="@{item.content}"
+                    android:textColor="#000000"
+                    android:textSize="15dp" />
 
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#CFCECE" />
-
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="25dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/like"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_centerVertical="true"
-                android:background="@drawable/basic_heart" />
-<!--            <D8D8D8> FF0000-->
-
-            <LinearLayout
-                android:id="@+id/line1"
-                android:layout_width="1dp"
-                android:layout_height="50dp"
-                android:layout_marginLeft="15dp"
-                android:layout_toRightOf="@+id/like"
-                android:background="#CFCECE"
-                android:orientation="vertical" />
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="15dp"
-                android:layout_toRightOf="@+id/line1"
-                android:orientation="vertical"
-                android:layout_toLeftOf="@+id/chatButton">
+                android:layout_height="1dp"
+                android:background="#CFCECE" />
 
-                <TextView
-                    android:id="@+id/price"
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="25dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/like"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/basic_heart" />
+                <!--            <D8D8D8> FF0000-->
+
+                <LinearLayout
+                    android:id="@+id/line1"
+                    android:layout_width="1dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_toRightOf="@+id/like"
+                    android:background="#CFCECE"
+                    android:orientation="vertical" />
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/scd6"
-                    android:text="10,000원"
-                    android:textColor="#000000"
-                    android:textSize="20dp" />
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:layout_toLeftOf="@+id/chatButton"
+                    android:layout_toRightOf="@+id/line1"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/priceOffer"
+                    <TextView
+                        android:id="@+id/price"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/scd6"
+                        android:text="@{item.price + '원'}"
+                        android:textColor="#000000"
+                        android:textSize="20dp" />
+
+                    <TextView
+                        android:id="@+id/priceOffer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:fontFamily="@font/scd4"
+                        android:text="가격제안불가"
+                        android:textSize="18dp" />
+                </LinearLayout>
+
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/chatButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="7dp"
-                    android:fontFamily="@font/scd4"
-                    android:text="가격제안불가"
-                    android:textSize="18dp" />
-            </LinearLayout>
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/activity_detail_item_chat_button"
+                    android:fontFamily="@font/gmm"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:text="채팅으로 거래하기"
+                    android:textColor="#FFFFFF" />
 
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/chatButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/activity_detail_item_chat_button"
-                android:fontFamily="@font/gmm"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:text="채팅으로 거래하기"
-                android:textColor="#FFFFFF" />
+            </RelativeLayout>
 
         </RelativeLayout>
 
+
     </RelativeLayout>
-
-
-</RelativeLayout>
+</layout>

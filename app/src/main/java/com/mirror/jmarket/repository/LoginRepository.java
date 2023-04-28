@@ -36,10 +36,7 @@ public class LoginRepository {
 
     private LoginRepository(Application application) {
         this.application = application;
-        mAuth = FirebaseAuth.getInstance();
-      //  firebaseUser = new MutableLiveData<>();
-      //  loginValid = new MutableLiveData<>();
-      //  signUpValid = new MutableLiveData<>();
+        mAuth = FirebaseAuth.getInstance();;
         myRef = FirebaseDatabase.getInstance().getReference("users");
     }
 

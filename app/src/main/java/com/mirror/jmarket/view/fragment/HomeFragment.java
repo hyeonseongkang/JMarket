@@ -116,6 +116,5 @@ public class HomeFragment extends Fragment {
                     itemViewModel.getHomeItems(inputText);
                     searchItem = inputText;
                 });
-
     }
 }
