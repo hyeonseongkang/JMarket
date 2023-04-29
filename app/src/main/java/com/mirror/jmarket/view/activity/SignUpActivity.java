@@ -28,7 +28,8 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(signUpBinding.getRoot());
         overridePendingTransition(R.anim.fadein_left, R.anim.none);
 
-        loginViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(LoginViewModel.class);
+        loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+      //  loginViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(LoginViewModel.class);
         loginViewModel.getSignUpValid().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {

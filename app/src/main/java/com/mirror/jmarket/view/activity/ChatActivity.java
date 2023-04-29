@@ -90,7 +90,8 @@ public class ChatActivity extends AppCompatActivity {
         binding.userNickName.setText(userNickName); // 채팅 상대방 닉네임
 
         // item viewModel
-        itemViewModel = new ViewModelProvider(this ,new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ItemViewModel.class);
+       // itemViewModel = new ViewModelProvider(this ,new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ItemViewModel.class);
+        itemViewModel = new ViewModelProvider(this).get(ItemViewModel.class);
         itemViewModel.getItem(itemKey);
         itemViewModel.getItem().observe(this, new Observer<Item>() {
             @Override
@@ -134,7 +135,8 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        chatViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ChatViewModel.class);
+        chatViewModel = new ViewModelProvider(this).get(ChatViewModel.class);
+       // chatViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ChatViewModel.class);
         chatViewModel.getMyChats(user.getUid(), uid, itemKey);
         chatViewModel.getChats().observe(this, new Observer<List<Chat>>() {
             @Override

@@ -27,7 +27,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(loginBinding.getRoot());
 
 
-        loginViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(LoginViewModel.class);
+        loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+      //  loginViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(LoginViewModel.class);
         loginViewModel.getLoginValid().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {

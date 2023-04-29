@@ -51,7 +51,8 @@ public class ReviewActivity extends AppCompatActivity {
         binding.userNickName.setText(userNickName);
 
         // view model
-        itemViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ItemViewModel.class);
+        itemViewModel = new ViewModelProvider(this).get(ItemViewModel.class);
+       // itemViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ItemViewModel.class);
         itemViewModel.getItem(itemKey);
         itemViewModel.getItem().observe(this, new Observer<Item>() {
             @Override

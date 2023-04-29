@@ -71,7 +71,8 @@ public class DetailItemActivity extends AppCompatActivity {
 
         user = MainActivity.USER;
 
-        userManagerViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(UserManagerViewModel.class);
+        userManagerViewModel = new ViewModelProvider(this).get(UserManagerViewModel.class);
+        //userManagerViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(UserManagerViewModel.class);
         userManagerViewModel.getUserProfile(user.getUid());
         userManagerViewModel.getUserProfile().observe(this, new Observer<User>() {
             @Override
@@ -111,7 +112,8 @@ public class DetailItemActivity extends AppCompatActivity {
             }
         });
 
-        itemViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ItemViewModel.class);
+        itemViewModel = new ViewModelProvider(this).get(ItemViewModel.class);
+       // itemViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ItemViewModel.class);
         itemViewModel.getItem(key);
         itemViewModel.getItem().observe(this, new Observer<Item>() {
             @Override
@@ -195,7 +197,8 @@ public class DetailItemActivity extends AppCompatActivity {
             }
         });
 
-        chatViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ChatViewModel.class);
+        chatViewModel = new ViewModelProvider(this).get(ChatViewModel.class);
+       // chatViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ChatViewModel.class);
 
         // 채팅방이 만들어지면 ChatActivity로 이동
         chatViewModel.getCreateChatRoom().observe(this, new Observer<Boolean>() {

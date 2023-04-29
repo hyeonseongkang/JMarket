@@ -60,7 +60,8 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         }
 
-        userManagerViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(UserManagerViewModel.class);
+        userManagerViewModel = new ViewModelProvider(this).get(UserManagerViewModel.class);
+       // userManagerViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(UserManagerViewModel.class);
         userManagerViewModel.updateValid.observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {

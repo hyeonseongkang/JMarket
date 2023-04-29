@@ -45,7 +45,8 @@ public class MyBuyListActivity extends AppCompatActivity {
         adapter = new HomeItemAdapter();
         binding.recyclerView.setAdapter(adapter);
 
-        itemViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ItemViewModel.class);
+        itemViewModel = new ViewModelProvider(this).get(ItemViewModel.class);
+       // itemViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ItemViewModel.class);
         itemViewModel.getMyBuyItems(user.getUid());
         itemViewModel.getMyBuyItems().observe(MyBuyListActivity.this, new Observer<List<Item>>() {
             @Override

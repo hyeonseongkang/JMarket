@@ -50,7 +50,8 @@ public class MainActivity extends AppCompatActivity {
         mainBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(mainBinding.getRoot());
 
-        loginViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(LoginViewModel.class);
+        loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+       // loginViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(LoginViewModel.class);
         loginViewModel.loginCheck();
         USER = loginViewModel.getFirebaseUser().getValue();
 
@@ -63,7 +64,8 @@ public class MainActivity extends AppCompatActivity {
         badgeDrawable.setVisible(false);
 
         // chat view model
-        chatViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ChatViewModel.class);
+        chatViewModel = new ViewModelProvider(this).get(ChatViewModel.class);
+      //  chatViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ChatViewModel.class);
         //chatViewModel.testDelete();
         //chatViewModel.getMyChats(USER.getUid()); // 내 채팅 가져오기
         chatViewModel.getMyChatRooms(FirebaseAuth.getInstance().getUid()); // 내 채팅방 가져오기

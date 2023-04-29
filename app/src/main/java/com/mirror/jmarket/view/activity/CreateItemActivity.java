@@ -71,7 +71,8 @@ public class CreateItemActivity extends AppCompatActivity {
         user = MainActivity.USER;
         itemPhotos = new ArrayList<>();
 
-        itemViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ItemViewModel.class);
+        itemViewModel = new ViewModelProvider(this).get(ItemViewModel.class);
+       //itemViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ItemViewModel.class);
         //itemViewModel.getItemSave().setValue(false);
         itemViewModel.getItemSave().observe(this, new Observer<Boolean>() {
             @Override
@@ -87,7 +88,8 @@ public class CreateItemActivity extends AppCompatActivity {
             }
         });
 
-        userManagerViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(UserManagerViewModel.class);
+        userManagerViewModel = new ViewModelProvider(this).get(UserManagerViewModel.class);
+       // userManagerViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(UserManagerViewModel.class);
         userManagerViewModel.getUserProfile(user.getUid());
         userManagerViewModel.getUserProfile().observe(this, new Observer<User>() {
             @Override

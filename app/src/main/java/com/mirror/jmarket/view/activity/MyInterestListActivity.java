@@ -45,7 +45,8 @@ public class MyInterestListActivity extends AppCompatActivity {
         adapter = new HomeItemAdapter();
         binding.recyclerView.setAdapter(adapter);
 
-        itemViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ItemViewModel.class);
+        itemViewModel = new ViewModelProvider(this).get(ItemViewModel.class);
+       // itemViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ItemViewModel.class);
         itemViewModel.getMyInterestItems(user.getUid());
         itemViewModel.getMyInterestItems().observe(MyInterestListActivity.this, new Observer<List<Item>>() {
             @Override
