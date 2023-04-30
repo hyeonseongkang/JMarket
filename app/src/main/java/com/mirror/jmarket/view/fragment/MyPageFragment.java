@@ -66,11 +66,21 @@ public class MyPageFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        init();
+        initObserve();
+        initListener();
+
+    }
+    void init() {
         loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
         user = MainActivity.USER;
 
         userManagerViewModel = new ViewModelProvider(requireActivity()).get(UserManagerViewModel.class);
         userManagerViewModel.getUserProfile(user.getUid());
+        binding.userEmail.setText(user.getEmail());
+    }
+
+    void initObserve() {
         userManagerViewModel.getUserProfile().observe(getActivity(), new Observer<User>() {
             @Override
             public void onChanged(User user) {
@@ -100,8 +110,18 @@ public class MyPageFragment extends Fragment {
 
             }
         });
+    }
 
-        binding.userEmail.setText(user.getEmail());
+    void initListener() {
+        binding.logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loginViewModel.logout();
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
 
         // 프로필 수정
         binding.editProfile.setOnClickListener(new View.OnClickListener() {
@@ -166,19 +186,6 @@ public class MyPageFragment extends Fragment {
 
             }
         });
-
-
-
-        binding.logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loginViewModel.logout();
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent);
-                getActivity().finish();
-            }
-        });
-
     }
 
     ActivityResultLauncher<Intent> editLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),

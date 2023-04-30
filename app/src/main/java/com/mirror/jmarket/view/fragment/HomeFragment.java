@@ -59,6 +59,14 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        init();
+        initObserve();
+        initListener();
+        initUtil();
+
+    }
+
+    void init()  {
         // recyclerview adapter 연결
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.recyclerView.setHasFixedSize(true);
@@ -67,6 +75,9 @@ public class HomeFragment extends Fragment {
 
         itemViewModel = new ViewModelProvider(requireActivity()).get(ItemViewModel.class);
         itemViewModel.getHomeItems("");
+    }
+
+    void initObserve() {
         itemViewModel.getItems().observe(getActivity(), new Observer<List<Item>>() {
             @Override
             public void onChanged(List<Item> items) {
@@ -87,7 +98,9 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
+    }
 
+    void initListener() {
         adapter.setOnItemClickListener(new HomeItemAdapter.onItemClickListener() {
             @Override
             public void onItemClick(Item item) {
@@ -104,7 +117,9 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
+    }
 
+    void initUtil() {
         Observable<String> editTextObservable = RxAndroidUtils.getInstance().getEditTextObservable(binding.search);
         editTextObservable
                 .debounce(1000, TimeUnit.MILLISECONDS)
@@ -117,4 +132,5 @@ public class HomeFragment extends Fragment {
                     searchItem = inputText;
                 });
     }
+
 }

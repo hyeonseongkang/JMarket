@@ -28,8 +28,17 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(signUpBinding.getRoot());
         overridePendingTransition(R.anim.fadein_left, R.anim.none);
 
+        init();
+        initObserve();
+        initListener();
+
+    }
+
+    void init() {
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
-      //  loginViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(LoginViewModel.class);
+    }
+
+    void initObserve() {
         loginViewModel.getSignUpValid().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
@@ -43,8 +52,9 @@ public class SignUpActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
-
+    void initListener() {
         signUpBinding.signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,4 +74,5 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
     }
+
 }

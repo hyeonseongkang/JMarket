@@ -26,9 +26,17 @@ public class LoginActivity extends AppCompatActivity {
         loginBinding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(loginBinding.getRoot());
 
+        init();
+        initObserve();
+        initListener();
 
+    }
+
+    void init() {
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
-      //  loginViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(LoginViewModel.class);
+    }
+
+    void initObserve() {
         loginViewModel.getLoginValid().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
@@ -41,7 +49,8 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-
+    }
+    void initListener() {
         loginBinding.loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,7 +60,6 @@ public class LoginActivity extends AppCompatActivity {
                 loginViewModel.login(new User(email, password));
             }
         });
-
         loginBinding.signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -60,14 +68,7 @@ public class LoginActivity extends AppCompatActivity {
                 finish();
             }
         });
-
     }
-
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        loginViewModel.loginCheck();
-//    }
 
     @Override
     protected void onStop() {

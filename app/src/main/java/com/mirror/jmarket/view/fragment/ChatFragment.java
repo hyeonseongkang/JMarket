@@ -64,29 +64,6 @@ public class ChatFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        user = MainActivity.USER;
-
-        chatBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        chatBinding.recyclerView.setHasFixedSize(true);
-        adapter = new ChatListItemAdapter();
-        chatBinding.recyclerView.setAdapter(adapter);
-
-        adapter.setOnItemClickListener(new ChatListItemAdapter.onItemClickListener() {
-            @Override
-            public void onItemClick(ChatRoom chatRoom) {
-                Intent intent = new Intent(getActivity(), ChatActivity.class);
-                User user = chatRoom.getUser();
-                intent.putExtra("itemKey", chatRoom.getItem().getKey());
-                intent.putExtra("uid", user.getUid()); // 상대방 uid
-                intent.putExtra("itemTitle", chatRoom.getItem().getTitle());
-                intent.putExtra("myNickName", myNickName);
-                intent.putExtra("userNickName", user.getNickName().length() > 0 ? user.getNickName() : user.getEmail());
-                intent.putExtra("userPhoto", user.getPhotoUri());
-                Log.d(TAG, user.getPhotoUri() + " 보낸 userphoto");
-                startActivity(intent);
-            }
-        });
         
         /*
 
@@ -104,7 +81,27 @@ getActivity()는 Fragment가 연결된 Activity가 없는 상태에서 호출되
 requireActivity()는 이와 달리 Fragment가 연결된 Activity가 없는 경우에는 예외(IllegalStateException)를 발생시키므로, Activity의 참조를 안전하게 가져올 수 있습니다. 따라서 requireActivity()를 사용하는 것이 안전한 방법입니다.
          */
 
+        init();
+        initObserve();
+        initListener();
+
+    }
+
+    void init() {
+        user = MainActivity.USER;
+
+        chatBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        chatBinding.recyclerView.setHasFixedSize(true);
+        adapter = new ChatListItemAdapter();
+        chatBinding.recyclerView.setAdapter(adapter);
+
         chatViewModel = new ViewModelProvider(requireActivity()).get(ChatViewModel.class);
+        userManagerViewModel = new ViewModelProvider(requireActivity()).get(UserManagerViewModel.class);
+
+        userManagerViewModel.getUserProfile(user.getUid());
+    }
+
+    void initObserve() {
         chatViewModel.getMyChatRooms().observe(getActivity(), new Observer<List<ChatRoom>>() {
             @Override
             public void onChanged(List<ChatRoom> chatRooms) {
@@ -113,14 +110,30 @@ requireActivity()는 이와 달리 Fragment가 연결된 Activity가 없는 경�
             }
         });
 
-        userManagerViewModel = new ViewModelProvider(requireActivity()).get(UserManagerViewModel.class);
-        userManagerViewModel.getUserProfile(user.getUid());
+
         userManagerViewModel.getUserProfile().observe(getActivity(), new Observer<User>() {
             @Override
             public void onChanged(User user) {
                 myNickName = user.getNickName().equals("") ? user.getEmail() : user.getNickName() ;
             }
         });
+    }
 
+    void initListener() {
+        adapter.setOnItemClickListener(new ChatListItemAdapter.onItemClickListener() {
+            @Override
+            public void onItemClick(ChatRoom chatRoom) {
+                Intent intent = new Intent(getActivity(), ChatActivity.class);
+                User user = chatRoom.getUser();
+                intent.putExtra("itemKey", chatRoom.getItem().getKey());
+                intent.putExtra("uid", user.getUid()); // 상대방 uid
+                intent.putExtra("itemTitle", chatRoom.getItem().getTitle());
+                intent.putExtra("myNickName", myNickName);
+                intent.putExtra("userNickName", user.getNickName().length() > 0 ? user.getNickName() : user.getEmail());
+                intent.putExtra("userPhoto", user.getPhotoUri());
+                Log.d(TAG, user.getPhotoUri() + " 보낸 userphoto");
+                startActivity(intent);
+            }
+        });
     }
 }
