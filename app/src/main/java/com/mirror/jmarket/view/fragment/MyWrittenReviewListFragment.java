@@ -49,6 +49,12 @@ public class MyWrittenReviewListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        init();
+        initObserve();
+
+    }
+
+    void init() {
         user = MainActivity.USER;
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.recyclerView.setHasFixedSize(true);
@@ -56,6 +62,10 @@ public class MyWrittenReviewListFragment extends Fragment {
         binding.recyclerView.setAdapter(adapter);
 
         itemViewModel = new ViewModelProvider(requireActivity()).get(ItemViewModel.class);
+        itemViewModel.getReviews(user.getUid(), "Written");
+    }
+
+    void initObserve() {
         itemViewModel.getReviews().observe(getActivity(), new Observer<List<Review>>() {
             @Override
             public void onChanged(List<Review> reviews) {
@@ -65,10 +75,6 @@ public class MyWrittenReviewListFragment extends Fragment {
 
             }
         });
-        itemViewModel.getReviews(user.getUid(), "Written");
-
-
     }
-
 
 }

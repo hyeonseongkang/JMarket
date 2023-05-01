@@ -53,6 +53,12 @@ public class MyCompleteSalesListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        init();
+        initObserve();
+
+    }
+
+    void init() {
         user = MainActivity.USER;
 
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -62,6 +68,9 @@ public class MyCompleteSalesListFragment extends Fragment {
 
         itemViewModel = new ViewModelProvider(requireActivity()).get(ItemViewModel.class);
         itemViewModel.getMyCompleteSalesItems(user.getUid());
+    }
+
+    void initObserve() {
         itemViewModel.getMyCompleteSalesItems().observe(getActivity(), new Observer<List<Item>>() {
             @Override
             public void onChanged(List<Item> items) {
@@ -70,6 +79,5 @@ public class MyCompleteSalesListFragment extends Fragment {
                 }
             }
         });
-
     }
 }

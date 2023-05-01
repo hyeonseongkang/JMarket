@@ -50,6 +50,12 @@ public class MyReceivedReviewListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        init();
+        initObserve();
+
+    }
+
+    void init() {
         user = MainActivity.USER;
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.recyclerView.setHasFixedSize(true);
@@ -57,21 +63,20 @@ public class MyReceivedReviewListFragment extends Fragment {
         binding.recyclerView.setAdapter(adapter);
 
         itemViewModel = new ViewModelProvider(requireActivity()).get(ItemViewModel.class);
+        itemViewModel.getReviews(user.getUid(), "Received");
+    }
+
+    void initObserve() {
         itemViewModel.getReviews().observe(getActivity(), new Observer<List<Review>>() {
             @Override
             public void onChanged(List<Review> reviews) {
-                Log.d("MyReceived", String.valueOf(reviews.size()));
                 adapter.setReviews(reviews);
                 if (reviews != null) {
-
 
                 }
 
             }
         });
-        itemViewModel.getReviews(user.getUid(), "Received");
-
-
     }
 
 

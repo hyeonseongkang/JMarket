@@ -53,6 +53,12 @@ public class MyOnSalesListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        init();
+        initObserve();
+
+    }
+
+    void init() {
         user = MainActivity.USER;
 
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -62,6 +68,9 @@ public class MyOnSalesListFragment extends Fragment {
 
         itemViewModel = new ViewModelProvider(requireActivity()).get(ItemViewModel.class);
         itemViewModel.getMyOnSalesItems(user.getUid());
+    }
+
+    void initObserve() {
         itemViewModel.getMyOnSalesItems().observe(getActivity(), new Observer<List<Item>>() {
             @Override
             public void onChanged(List<Item> items) {
@@ -70,6 +79,6 @@ public class MyOnSalesListFragment extends Fragment {
                 }
             }
         });
-
     }
+
 }

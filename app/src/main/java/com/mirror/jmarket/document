@@ -34,3 +34,41 @@ ex) MutableLiveData<Boolean> itemSave // 중고 물건 저장 완료 확인 live
 중고 물건 생성 Activity에서 중고 물건을 등록을 완료하면 itemSave에 true값을 넣어서 Activity finish함, 이때 itemSave에는 true값이 계속 저장되어 있음(LiveData 생명주기 && singleton pattern)
 문제는 다음 중고 물건을 생성하기 위해 중고 물건 생성 Activity로 이동하게 되면 itemSave에는 이미 true값이 있기때문에 onCreate에서 바로 finish시킴
 그러므로 한 Activity에서 한 번 쓰일 값들은 onCreate에서 setValue()로 값을 초기화 시켜주던가 생명주기 메서드를 사용하여 removeObservers를 통해 null시켜줘야 함
+
+
+
+// rxjava firebase code
+   void rxFirebase() {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users");
+        Observable.create(emitter -> {
+                    ValueEventListener listener = new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            User user = dataSnapshot.getValue(User.class);
+                            emitter.onNext(user);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError error) {
+                            emitter.onError(error.toException());
+                        }
+                    };
+
+                    ref.addValueEventListener(listener);
+
+                    // Disposable 객체 반환
+                    emitter.setDisposable(new MainThreadDisposable() {
+                        @Override
+                        protected void onDispose() {
+                            ref.removeEventListener(listener);
+                        }
+                    });
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(user -> {
+                    Log.d("TAG", "User name: " + user.getName() + ", email " + user.getEmail());
+                }, error -> {
+                    Log.w("TAG", "Failed to read value.", error);
+                });
+    }

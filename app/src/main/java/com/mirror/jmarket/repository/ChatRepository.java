@@ -38,6 +38,12 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import durdinapps.rxfirebase2.RxFirebaseDatabase;
+import io.reactivex.rxjava3.android.MainThreadDisposable;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 public class ChatRepository {
     public static final String TAG = "ChatRepository";
 
@@ -68,6 +74,7 @@ public class ChatRepository {
         leaveChatRoom = new MutableLiveData<>();
 
         myLeaveChatRoom = new MutableLiveData<>();
+
     }
 
     public static synchronized ChatRepository getInstance(Application application) {

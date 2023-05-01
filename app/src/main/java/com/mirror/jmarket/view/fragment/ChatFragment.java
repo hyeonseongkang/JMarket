@@ -49,7 +49,6 @@ public class ChatFragment extends Fragment {
     private String myNickName;
 
 
-
     public ChatFragment() {
         // Required empty public constructor
     }
