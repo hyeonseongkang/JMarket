@@ -51,4 +51,8 @@ public class User {
     public void setPhotoUri(String uri) {
         this.photoUri = uri;
     }
+
+    public String toString() {
+        return uid + " " + email + " " + password + " " + nickName + " " + photoUri;
+    }
 }
