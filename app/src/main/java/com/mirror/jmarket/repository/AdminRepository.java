@@ -1,6 +1,7 @@
 package com.mirror.jmarket.repository;
 
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.util.Log;
 
@@ -11,6 +12,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mirror.jmarket.model.Item;
 import com.mirror.jmarket.model.User;
 import com.mirror.jmarket.view.activity.AdminActivity;
 
@@ -35,8 +37,11 @@ public class AdminRepository {
     private Application application;
 
     private DatabaseReference myRef;
+    private DatabaseReference itemRef;
 
     private MutableLiveData<List<User>> usersProfile;
+
+    private MutableLiveData<List<Item>> items;
 
 
     public static synchronized AdminRepository getInstance(Application application) {
@@ -49,8 +54,9 @@ public class AdminRepository {
     private AdminRepository(Application application) {
         this.application = application;
         myRef = FirebaseDatabase.getInstance().getReference("users");
-
+        itemRef = FirebaseDatabase.getInstance().getReference("items");
         usersProfile = new MutableLiveData<>();
+        items = new MutableLiveData<>();
     }
 
     private ValueEventListener createValueEventListener(final PublishSubject<DataSnapshot> subject) {
@@ -81,6 +87,7 @@ public class AdminRepository {
         });
     }
 
+    @SuppressLint("CheckResult")
     public void getUsers() {
 
         observeValueEvent(myRef)
@@ -98,11 +105,33 @@ public class AdminRepository {
                         // 데이터 가져오기에 실패했을 때 처리할 로직 작성
                     }
                 });
+
     }
 
+    @SuppressLint("CheckResult")
+    public void getItems() {
 
-    public MutableLiveData<List<User>> getUsersProfile() {
+        observeValueEvent(itemRef)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<DataSnapshot>() {
+                    @Override
+                    public void accept(DataSnapshot dataSnapshot) throws Exception {
+                        // 데이터를 가져왔을 때 처리할 로직 작성
+                        Log.d("ITEM", dataSnapshot.getValue().toString());
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        // 데이터 가져오기에 실패했을 때 처리할 로직 작성
+                    }
+                });
+    }
+
+    public MutableLiveData<List<User>> getLiveDataUsers() {
         return usersProfile;
     }
+
+    public MutableLiveData<List<Item>> getLiveDataItems() { return items;}
 
 }

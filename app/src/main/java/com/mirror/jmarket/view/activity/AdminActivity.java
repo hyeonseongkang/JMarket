@@ -10,6 +10,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.mirror.jmarket.databinding.ActivityAdminBinding;
+import com.mirror.jmarket.model.Item;
 import com.mirror.jmarket.model.User;
 import com.mirror.jmarket.utils.RxAndroidUtils;
 import com.mirror.jmarket.viewmodel.AdminViewModel;
@@ -37,14 +38,24 @@ public class AdminActivity extends AppCompatActivity {
     void init() {
         adminViewModel = new ViewModelProvider(this).get(AdminViewModel.class);
         adminViewModel.getUsers();
+        adminViewModel.getItems();
     }
 
     void initObserve() {
-        adminViewModel.getUsersProfile().observe(this, new Observer<List<User>>() {
+        adminViewModel.getLiveDataUsers().observe(this, new Observer<List<User>>() {
             @Override
             public void onChanged(List<User> users) {
                 for (User user: users) {
                     Log.d(TAG, user.toString());
+                }
+            }
+        });
+
+        adminViewModel.getLiveDataItems().observe(this, new Observer<List<Item>>() {
+            @Override
+            public void onChanged(List<Item> items) {
+                for (Item item: items) {
+                    Log.d(TAG, item.toString());
                 }
             }
         });
