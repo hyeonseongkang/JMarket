@@ -68,12 +68,32 @@ public class CreateItemActivity extends AppCompatActivity {
 
         overridePendingTransition(R.anim.fadein_left, R.anim.none);
 
+        init();
+        initObserve();
+        initListener();
+    }
+
+    void init() {
         user = MainActivity.USER;
         itemPhotos = new ArrayList<>();
 
         itemViewModel = new ViewModelProvider(this).get(ItemViewModel.class);
-       //itemViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ItemViewModel.class);
-        //itemViewModel.getItemSave().setValue(false);
+
+        userManagerViewModel = new ViewModelProvider(this).get(UserManagerViewModel.class);
+        // userManagerViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(UserManagerViewModel.class);
+        userManagerViewModel.getUserProfile(user.getUid());
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        binding.photoItemRecyclerView.setLayoutManager(layoutManager);
+        binding.photoItemRecyclerView.setHasFixedSize(true);
+
+        adapter = new HomeItemPhotoAdapter();
+        binding.photoItemRecyclerView.setAdapter(adapter);
+
+    }
+
+    void initObserve() {
         itemViewModel.getItemSave().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
@@ -88,9 +108,6 @@ public class CreateItemActivity extends AppCompatActivity {
             }
         });
 
-        userManagerViewModel = new ViewModelProvider(this).get(UserManagerViewModel.class);
-       // userManagerViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(UserManagerViewModel.class);
-        userManagerViewModel.getUserProfile(user.getUid());
         userManagerViewModel.getUserProfile().observe(this, new Observer<User>() {
             @Override
             public void onChanged(User user) {
@@ -109,24 +126,32 @@ public class CreateItemActivity extends AppCompatActivity {
 
             }
         });
+    }
 
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        binding.photoItemRecyclerView.setLayoutManager(layoutManager);
-        binding.photoItemRecyclerView.setHasFixedSize(true);
-
-        adapter = new HomeItemPhotoAdapter();
-        binding.photoItemRecyclerView.setAdapter(adapter);
-
-        // 아이템 사진 추가 했다가 취소
-        adapter.setOnItemClickListener(new HomeItemPhotoAdapter.onItemClickListener() {
+    void initListener() {
+        binding.backButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick( int position) {
-                itemPhotos.remove(position);
-                adapter.notifyItemRemoved(position);
-                adapter.notifyItemRangeChanged(position, itemPhotos.size());
-                binding.photoCount.setText(String.valueOf(itemPhotos.size()));
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.none, R.anim.fadeout_left);
+            }
+        });
+
+        // 아이템 생성
+        binding.okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String title = binding.title.getText().toString();
+                String price = binding.price.getText().toString();
+                Boolean priceOffer = binding.priceOffer.isChecked();
+                String content = binding.content.getText().toString();
+
+                if (itemPhotos.size() == 0) return;
+
+                binding.progress.setVisibility(View.VISIBLE);
+                //String id, String title, String price, boolean priceOffer, String content, ArrayList<String> photoKeys, String key, String firstPhotoUri, String sellerProfileUri, String sellerName, ArrayList<String> likes
+                Item item = new Item(user.getUid(), title, price, priceOffer, content, itemPhotos, null, "", itemPhotos.get(0), user.getUid(), null, false);
+                itemViewModel.createItem(item);
             }
         });
 
@@ -162,34 +187,18 @@ public class CreateItemActivity extends AppCompatActivity {
             }
         });
 
-
-        // 아이템 생성
-        binding.okButton.setOnClickListener(new View.OnClickListener() {
+        // 아이템 사진 추가 했다가 취소
+        adapter.setOnItemClickListener(new HomeItemPhotoAdapter.onItemClickListener() {
             @Override
-            public void onClick(View view) {
-                String title = binding.title.getText().toString();
-                String price = binding.price.getText().toString();
-                Boolean priceOffer = binding.priceOffer.isChecked();
-                String content = binding.content.getText().toString();
-
-                if (itemPhotos.size() == 0) return;
-
-                binding.progress.setVisibility(View.VISIBLE);
-                //String id, String title, String price, boolean priceOffer, String content, ArrayList<String> photoKeys, String key, String firstPhotoUri, String sellerProfileUri, String sellerName, ArrayList<String> likes
-                Item item = new Item(user.getUid(), title, price, priceOffer, content, itemPhotos, null, "", itemPhotos.get(0), user.getUid(), null, false);
-                itemViewModel.createItem(item);
+            public void onItemClick( int position) {
+                itemPhotos.remove(position);
+                adapter.notifyItemRemoved(position);
+                adapter.notifyItemRangeChanged(position, itemPhotos.size());
+                binding.photoCount.setText(String.valueOf(itemPhotos.size()));
             }
         });
-
-        binding.backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                overridePendingTransition(R.anim.none, R.anim.fadeout_left);
-            }
-        });
-
     }
+
 
     ActivityResultLauncher<Intent> getPhotoLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {

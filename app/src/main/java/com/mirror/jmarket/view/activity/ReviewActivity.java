@@ -43,6 +43,13 @@ public class ReviewActivity extends AppCompatActivity {
 
         overridePendingTransition(R.anim.fadein_left, R.anim.none);
 
+        init();
+        initObserve();
+        initListener();
+
+    }
+
+    void init() {
         // get Intent
         Intent intent = getIntent();
         itemKey = intent.getStringExtra("itemKey");
@@ -52,14 +59,18 @@ public class ReviewActivity extends AppCompatActivity {
 
         // view model
         itemViewModel = new ViewModelProvider(this).get(ItemViewModel.class);
-       // itemViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ItemViewModel.class);
+        // itemViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ItemViewModel.class);
         itemViewModel.getItem(itemKey);
+    }
+
+    void initObserve() {
+
         itemViewModel.getItem().observe(this, new Observer<Item>() {
             @Override
             public void onChanged(Item item) {
                 currentItem = item;
                 binding.itemTitle.setText(item.getTitle());
-              //  binding.seller.setText(item.getSellerName());
+                //  binding.seller.setText(item.getSellerName());
 
                 Glide.with(ReviewActivity.this)
                         .load(item.getFirstPhotoUri())
@@ -79,10 +90,9 @@ public class ReviewActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
-
-        // button
-
+    void initListener() {
         binding.writeReviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,4 +114,5 @@ public class ReviewActivity extends AppCompatActivity {
             }
         });
     }
+
 }

@@ -60,21 +60,15 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         }
 
+        init();
+        initObserve();
+        initListener();
+    }
+
+    void init() {
         userManagerViewModel = new ViewModelProvider(this).get(UserManagerViewModel.class);
-       // userManagerViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(UserManagerViewModel.class);
-        userManagerViewModel.updateValid.observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                if (aBoolean) {
-                    Log.d(TAG, "update success user profile");
-                    setResult(RESULT_OK);
-                    finish();
-                    overridePendingTransition(R.anim.none, R.anim.fadeout_left);
-                } else {
-                    Log.d(TAG, "update fail user profile");
-                }
-            }
-        });
+        // userManagerViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(UserManagerViewModel.class);
+
 
         Intent getIntent = getIntent();
         uid = getIntent.getStringExtra("uid");
@@ -82,6 +76,9 @@ public class EditProfileActivity extends AppCompatActivity {
         nickName = null;
 
         userManagerViewModel.getUserProfile(uid);
+    }
+
+    void initObserve() {
         userManagerViewModel.getUserProfile().observe(this, new Observer<User>() {
             @Override
             public void onChanged(User user) {
@@ -103,6 +100,23 @@ public class EditProfileActivity extends AppCompatActivity {
                 binding.progress.setVisibility(View.GONE);
             }
         });
+
+        userManagerViewModel.updateValid.observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean) {
+                    Log.d(TAG, "update success user profile");
+                    setResult(RESULT_OK);
+                    finish();
+                    overridePendingTransition(R.anim.none, R.anim.fadeout_left);
+                } else {
+                    Log.d(TAG, "update fail user profile");
+                }
+            }
+        });
+    }
+
+    void initListener() {
 
         binding.userPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,6 +153,7 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
     }
+
 
     ActivityResultLauncher<Intent> getPhotoLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {

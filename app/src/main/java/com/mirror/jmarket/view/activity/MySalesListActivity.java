@@ -26,8 +26,15 @@ public class MySalesListActivity extends AppCompatActivity {
 
         overridePendingTransition(R.anim.fadein_left, R.anim.none);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, new MyOnSalesListFragment()).commit();
+        init();
+        initListener();
+    }
 
+    void init() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, new MyOnSalesListFragment()).commit();
+    }
+
+    void initListener() {
         binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -62,4 +69,5 @@ public class MySalesListActivity extends AppCompatActivity {
             }
         });
     }
+
 }

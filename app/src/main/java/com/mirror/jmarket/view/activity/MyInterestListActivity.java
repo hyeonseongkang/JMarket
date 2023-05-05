@@ -40,14 +40,25 @@ public class MyInterestListActivity extends AppCompatActivity {
 
         overridePendingTransition(R.anim.fadein_left, R.anim.none);
 
+        init();
+        initObserve();
+        initListener();
+
+    }
+
+    void init() {
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setHasFixedSize(true);
         adapter = new HomeItemAdapter();
         binding.recyclerView.setAdapter(adapter);
 
         itemViewModel = new ViewModelProvider(this).get(ItemViewModel.class);
-       // itemViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ItemViewModel.class);
+        // itemViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ItemViewModel.class);
         itemViewModel.getMyInterestItems(user.getUid());
+    }
+
+    void initObserve() {
+
         itemViewModel.getMyInterestItems().observe(MyInterestListActivity.this, new Observer<List<Item>>() {
             @Override
             public void onChanged(List<Item> items) {
@@ -56,7 +67,9 @@ public class MyInterestListActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
+    void initListener() {
 
         adapter.setOnItemClickListener(new HomeItemAdapter.onItemClickListener() {
             @Override
@@ -77,4 +90,5 @@ public class MyInterestListActivity extends AppCompatActivity {
             }
         });
     }
+
 }

@@ -72,6 +72,13 @@ public class ChatActivity extends AppCompatActivity {
 
         overridePendingTransition(R.anim.fadein_left, R.anim.none);
 
+        init();
+        initObserve();
+        initListener();
+
+    }
+
+    void init() {
         user = MainActivity.USER;
 
         Intent getIntent = getIntent();
@@ -90,9 +97,29 @@ public class ChatActivity extends AppCompatActivity {
         binding.userNickName.setText(userNickName); // 채팅 상대방 닉네임
 
         // item viewModel
-       // itemViewModel = new ViewModelProvider(this ,new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ItemViewModel.class);
+        // itemViewModel = new ViewModelProvider(this ,new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ItemViewModel.class);
         itemViewModel = new ViewModelProvider(this).get(ItemViewModel.class);
         itemViewModel.getItem(itemKey);
+        itemViewModel.getComplete(uid, user.getUid(), itemKey);
+
+        chatViewModel = new ViewModelProvider(this).get(ChatViewModel.class);
+        // chatViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ChatViewModel.class);
+        chatViewModel.getMyChats(user.getUid(), uid, itemKey);
+
+        // 상대방이 채팅방을 나간경우
+        chatViewModel.getLeaveChatRoom(uid, user.getUid(), itemKey);
+
+        // 메시지 읽음 처리
+        chatViewModel.allMessageChecked(user.getUid(), uid, itemKey);
+
+        // 채팅방을 나가지 않았으면 현재 해당 채팅방에 방문하고 있다는 표시
+        if (!leaveChatRoom)
+            chatViewModel.setVisited(user.getUid(), uid, itemKey, true);
+
+        chatViewModel.getVisited(uid, user.getUid(), itemKey);
+    }
+
+    void initObserve() {
         itemViewModel.getItem().observe(this, new Observer<Item>() {
             @Override
             public void onChanged(Item item) {
@@ -100,7 +127,7 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        itemViewModel.getComplete(uid, user.getUid(), itemKey);
+
         itemViewModel.getComplete().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
@@ -127,17 +154,6 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        binding.completeDeal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CompleteUser completeUser = new CompleteUser(currentItem, uid, user.getUid(), currentItem.getId());
-                itemViewModel.setComplete(user.getUid(), uid, itemKey, completeUser);
-            }
-        });
-
-        chatViewModel = new ViewModelProvider(this).get(ChatViewModel.class);
-       // chatViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ChatViewModel.class);
-        chatViewModel.getMyChats(user.getUid(), uid, itemKey);
         chatViewModel.getChats().observe(this, new Observer<List<Chat>>() {
             @Override
             public void onChanged(List<Chat> chats) {
@@ -149,8 +165,7 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        // 상대방이 채팅방을 나간경우
-        chatViewModel.getLeaveChatRoom(uid, user.getUid(), itemKey);
+
         chatViewModel.getLeaveChatRoom().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
@@ -174,14 +189,7 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        // 메시지 읽음 처리
-        chatViewModel.allMessageChecked(user.getUid(), uid, itemKey);
 
-        // 채팅방을 나가지 않았으면 현재 해당 채팅방에 방문하고 있다는 표시
-        if (!leaveChatRoom)
-            chatViewModel.setVisited(user.getUid(), uid, itemKey, true);
-
-        chatViewModel.getVisited(uid, user.getUid(), itemKey);
         chatViewModel.getVisited().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
@@ -189,8 +197,17 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+    }
 
-        // button
+    void initListener() {
+        binding.completeDeal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CompleteUser completeUser = new CompleteUser(currentItem, uid, user.getUid(), currentItem.getId());
+                itemViewModel.setComplete(user.getUid(), uid, itemKey, completeUser);
+            }
+        });
+
         binding.sendMessageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

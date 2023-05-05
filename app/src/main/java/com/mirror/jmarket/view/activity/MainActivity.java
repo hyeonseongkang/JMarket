@@ -50,8 +50,13 @@ public class MainActivity extends AppCompatActivity {
         mainBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(mainBinding.getRoot());
 
+        init();
+        initObserve();
+    }
+
+    void init() {
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
-       // loginViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(LoginViewModel.class);
+        // loginViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(LoginViewModel.class);
         loginViewModel.loginCheck();
         USER = loginViewModel.getFirebaseUser().getValue();
 
@@ -65,12 +70,18 @@ public class MainActivity extends AppCompatActivity {
 
         // chat view model
         chatViewModel = new ViewModelProvider(this).get(ChatViewModel.class);
-      //  chatViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ChatViewModel.class);
+        //  chatViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ChatViewModel.class);
         //chatViewModel.testDelete();
         //chatViewModel.getMyChats(USER.getUid()); // 내 채팅 가져오기
         chatViewModel.getMyChatRooms(FirebaseAuth.getInstance().getUid()); // 내 채팅방 가져오기
         chatViewModel.getUnReadChatCount(FirebaseAuth.getInstance().getUid()); // 읽지 않은 채팅 갯수 가져오기
 
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, new HomeFragment()).commit();
+
+        mainBinding.bottomNavigation.setOnItemSelectedListener(onItemSelectedListener);
+    }
+
+    void initObserve() {
         // observe 통해 view model - model(repository)의 LiveData unReadChatCount를 관찰하다 변경이 생기면 호출됨
         chatViewModel.getUnReadChatCount().observe(this, new Observer<HashMap<List<String>, Integer>>() {
             @Override
@@ -96,12 +107,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, new HomeFragment()).commit();
-
-        mainBinding.bottomNavigation.setOnItemSelectedListener(onItemSelectedListener);
     }
+
+
 
     NavigationBarView.OnItemSelectedListener onItemSelectedListener = new NavigationBarView.OnItemSelectedListener() {
         @Override

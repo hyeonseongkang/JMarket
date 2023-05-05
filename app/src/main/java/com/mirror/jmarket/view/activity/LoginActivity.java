@@ -50,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
     }
+
     void initListener() {
         loginBinding.loginButton.setOnClickListener(new View.OnClickListener() {
             @Override

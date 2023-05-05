@@ -40,14 +40,26 @@ public class MyBuyListActivity extends AppCompatActivity {
 
         overridePendingTransition(R.anim.fadein_left, R.anim.none);
 
+        init();
+        initObserve();
+        initListener();
+
+    }
+
+    void init() {
+
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setHasFixedSize(true);
         adapter = new HomeItemAdapter();
         binding.recyclerView.setAdapter(adapter);
 
         itemViewModel = new ViewModelProvider(this).get(ItemViewModel.class);
-       // itemViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ItemViewModel.class);
+        // itemViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ItemViewModel.class);
         itemViewModel.getMyBuyItems(user.getUid());
+    }
+
+    void initObserve() {
+
         itemViewModel.getMyBuyItems().observe(MyBuyListActivity.this, new Observer<List<Item>>() {
             @Override
             public void onChanged(List<Item> items) {
@@ -56,9 +68,9 @@ public class MyBuyListActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
-
-        // button
+    void initListener() {
         binding.backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,4 +79,5 @@ public class MyBuyListActivity extends AppCompatActivity {
             }
         });
     }
+
 }

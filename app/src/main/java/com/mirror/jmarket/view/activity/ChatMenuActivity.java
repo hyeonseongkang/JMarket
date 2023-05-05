@@ -25,19 +25,16 @@ public class ChatMenuActivity extends AppCompatActivity {
 
         overridePendingTransition(R.anim.fadein_up, R.anim.none);
 
+        initListener();
+    }
 
-        // button
 
-        chatMenuBinding.completeDeal.setOnClickListener(new View.OnClickListener() {
+    void initListener() {
+        chatMenuBinding.backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Intent data = new Intent();
-                data.putExtra("data", "complete");
-                setResult(RESULT_OK, data);
                 finish();
                 overridePendingTransition(R.anim.none, R.anim.fadeout_up);
-
             }
         });
 
@@ -70,12 +67,18 @@ public class ChatMenuActivity extends AppCompatActivity {
             }
         });
 
-        chatMenuBinding.backButton.setOnClickListener(new View.OnClickListener() {
+        chatMenuBinding.completeDeal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Intent data = new Intent();
+                data.putExtra("data", "complete");
+                setResult(RESULT_OK, data);
                 finish();
                 overridePendingTransition(R.anim.none, R.anim.fadeout_up);
+
             }
         });
     }
+
 }

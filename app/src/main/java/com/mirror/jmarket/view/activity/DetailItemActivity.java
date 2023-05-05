@@ -60,11 +60,17 @@ public class DetailItemActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        binding = ActivityDetailItemBinding.inflate(getLayoutInflater());
-//        setContentView(binding.getRoot());
         binding = DataBindingUtil.setContentView(this, R.layout.activity_detail_item);
 
         overridePendingTransition(R.anim.fadein_left, R.anim.none);
+
+        init();
+        initObserve();
+        initListener();
+
+    }
+
+    void init() {
 
         Intent getIntent = getIntent();
         key = getIntent.getStringExtra("key");
@@ -74,6 +80,74 @@ public class DetailItemActivity extends AppCompatActivity {
         userManagerViewModel = new ViewModelProvider(this).get(UserManagerViewModel.class);
         //userManagerViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(UserManagerViewModel.class);
         userManagerViewModel.getUserProfile(user.getUid());
+
+        chatViewModel = new ViewModelProvider(this).get(ChatViewModel.class);
+        // chatViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ChatViewModel.class);
+
+        itemViewModel = new ViewModelProvider(this).get(ItemViewModel.class);
+        // itemViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ItemViewModel.class);
+        itemViewModel.getItem(key);
+
+        // 현재 아이템 삭제했을 경우 종료
+        itemViewModel.getDeleteItemState().setValue(false);
+
+        // 현재 아이템을 누른 uid가 아이템의 좋아요를 눌렀는지 확인
+        itemViewModel.getLike(key, user.getUid());
+
+
+        // horizontal recyclerview
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        binding.recyclerView.setLayoutManager(linearLayoutManager);
+        binding.recyclerView.setHasFixedSize(true);
+
+        adapter = new DetailPhotoItemAdapter();
+        binding.recyclerView.setAdapter(adapter);
+    }
+
+    void initObserve() {
+        // 채팅방이 만들어지면 ChatActivity로 이동
+        chatViewModel.getCreateChatRoom().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean) {
+                    Intent intent = new Intent(DetailItemActivity.this, ChatActivity.class);
+                    intent.putExtra("itemKey", key);
+                    intent.putExtra("uid", sellerUid);
+                    intent.putExtra("itemTitle", currentItem.getTitle());
+                    intent.putExtra("myNickName",  myUser.getNickName().length() <= 0 ? user.getEmail() : myUser.getNickName());
+                    intent.putExtra("userNickName", otherUser.getNickName().length() > 0 ? otherUser.getNickName() : otherUser.getEmail());
+//                intent.putExtra("userPhoto", currentItem.sellerProfileUri());
+                    intent.putExtra("userPhoto", "null");
+
+                    startActivity(intent);
+                    finish();
+                }
+
+            }
+        });
+
+        itemViewModel.getLike().observe(DetailItemActivity.this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                //Log.d(TAG, aBoolean.toString());
+                if (aBoolean)
+                    binding.like.setBackgroundResource(R.drawable.red_heart);
+                else
+                    binding.like.setBackgroundResource(R.drawable.basic_heart);
+            }
+        });
+
+        itemViewModel.getDeleteItemState().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean) {
+                    Toast.makeText(DetailItemActivity.this, "삭제 완료", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            }
+        });
+
         userManagerViewModel.getUserProfile().observe(this, new Observer<User>() {
             @Override
             public void onChanged(User user) {
@@ -89,32 +163,6 @@ public class DetailItemActivity extends AppCompatActivity {
             }
         });
 
-        binding.deleteItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(DetailItemActivity.this)
-                        .setTitle("중고 물건 삭제")
-                        .setMessage(currentItem.getTitle() + "를 삭제 하시겠습니까?")
-                        .setPositiveButton("삭제", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                itemViewModel.deleteItem(currentItem.getKey());
-                            }
-                        })
-                        .setNegativeButton("취소", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-
-                            }
-                        });
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
-            }
-        });
-
-        itemViewModel = new ViewModelProvider(this).get(ItemViewModel.class);
-       // itemViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ItemViewModel.class);
-        itemViewModel.getItem(key);
         itemViewModel.getItem().observe(this, new Observer<Item>() {
             @Override
             public void onChanged(Item item) {
@@ -137,9 +185,9 @@ public class DetailItemActivity extends AppCompatActivity {
                 if (sellerUid.equals(user.getUid())) {
                     binding.deleteItem.setVisibility(View.VISIBLE);
                 }
-              //  binding.title.setText(item.getTitle());
-              //  binding.content.setText(item.getContent());
-              //  binding.price.setText(item.getPrice() + "원");
+                //  binding.title.setText(item.getTitle());
+                //  binding.content.setText(item.getContent());
+                //  binding.price.setText(item.getPrice() + "원");
 
                 userManagerViewModel.getOtherUserProfile(sellerUid); // 판매자 profile 가져옴
 
@@ -171,65 +219,9 @@ public class DetailItemActivity extends AppCompatActivity {
 
             }
         });
+    }
 
-        // 현재 아이템 삭제했을 경우 종료
-        itemViewModel.getDeleteItemState().setValue(false);
-        itemViewModel.getDeleteItemState().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                if (aBoolean) {
-                    Toast.makeText(DetailItemActivity.this, "삭제 완료", Toast.LENGTH_SHORT).show();
-                    finish();
-                }
-            }
-        });
-
-        // 현재 아이템을 누른 uid가 아이템의 좋아요를 눌렀는지 확인
-        itemViewModel.getLike(key, user.getUid());
-        itemViewModel.getLike().observe(DetailItemActivity.this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                //Log.d(TAG, aBoolean.toString());
-                if (aBoolean)
-                    binding.like.setBackgroundResource(R.drawable.red_heart);
-                else
-                    binding.like.setBackgroundResource(R.drawable.basic_heart);
-            }
-        });
-
-        chatViewModel = new ViewModelProvider(this).get(ChatViewModel.class);
-       // chatViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ChatViewModel.class);
-
-        // 채팅방이 만들어지면 ChatActivity로 이동
-        chatViewModel.getCreateChatRoom().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                if (aBoolean) {
-                    Intent intent = new Intent(DetailItemActivity.this, ChatActivity.class);
-                    intent.putExtra("itemKey", key);
-                    intent.putExtra("uid", sellerUid);
-                    intent.putExtra("itemTitle", currentItem.getTitle());
-                    intent.putExtra("myNickName",  myUser.getNickName().length() <= 0 ? user.getEmail() : myUser.getNickName());
-                    intent.putExtra("userNickName", otherUser.getNickName().length() > 0 ? otherUser.getNickName() : otherUser.getEmail());
-//                intent.putExtra("userPhoto", currentItem.sellerProfileUri());
-                    intent.putExtra("userPhoto", "null");
-
-                    startActivity(intent);
-                    finish();
-                }
-
-            }
-        });
-
-        // horizontal recyclerview
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
-        binding.recyclerView.setLayoutManager(linearLayoutManager);
-        binding.recyclerView.setHasFixedSize(true);
-
-        adapter = new DetailPhotoItemAdapter();
-        binding.recyclerView.setAdapter(adapter);
-
+    void initListener() {
         binding.chatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -238,7 +230,6 @@ public class DetailItemActivity extends AppCompatActivity {
                 chatViewModel.setChatRoom(user.getUid(), sellerUid, currentItem.getKey(), chatRoom, myUser, otherUser);
             }
         });
-
         binding.like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -254,6 +245,30 @@ public class DetailItemActivity extends AppCompatActivity {
             }
         });
 
+        binding.deleteItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(DetailItemActivity.this)
+                        .setTitle("중고 물건 삭제")
+                        .setMessage(currentItem.getTitle() + "를 삭제 하시겠습니까?")
+                        .setPositiveButton("삭제", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                itemViewModel.deleteItem(currentItem.getKey());
+                            }
+                        })
+                        .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+            }
+        });
+
 
     }
+
 }
