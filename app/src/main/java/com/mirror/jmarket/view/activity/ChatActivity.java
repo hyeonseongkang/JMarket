@@ -160,6 +160,9 @@ public class ChatActivity extends AppCompatActivity {
                 if (userPhoto == null || userPhoto.equals("null")) {
                     userPhoto = "null";
                 }
+                for (Chat chat: chats) {
+                    Log.d(TAG, chat.getMessage());
+                }
                 adapter.setChats(chats, user.getUid(), uid, userPhoto);
                 binding.recyclerView.scrollToPosition(chats.size() - 1);
             }
@@ -259,6 +262,9 @@ public class ChatActivity extends AppCompatActivity {
         binding.backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                chatViewModel.removeGetVisitedValueEventListener(user.getUid(), uid, itemKey);
+                chatViewModel.removeGetAllMessageCheckedValueEventListener(user.getUid(), uid, itemKey);
+                chatViewModel.removeGetLeaveChatRoomValueEventListener(user.getUid(), uid, itemKey);
                 finish();
                 overridePendingTransition(R.anim.none, R.anim.fadeout_left);
             }
@@ -303,30 +309,21 @@ public class ChatActivity extends AppCompatActivity {
     public void onStop() {
         super.onStop();
         Log.d(TAG, "onStop");
-        if (!leaveChatRoom)
+        if (!leaveChatRoom) {
             chatViewModel.setVisited(user.getUid(), uid, itemKey, false);
-    }
+            chatViewModel.removeMyChatsValueEventListener(user.getUid(), uid, itemKey);
+        }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d(TAG, "onPause");
-        if (!leaveChatRoom)
-            chatViewModel.setVisited(user.getUid(), uid, itemKey, false);
     }
 
     @Override
     public void onRestart() {
         super.onRestart();
-        if (!leaveChatRoom)
+        if (!leaveChatRoom){
             chatViewModel.setVisited(user.getUid(), uid, itemKey, true);
+            chatViewModel.getMyChats(user.getUid(), uid, itemKey);
+        }
+
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy");
-        if (!leaveChatRoom)
-            chatViewModel.setVisited(user.getUid(), uid, itemKey, false);
-    }
 }

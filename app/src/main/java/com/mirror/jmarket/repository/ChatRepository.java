@@ -86,7 +86,11 @@ public class ChatRepository {
 
     private DatabaseReference chatsRef;
     private DatabaseReference chatRoomsRef;
-
+    private ValueEventListener myChatsValueEventListener;
+    private ValueEventListener getVisitedValueEventListener;
+    private ValueEventListener getAllMessageCheckedValueEventListener1;
+    private ValueEventListener getAllMessageCheckedValueEventListener2;
+    private ValueEventListener getLeaveChatRoomValueEventListener;
     private MutableLiveData<List<HashMap<List<String>, List<Chat>>>> myChats;
     private List<HashMap<List<String>, List<Chat>>> myChatList;
 
@@ -141,6 +145,23 @@ public class ChatRepository {
 
     // 상대방이 채팅방에 들어와 있는지 확인
     public void getVisited(String userUid, String myUid, String itemKey) {
+
+        getVisitedValueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.getValue(Boolean.class) != null) {
+                    boolean visit = snapshot.getValue(Boolean.class);
+                    visited.setValue(visit);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+        chatRoomsRef.child(userUid).child(myUid).child(itemKey).child("visited").addValueEventListener(getVisitedValueEventListener);
+        /*
         chatRoomsRef.child(userUid).child(myUid).child(itemKey).child("visited").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
@@ -155,6 +176,14 @@ public class ChatRepository {
 
             }
         });
+
+         */
+    }
+
+    public void removeGetVisitedValueEventListener(String userUid, String myUid, String itemKey) {
+        if (getVisitedValueEventListener != null) {
+            chatRoomsRef.child(userUid).child(myUid).child(itemKey).child("visited").removeEventListener(getVisitedValueEventListener);
+        }
     }
 
     /*
@@ -162,7 +191,27 @@ public class ChatRepository {
     채팅 데이터는 myUid/userUid/ChatData && userUid/myUid/ChatData 양쪽 uid 하위 모두에 저장되니 myUid 와 userUid(상대) 하위의 값을 모두 바꿔줘야함
      */
     public void allMessageChecked(String myUid, String userUid, String itemKey) {
-        chatsRef.child(myUid).child(userUid).child(itemKey).addListenerForSingleValueEvent(new ValueEventListener() {
+
+        getAllMessageCheckedValueEventListener1 = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                    Chat chat = snapshot1.getValue(Chat.class);
+
+                    if (chat.getSender().equals(userUid)) {
+                        snapshot1.getRef().child("checked").setValue(true);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+        chatsRef.child(myUid).child(userUid).child(itemKey).addListenerForSingleValueEvent(getAllMessageCheckedValueEventListener1);
+        /*
+                chatsRef.child(myUid).child(userUid).child(itemKey).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 for (DataSnapshot snapshot1 : snapshot.getChildren()) {
@@ -179,7 +228,27 @@ public class ChatRepository {
 
             }
         });
+         */
 
+        getAllMessageCheckedValueEventListener2 = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                    Chat chat = snapshot1.getValue(Chat.class);
+
+                    if (chat.getSender().equals(userUid)) {
+                        snapshot1.getRef().child("checked").setValue(true);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+        chatsRef.child(userUid).child(myUid).child(itemKey).addListenerForSingleValueEvent(getAllMessageCheckedValueEventListener2);
+        /*
         chatsRef.child(userUid).child(myUid).child(itemKey).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
@@ -197,6 +266,18 @@ public class ChatRepository {
 
             }
         });
+         */
+
+    }
+
+    public void removeGetAllMessageCheckedValueEventListener(String myUid, String userUid, String itemKey) {
+        if (getAllMessageCheckedValueEventListener1 != null) {
+            chatsRef.child(userUid).child(myUid).child(itemKey).removeEventListener(getAllMessageCheckedValueEventListener1);
+        }
+
+        if (getAllMessageCheckedValueEventListener2 != null) {
+            chatsRef.child(userUid).child(myUid).child(itemKey).removeEventListener(getAllMessageCheckedValueEventListener2);
+        }
     }
 
     // 읽지 않은 채팅 수
@@ -600,7 +681,29 @@ public class ChatRepository {
     }
 
     public void getMyChats(String myUid, String userUid, String itemKey) {
-        chatsRef.child(myUid).child(userUid).child(itemKey).addValueEventListener(new ValueEventListener() {
+
+        myChatsValueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                chatList.clear();
+                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                    Chat chat = snapshot1.getValue(Chat.class);
+                    Log.d(TAG, chat.getMessage().toString());
+                    chatList.add(chat);
+                }
+                chats.setValue(chatList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // 데이터 조회가 취소되었을 때 호출되는 콜백 메서드
+            }
+        };
+        chatsRef.child(myUid).child(userUid).child(itemKey).addValueEventListener(myChatsValueEventListener);
+
+        /*
+        // 기존
+         chatsRef.child(myUid).child(userUid).child(itemKey).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 chatList.clear();
@@ -616,6 +719,15 @@ public class ChatRepository {
 
             }
         });
+         */
+
+    }
+
+    public void removeMyChatsValueEventListener(String myUid, String userUid, String itemKey) {
+        if (myChatsValueEventListener != null) {
+            Log.d(TAG, "Listener 해제");
+            chatsRef.child(myUid).child(userUid).child(itemKey).removeEventListener(myChatsValueEventListener);
+        }
     }
 
 
@@ -671,7 +783,26 @@ public class ChatRepository {
 
     // 채팅방 나갔는지 확인
     public void getLeaveChatRoom(String userUid, String myUid, String itemKey) {
-        chatRoomsRef.child(userUid).child(myUid).child(itemKey).child("leaveChatRoom").addValueEventListener(new ValueEventListener() {
+        getLeaveChatRoomValueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                boolean value = snapshot.getValue(Boolean.class);
+
+                if (value) {
+                    leaveChatRoom.setValue(true);
+                } else {
+                    leaveChatRoom.setValue(false);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+        chatRoomsRef.child(userUid).child(myUid).child(itemKey).child("leaveChatRoom").addValueEventListener(getLeaveChatRoomValueEventListener);
+        /*
+                chatRoomsRef.child(userUid).child(myUid).child(itemKey).child("leaveChatRoom").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 boolean value = snapshot.getValue(Boolean.class);
@@ -689,6 +820,14 @@ public class ChatRepository {
 
             }
         });
+         */
+
+    }
+
+    public void removeGetLeaveChatRoomValueEventListener(String userUid, String myUid, String itemKey) {
+        if (getLeaveChatRoomValueEventListener != null) {
+            chatRoomsRef.child(userUid).child(myUid).child(itemKey).child("leaveChatRoom").removeEventListener(getLeaveChatRoomValueEventListener);
+        }
     }
 }
 

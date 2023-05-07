@@ -13,9 +13,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mirror.jmarket.model.Item;
+import com.mirror.jmarket.model.Test;
 import com.mirror.jmarket.model.User;
 import com.mirror.jmarket.view.activity.AdminActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import durdinapps.rxfirebase2.RxFirebaseDatabase;
@@ -31,7 +33,8 @@ import io.reactivex.rxjava3.subjects.PublishSubject;
 
 public class AdminRepository {
 
-    private static final String TAG = AdminRepository.class.getSimpleName();
+    private static final String TAG = "TEST";
+    //    private static final String TAG = AdminRepository.class.getSimpleName();
 
     private static AdminRepository instance;
     private Application application;
@@ -39,25 +42,50 @@ public class AdminRepository {
     private DatabaseReference myRef;
     private DatabaseReference itemRef;
 
+    private DatabaseReference testRef;
+
+    private ValueEventListener valueEventListener;
+
     private MutableLiveData<List<User>> usersProfile;
 
     private MutableLiveData<List<Item>> items;
 
+    private MutableLiveData<List<Test>> tests;
+    private List<Test> tempTest;
 
-    public static synchronized AdminRepository getInstance(Application application) {
-        if (instance == null) {
-            instance = new AdminRepository(application);
-        }
-        return instance;
-    }
 
-    private AdminRepository(Application application) {
+//    public static synchronized AdminRepository getInstance(Application application) {
+//        if (instance == null) {
+//            instance = new AdminRepository(application);
+//        }
+//        return instance;
+//    }
+//
+//    private AdminRepository(Application application) {
+//        this.application = application;
+//        myRef = FirebaseDatabase.getInstance().getReference("users");
+//        itemRef = FirebaseDatabase.getInstance().getReference("items");
+//        testRef = FirebaseDatabase.getInstance().getReference("tests");
+//        usersProfile = new MutableLiveData<>();
+//        items = new MutableLiveData<>();
+//        tests= new MutableLiveData<>();
+//
+//        tempTest = new ArrayList<>();
+//    }
+
+    public AdminRepository(Application application) {
         this.application = application;
         myRef = FirebaseDatabase.getInstance().getReference("users");
         itemRef = FirebaseDatabase.getInstance().getReference("items");
+        testRef = FirebaseDatabase.getInstance().getReference("tests");
         usersProfile = new MutableLiveData<>();
         items = new MutableLiveData<>();
+        tests= new MutableLiveData<>();
+
+        tempTest = new ArrayList<>();
     }
+
+
 
     private ValueEventListener createValueEventListener(final PublishSubject<DataSnapshot> subject) {
         return new ValueEventListener() {
@@ -128,10 +156,47 @@ public class AdminRepository {
                 });
     }
 
+    public void setTests() {
+        Test test = new Test("test", "27");
+        testRef.push().setValue(test);
+    }
+
+    public void getTests() {
+        Log.d(TAG, "init getTest!!");
+
+        valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@androidx.annotation.NonNull DataSnapshot snapshot) {
+                tempTest.clear();
+                Log.d(TAG, "호출되고 있습니다.");
+                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                    Log.d(TAG, snapshot1.getValue().toString());
+                    Test test = snapshot1.getValue(Test.class);
+                    tempTest.add(test);
+                }
+                tests.setValue(tempTest);
+            }
+
+            @Override
+            public void onCancelled(@androidx.annotation.NonNull DatabaseError error) {
+
+            }
+        };
+        testRef.addValueEventListener(valueEventListener);
+    }
+
+    public void removeValueEventListener() {
+        if (valueEventListener != null) {
+            Log.d(TAG, "해제 되었습니다.");
+            testRef.removeEventListener(valueEventListener);
+        }
+    }
     public MutableLiveData<List<User>> getLiveDataUsers() {
         return usersProfile;
     }
 
     public MutableLiveData<List<Item>> getLiveDataItems() { return items;}
+
+    public MutableLiveData<List<Test>> getLiveDataTests() { return tests;}
 
 }

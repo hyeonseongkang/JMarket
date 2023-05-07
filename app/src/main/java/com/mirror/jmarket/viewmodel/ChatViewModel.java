@@ -123,6 +123,22 @@ public class ChatViewModel extends AndroidViewModel {
 
     public void getMyChats(String myUid, String userUid, String itemKey) { repository.getMyChats(myUid, userUid, itemKey);}
 
+    public void removeMyChatsValueEventListener(String myUid, String userUid, String itemkey) {
+        repository.removeMyChatsValueEventListener(myUid, userUid, itemkey);
+    }
+
+    public void removeGetVisitedValueEventListener(String userUid, String myUid, String itemKey) {
+        repository.removeGetVisitedValueEventListener(userUid, myUid, itemKey);
+    }
+
+    public void removeGetAllMessageCheckedValueEventListener(String myUid, String userUid, String itemKey) {
+        repository.removeGetAllMessageCheckedValueEventListener(myUid, userUid, itemKey);
+    }
+
+    public void removeGetLeaveChatRoomValueEventListener(String userUid, String myUid, String itemKey) {
+        repository.removeGetLeaveChatRoomValueEventListener(userUid, myUid, itemKey);
+    }
+
     public void setLeaveChatRoom(String myUid, String userUid, String itemKey) {
         repository.setLeaveChatRoom(myUid, userUid, itemKey);
     }

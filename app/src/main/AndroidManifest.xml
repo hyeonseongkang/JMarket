@@ -10,7 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.JMarket">
         <activity
-            android:name=".view.activity.SplashActivity"
+            android:name=".view.activity.TestActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.AdminActivity"
             android:exported="false" />
         <activity android:name=".view.activity.MyBuyListActivity" />
         <activity android:name=".view.activity.MySalesListActivity" />
@@ -29,7 +32,7 @@
         <activity android:name=".view.activity.SignUpActivity" />
         <activity android:name=".view.activity.MainActivity" />
         <activity
-            android:name=".view.activity.AdminActivity"
+            android:name=".view.activity.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
