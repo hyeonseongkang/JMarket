@@ -6,6 +6,7 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.mirror.jmarket.model.Chat;
@@ -20,20 +21,20 @@ public class ChatViewModel extends AndroidViewModel {
 
     private ChatRepository repository;
 
-    private MutableLiveData<List<HashMap<List<String>, List<Chat>>>> myChats;
+    private LiveData<List<HashMap<List<String>, List<Chat>>>> myChats;
 
-    private MutableLiveData<List<Chat>> chats;
+    private LiveData<List<Chat>> chats;
 
-    private MutableLiveData<List<ChatRoom>> chatRooms;
+    private LiveData<List<ChatRoom>> chatRooms;
 
-    private MutableLiveData<Boolean> visited;
+    private LiveData<Boolean> visited;
 
-    private MutableLiveData<Boolean> createChatRoom;
+    private LiveData<Boolean> createChatRoom;
 
-    private MutableLiveData<HashMap<List<String>, Integer>> unReadChatCount;
+    private LiveData<HashMap<List<String>, Integer>> unReadChatCount;
 
-    private MutableLiveData<Boolean> leaveChatRoom;
-    private MutableLiveData<Boolean> myLeaveChatRoom;
+    private LiveData<Boolean> leaveChatRoom;
+    private LiveData<Boolean> myLeaveChatRoom;
 
     public ChatViewModel(Application application) {
         super(application);
@@ -49,31 +50,31 @@ public class ChatViewModel extends AndroidViewModel {
         chats = repository.getChats();
 
 
-        visited.setValue(false);
-        createChatRoom.setValue(false);
-        leaveChatRoom.setValue(false);
-        myLeaveChatRoom.setValue(false);
+//        visited.setValue(false);
+//        createChatRoom.setValue(false);
+//        leaveChatRoom.setValue(false);
+//        myLeaveChatRoom.setValue(false);
     }
 
-    public MutableLiveData<List<HashMap<List<String>, List<Chat>>>> getMyChats() { return myChats; }
+    public LiveData<List<HashMap<List<String>, List<Chat>>>> getMyChats() { return myChats; }
 
-    public MutableLiveData<List<Chat>> getChats() { return chats; }
+    public LiveData<List<Chat>> getChats() { return chats; }
 
     // public MutableLiveData<List<List<Chat>>> getMyChats() { return myChats; }
 
-    public MutableLiveData<List<ChatRoom>> getMyChatRooms() { return chatRooms; }
+    public LiveData<List<ChatRoom>> getMyChatRooms() { return chatRooms; }
 
-    public MutableLiveData<Boolean> getVisited() { return visited; }
+    public LiveData<Boolean> getVisited() { return visited; }
 
-    public MutableLiveData<Boolean> getCreateChatRoom() { return createChatRoom; }
+    public LiveData<Boolean> getCreateChatRoom() { return createChatRoom; }
 
-    public MutableLiveData<HashMap<List<String>, Integer>> getUnReadChatCount() {
+    public LiveData<HashMap<List<String>, Integer>> getUnReadChatCount() {
         return unReadChatCount;
     }
 
-    public MutableLiveData<Boolean> getLeaveChatRoom() { return leaveChatRoom; }
+    public LiveData<Boolean> getLeaveChatRoom() { return leaveChatRoom; }
 
-    public MutableLiveData<Boolean> getMyLeaveChatRoom() { return myLeaveChatRoom; }
+    public LiveData<Boolean> getMyLeaveChatRoom() { return myLeaveChatRoom; }
 
     public void getUnReadChatCount(String myUid) {
         repository.getUnReadChatCount(myUid);

@@ -4,6 +4,7 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.mirror.jmarket.model.CompleteUser;
@@ -19,27 +20,27 @@ public class ItemViewModel extends AndroidViewModel {
 
     private ItemRepository repository;
 
-    private MutableLiveData<Boolean> itemSave;
+    private LiveData<Boolean> itemSave;
 
-    private MutableLiveData<List<Item>> items;
+    private LiveData<List<Item>> items;
 
-    private MutableLiveData<List<Item>> myInterestItems;
-    private MutableLiveData<List<Item>> myOnSalesItems;
-    private MutableLiveData<List<Item>> myCompleteSalesItems;
+    private LiveData<List<Item>> myInterestItems;
+    private LiveData<List<Item>> myOnSalesItems;
+    private LiveData<List<Item>> myCompleteSalesItems;
 
-    private MutableLiveData<List<Item>> myBuyItems;
+    private LiveData<List<Item>> myBuyItems;
 
-    private MutableLiveData<Item> item;
+    private LiveData<Item> item;
 
-    private MutableLiveData<Boolean> like;
+    private LiveData<Boolean> like;
 
-    private MutableLiveData<Boolean> complete;
+    private LiveData<Boolean> complete;
 
-    private MutableLiveData<Boolean> reviewComplete;
+    private LiveData<Boolean> reviewComplete;
 
-    private MutableLiveData<List<Review>> reviews;
+    private LiveData<List<Review>> reviews;
 
-    private MutableLiveData<Boolean> deleteItemState;
+    private LiveData<Boolean> deleteItemState;
 
     public ItemViewModel(@NonNull @NotNull Application application) {
         super(application);
@@ -58,35 +59,35 @@ public class ItemViewModel extends AndroidViewModel {
         reviews = repository.getReviews();
         deleteItemState = repository.getDeleteItemState();
 
-        itemSave.setValue(false);
-        complete.setValue(false);
-        reviewComplete.setValue(false);
-        deleteItemState.setValue(false);
+//        itemSave.setValue(false);
+//        complete.setValue(false);
+//        reviewComplete.setValue(false);
+//        deleteItemState.setValue(false);
     }
 
-    public MutableLiveData<Boolean> getItemSave() { return itemSave; }
+    public LiveData<Boolean> getItemSave() { return itemSave; }
 
-    public MutableLiveData<List<Item>> getItems() { return items; }
+    public LiveData<List<Item>> getItems() { return items; }
 
-    public MutableLiveData<List<Item>> getMyInterestItems() { return myInterestItems; }
+    public LiveData<List<Item>> getMyInterestItems() { return myInterestItems; }
 
-    public MutableLiveData<List<Item>> getMyOnSalesItems() { return myOnSalesItems; }
+    public LiveData<List<Item>> getMyOnSalesItems() { return myOnSalesItems; }
 
-    public MutableLiveData<List<Item>> getMyCompleteSalesItems() { return myCompleteSalesItems; }
+    public LiveData<List<Item>> getMyCompleteSalesItems() { return myCompleteSalesItems; }
 
-    public MutableLiveData<List<Item>> getMyBuyItems() { return myBuyItems; }
+    public LiveData<List<Item>> getMyBuyItems() { return myBuyItems; }
 
-    public MutableLiveData<Item> getItem() { return item; }
+    public LiveData<Item> getItem() { return item; }
 
-    public MutableLiveData<Boolean> getLike() { return like; }
+    public LiveData<Boolean> getLike() { return like; }
 
-    public MutableLiveData<Boolean> getComplete() { return complete; }
+    public LiveData<Boolean> getComplete() { return complete; }
 
-    public MutableLiveData<Boolean> getReviewComplete() { return reviewComplete; }
+    public LiveData<Boolean> getReviewComplete() { return reviewComplete; }
 
-    public MutableLiveData<List<Review>> getReviews() { return reviews; }
+    public LiveData<List<Review>> getReviews() { return reviews; }
 
-    public MutableLiveData<Boolean> getDeleteItemState() { return deleteItemState; }
+    public LiveData<Boolean> getDeleteItemState() { return deleteItemState; }
 
     public void getHomeItems(String findText) { repository.getHomeItems(findText); }
 

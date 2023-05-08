@@ -3,6 +3,7 @@ package com.mirror.jmarket.viewmodel;
 import android.app.Application;
 
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.mirror.jmarket.model.User;
@@ -15,13 +16,13 @@ public class UserManagerViewModel extends AndroidViewModel {
 
     private UserManagerRepository repository;
 
-    public MutableLiveData<User> userProfile;
+    public LiveData<User> userProfile;
 
-    private MutableLiveData<User> otherUserProfile;
+    private LiveData<User> otherUserProfile;
 
-    public MutableLiveData<List<User>> usersProfile;
+    public LiveData<List<User>> usersProfile;
 
-    public MutableLiveData<Boolean> updateValid;
+    public LiveData<Boolean> updateValid;
 
     public UserManagerViewModel(Application application) {
         super(application);
@@ -32,19 +33,19 @@ public class UserManagerViewModel extends AndroidViewModel {
         usersProfile = repository.getUsersProfile();
         updateValid = repository.getUpdateValid();
 
-        updateValid.setValue(false);
+        //updateValid.setValue(false);
 
     }
 
-    public MutableLiveData<User> getUserProfile() {
+    public LiveData<User> getUserProfile() {
         return userProfile;
     }
 
-    public MutableLiveData<User> getOtherUserProfile() { return otherUserProfile; }
+    public LiveData<User> getOtherUserProfile() { return otherUserProfile; }
 
-    public MutableLiveData<List<User>> getUsersProfile() { return usersProfile; }
+    public LiveData<List<User>> getUsersProfile() { return usersProfile; }
 
-    public MutableLiveData<Boolean> getUpdateValid() { return updateValid; }
+    public LiveData<Boolean> getUpdateValid() { return updateValid; }
 
     public void getUserProfile(String uid) { repository.getUserProfile(uid);}
 

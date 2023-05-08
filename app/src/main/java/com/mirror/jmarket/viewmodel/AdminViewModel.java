@@ -4,6 +4,7 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -19,9 +20,9 @@ public class AdminViewModel extends AndroidViewModel {
 
    private AdminRepository repository;
 
-   public MutableLiveData<List<User>> usersProfile;
-   public MutableLiveData<List<Item>> items;
-   public MutableLiveData<List<Test>> tests;
+   public LiveData<List<User>> usersProfile;
+   public LiveData<List<Item>> items;
+   public LiveData<List<Test>> tests;
 
    public AdminViewModel(@NonNull Application application) {
       super(application);
@@ -32,13 +33,13 @@ public class AdminViewModel extends AndroidViewModel {
       tests = repository.getLiveDataTests();
    }
 
-   public MutableLiveData<List<User>> getLiveDataUsers() {
+   public LiveData<List<User>> getLiveDataUsers() {
       return usersProfile;
    }
 
-   public MutableLiveData<List<Item>> getLiveDataItems() { return items; }
+   public LiveData<List<Item>> getLiveDataItems() { return items; }
 
-   public MutableLiveData<List<Test>> getLiveDataTests() { return tests; }
+   public LiveData<List<Test>> getLiveDataTests() { return tests; }
 
    public void getUsers() {
       repository.getUsers();
