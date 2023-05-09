@@ -84,9 +84,6 @@ public class MainActivity extends AppCompatActivity {
 
         mainBinding.bottomNavigation.setOnItemSelectedListener(onItemSelectedListener);
 
-        Intent chatServiceIntent = new Intent(this, ChatService.class);
-        chatServiceIntent.putExtra("myUid", FirebaseAuth.getInstance().getUid());
-        startService(chatServiceIntent);
     }
 
     void initObserve() {

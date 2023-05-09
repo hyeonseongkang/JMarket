@@ -545,7 +545,6 @@ public class ChatRepository {
                         }
                     }
 
-                    /*
                     if (addChatRoom) {
                         // 채팅방이 추가 되었다면 알림을 보냄
                         if (!chatRoom.getVisited()) {
@@ -557,12 +556,7 @@ public class ChatRepository {
                             }
                         }
                     }
-
-                     */
-
-
                 }
-
                 chatRooms.setValue(chatRoomList);
             }
 
