@@ -1,29 +1,21 @@
 package com.mirror.jmarket.view.activity;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.mirror.jmarket.databinding.ActivityAdminBinding;
 import com.mirror.jmarket.model.Item;
 import com.mirror.jmarket.model.Test;
 import com.mirror.jmarket.model.User;
-import com.mirror.jmarket.utils.RxAndroidUtils;
+import com.mirror.jmarket.service.ChatService;
 import com.mirror.jmarket.viewmodel.AdminViewModel;
-import com.mirror.jmarket.viewmodel.LoginViewModel;
 
 import java.util.List;
 
@@ -33,6 +25,8 @@ public class AdminActivity extends AppCompatActivity {
     private ActivityAdminBinding binding;
 
     private AdminViewModel adminViewModel;
+
+    private Intent serviceIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +87,29 @@ public class AdminActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        binding.startService.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                serviceIntent=  new Intent(getApplicationContext(), ChatService.class);
+                //오레오 이상부터 동작하는 코드
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(serviceIntent);
+                }
+                //serviceIntent.putExtra("name","강현성");
+                //startService(serviceIntent);
+            }
+        });
+
+
+        binding.stopService.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                stopService(serviceIntent);
+            }
+        });
+
     }
 
     @Override

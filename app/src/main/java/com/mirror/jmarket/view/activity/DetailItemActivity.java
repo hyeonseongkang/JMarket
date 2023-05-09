@@ -89,7 +89,7 @@ public class DetailItemActivity extends AppCompatActivity {
         itemViewModel.getItem(key);
 
         // 현재 아이템 삭제했을 경우 종료
-        itemViewModel.getDeleteItemState().setValue(false);
+        itemViewModel.setDeleteItemState(false);
 
         // 현재 아이템을 누른 uid가 아이템의 좋아요를 눌렀는지 확인
         itemViewModel.getLike(key, user.getUid());

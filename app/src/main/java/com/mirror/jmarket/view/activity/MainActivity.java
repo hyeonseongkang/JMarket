@@ -5,10 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.badge.BadgeDrawable;
@@ -19,6 +22,7 @@ import com.mirror.jmarket.R;
 import com.mirror.jmarket.databinding.ActivityMainBinding;
 import com.mirror.jmarket.factory.LoginViewModelFactory;
 import com.mirror.jmarket.repository.LoginRepository;
+import com.mirror.jmarket.service.ChatService;
 import com.mirror.jmarket.view.fragment.ChatFragment;
 import com.mirror.jmarket.view.fragment.HomeFragment;
 import com.mirror.jmarket.view.fragment.MyPageFragment;
@@ -79,6 +83,10 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.container, new HomeFragment()).commit();
 
         mainBinding.bottomNavigation.setOnItemSelectedListener(onItemSelectedListener);
+
+        Intent chatServiceIntent = new Intent(this, ChatService.class);
+        chatServiceIntent.putExtra("myUid", FirebaseAuth.getInstance().getUid());
+        startService(chatServiceIntent);
     }
 
     void initObserve() {

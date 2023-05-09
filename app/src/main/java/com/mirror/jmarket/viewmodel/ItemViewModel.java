@@ -122,4 +122,6 @@ public class ItemViewModel extends AndroidViewModel {
     public void getMyBuyItems(String myUid) { repository.getMyBuyItems(myUid); }
 
     public void deleteItem(String itemKey) { repository.deleteItem(itemKey); }
+
+    public void setDeleteItemState(boolean state) { repository.setDeleteItemState(state); }
 }

@@ -13,4 +13,24 @@
         android:text="admin"
         android:layout_centerInParent="true"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/startService"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="startService"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/stopService"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="stopService"/>
+    </LinearLayout>
+
 </RelativeLayout>

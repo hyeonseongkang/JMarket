@@ -557,4 +557,10 @@ public class ItemRepository {
 
     }
 
+    public void setDeleteItemState(boolean state) {
+        deleteItemState.setValue(state);
+    }
+
+
+
 }
