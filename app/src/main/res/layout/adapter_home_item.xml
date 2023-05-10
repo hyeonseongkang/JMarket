@@ -1,98 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="110dp"
-    android:layout_marginTop="25dp">
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable
+            name="item"
+            type="com.mirror.jmarket.model.Item" />
+    </data>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
-        android:layout_alignParentLeft="true"
-        app:cardCornerRadius="10dp">
-
-        <ImageView
-            android:id="@+id/photo"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:src="@drawable/imac" />
-    </androidx.cardview.widget.CardView>
-
-    <LinearLayout
-        android:id="@+id/lin"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="15dp"
-        android:layout_toRightOf="@+id/cardView"
-        android:orientation="vertical">
+        android:layout_height="110dp"
+        android:layout_marginTop="25dp">
 
-        <RelativeLayout
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_alignParentLeft="true"
+            app:cardCornerRadius="10dp">
+
+            <ImageView
+                android:id="@+id/photo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+
+                android:src="@drawable/imac" />
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:id="@+id/lin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="15dp"
+            android:layout_toRightOf="@+id/cardView"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/scd5"
+                    android:maxLines="1"
+                    android:text="@{item.title}"
+                    android:textColor="#000000"
+                    android:textSize="16dp"
+                    android:layout_centerVertical="true"/>
+
+                <ImageView
+                    android:id="@+id/interest"
+                    android:visibility="gone"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/red_heart"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"/>
+
+            </RelativeLayout>
+
 
             <TextView
-                android:id="@+id/title"
+                android:id="@+id/price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/scd5"
                 android:maxLines="1"
-                android:text="제목"
+                android:text="@{item.price}"
                 android:textColor="#000000"
-                android:textSize="16dp"
-                android:layout_centerVertical="true"/>
-
-            <ImageView
-                android:id="@+id/interest"
-                android:visibility="gone"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/red_heart"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"/>
-
-        </RelativeLayout>
+                android:textSize="15dp"
+                android:textStyle="bold" />
 
 
-        <TextView
-            android:id="@+id/price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
-            android:ellipsize="end"
-            android:fontFamily="@font/scd5"
-            android:maxLines="1"
-            android:text="10,000"
-            android:textColor="#000000"
-            android:textSize="15dp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/gmm"
+                android:maxLines="1"
+                android:text="@{item.content}"
+                android:textSize="12dp" />
+
+        </LinearLayout>
 
 
-        <TextView
-            android:id="@+id/content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
-            android:ellipsize="end"
-            android:fontFamily="@font/gmm"
-            android:maxLines="1"
-            android:text="내asdasdasdasasdasdadddasdasdasdasdasdasd용"
-            android:textSize="12dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="10dp"
+            android:background="#CFCECE" />
 
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="10dp"
-        android:background="#CFCECE" />
-
-</RelativeLayout>
+    </RelativeLayout>
+</layout>

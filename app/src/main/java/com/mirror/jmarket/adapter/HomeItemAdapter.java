@@ -8,10 +8,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.BindingAdapter;
+import androidx.databinding.ObservableArrayList;
+import androidx.databinding.library.baseAdapters.BR;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.mirror.jmarket.R;
+import com.mirror.jmarket.databinding.AdapterHomeItemBinding;
 import com.mirror.jmarket.model.Item;
 
 import org.jetbrains.annotations.NotNull;
@@ -30,48 +34,55 @@ public class HomeItemAdapter extends RecyclerView.Adapter<HomeItemAdapter.MyView
     @NotNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+        AdapterHomeItemBinding binding = AdapterHomeItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.adapter_home_item, parent,false);
 
-        return new MyViewHolder(itemView);
+        return new MyViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull MyViewHolder holder, int position) {
         Item item = items.get(position);
+        holder.bind(item, interest);
 
-        holder.interest.setVisibility(View.GONE);
 
-        if (interest == true) {
-            holder.interest.setVisibility(View.VISIBLE);
-        }
-
-        holder.title.setText(item.getTitle());
-        holder.content.setText(item.getContent());
-        holder.price.setText(item.getPrice() + "원");
-        Glide.with(holder.itemView.getContext())
-                .load(Uri.parse(items.get(position).getFirstPhotoUri()))
-                .into(holder.photo);
     }
 
     @Override
     public int getItemCount() { return items == null ? 0 : items.size();}
 
     public void setItems(List<Item> items, boolean interest) {
-        this.items = items;
-        this.interest = interest;
-        notifyDataSetChanged();
+        if (items != null) {
+            this.items = items;
+            this.interest = interest;
+            notifyDataSetChanged();
 
+        }
     }
+
+    @BindingAdapter("bind:item")
+    public static void bindItem(RecyclerView recyclerView, ObservableArrayList<Item> items) {
+        HomeItemAdapter adapter = (HomeItemAdapter) recyclerView.getAdapter();
+        if (adapter != null) {
+            if (items != null) {
+                adapter.setItems(items, false);
+            }
+        }
+    }
+
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
+        AdapterHomeItemBinding binding;
         private ImageView photo;
         private ImageView interest;
         private TextView title, content, price;
 
-        public MyViewHolder(View itemView) {
-            super(itemView);
+        public MyViewHolder(AdapterHomeItemBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
 
             photo = itemView.findViewById(R.id.photo);
             interest = itemView.findViewById(R.id.interest);
@@ -84,7 +95,7 @@ public class HomeItemAdapter extends RecyclerView.Adapter<HomeItemAdapter.MyView
             content.setSelected(true);
             price.setSelected(true);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+            binding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     int position = getAdapterPosition();
@@ -93,6 +104,23 @@ public class HomeItemAdapter extends RecyclerView.Adapter<HomeItemAdapter.MyView
                     }
                 }
             });
+        }
+
+        void bind(Item item, boolean interest) {
+            binding.interest.setVisibility(View.GONE);
+
+            if (interest == true) {
+                binding.interest.setVisibility(View.VISIBLE);
+            }
+
+            binding.setVariable(BR.item, item);
+
+//            binding.title.setText(item.getTitle());
+//            binding.content.setText(item.getContent());
+//            binding.price.setText(item.getPrice() + "원");
+//            Glide.with(holder.itemView.getContext())
+//                    .load(Uri.parse(items.get(position).getFirstPhotoUri()))
+//                    .into(holder.photo);
         }
     }
 
