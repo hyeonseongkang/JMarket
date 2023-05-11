@@ -35,6 +35,7 @@ public class ChatViewModel extends AndroidViewModel {
 
     private LiveData<Boolean> leaveChatRoom;
     private LiveData<Boolean> myLeaveChatRoom;
+    private LiveData<User> chatUser;
 
     public ChatViewModel(Application application) {
         super(application);
@@ -48,6 +49,7 @@ public class ChatViewModel extends AndroidViewModel {
         leaveChatRoom = repository.getLeaveChatRoom();
         myLeaveChatRoom = repository.getMyLeaveChatRoom() ;
         chats = repository.getChats();
+        chatUser = repository.getChatuser();
 
 
 //        visited.setValue(false);
@@ -75,6 +77,8 @@ public class ChatViewModel extends AndroidViewModel {
     public LiveData<Boolean> getLeaveChatRoom() { return leaveChatRoom; }
 
     public LiveData<Boolean> getMyLeaveChatRoom() { return myLeaveChatRoom; }
+
+    public LiveData<User> getChatUser() { return chatUser; }
 
     public void getUnReadChatCount(String myUid) {
         repository.getUnReadChatCount(myUid);
@@ -151,5 +155,10 @@ public class ChatViewModel extends AndroidViewModel {
     public void testDelete() {
         repository.testDelete();
     }
+
+    public void getChatUser(String uid) {
+        repository.getChatUser(uid);
+    }
+
 
 }

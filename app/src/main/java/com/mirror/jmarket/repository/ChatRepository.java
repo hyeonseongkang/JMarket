@@ -55,6 +55,7 @@ public class ChatRepository {
         this.application = application;
         chatsRef = FirebaseDatabase.getInstance().getReference("chats");
         chatRoomsRef = FirebaseDatabase.getInstance().getReference("chatRooms");
+        usersRef = FirebaseDatabase.getInstance().getReference("users");
 
         myChats = new MutableLiveData<>();
         myChatList = new ArrayList<>();
@@ -75,6 +76,8 @@ public class ChatRepository {
 
         myLeaveChatRoom = new MutableLiveData<>();
 
+        chatUser = new MutableLiveData<>();
+
     }
 
     public static synchronized ChatRepository getInstance(Application application) {
@@ -86,6 +89,7 @@ public class ChatRepository {
 
     private DatabaseReference chatsRef;
     private DatabaseReference chatRoomsRef;
+    private DatabaseReference usersRef;
     private ValueEventListener myChatsValueEventListener;
     private ValueEventListener getVisitedValueEventListener;
     private ValueEventListener getAllMessageCheckedValueEventListener1;
@@ -94,6 +98,7 @@ public class ChatRepository {
     private MutableLiveData<List<HashMap<List<String>, List<Chat>>>> myChats;
     private List<HashMap<List<String>, List<Chat>>> myChatList;
 
+    private MutableLiveData<User> chatUser;
     private MutableLiveData<List<Chat>> chats;
     private List<Chat> chatList;
 
@@ -113,7 +118,9 @@ public class ChatRepository {
         return myChats;
     }
 
-    public MutableLiveData<List<Chat>> getChats() { return chats; }
+    public MutableLiveData<List<Chat>> getChats() {
+        return chats;
+    }
 
     public MutableLiveData<List<ChatRoom>> getMyChatRooms() {
         return chatRooms;
@@ -127,7 +134,9 @@ public class ChatRepository {
         return visited;
     }
 
-    public MutableLiveData<HashMap<List<String>, Integer>> getUnReadChatCount() { return unReadChatCount; }
+    public MutableLiveData<HashMap<List<String>, Integer>> getUnReadChatCount() {
+        return unReadChatCount;
+    }
 
     public MutableLiveData<Boolean> getLeaveChatRoom() {
         return leaveChatRoom;
@@ -135,6 +144,10 @@ public class ChatRepository {
 
     public MutableLiveData<Boolean> getMyLeaveChatRoom() {
         return myLeaveChatRoom;
+    }
+
+    public MutableLiveData<User> getChatuser() {
+        return chatUser;
     }
 
 
@@ -485,7 +498,7 @@ public class ChatRepository {
                  */
                 //Log.d("onChildChanged", snapshot.getRef().toString());
 
-                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                     //Log.d("onChildChanged/", snapshot1.getRef().toString());
                     ChatRoom chatRoom = snapshot1.getValue(ChatRoom.class);
 
@@ -503,7 +516,7 @@ public class ChatRepository {
                     for (int i = 0; i < chatRoomList.size(); i++) {
                         // 채팅방 리스트에서 이번에 변경된 채팅방이 존재하는지 판별
                         if (chatRoomList.get(i).getUser().getUid().equals(chatRoom.getUser().getUid()) &&
-                            chatRoomList.get(i).getKey().equals(chatRoom.getKey())) {
+                                chatRoomList.get(i).getKey().equals(chatRoom.getKey())) {
 
                             // 만약 채팅방을 나갔다면
                             if (chatRoom.isLeaveChatRoom())
@@ -511,7 +524,7 @@ public class ChatRepository {
 
                             cond = false;
                             position = i;
-                            
+
                             break;
                         }
                     }
@@ -607,7 +620,7 @@ public class ChatRepository {
         chat.setTime(dateTime[1]);
 
         String pushKey1 = chatsRef.push().getKey();
-        String pushKey2 = chatsRef.push().getKey() ;
+        String pushKey2 = chatsRef.push().getKey();
         chatsRef.child(sender).child(receiver).child(itemKey).child(pushKey1).setValue(chat).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<Void> task) {
@@ -685,7 +698,7 @@ public class ChatRepository {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 chatList.clear();
-                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                     Chat chat = snapshot1.getValue(Chat.class);
                     Log.d(TAG, chat.getMessage().toString());
                     chatList.add(chat);
@@ -827,6 +840,22 @@ public class ChatRepository {
         if (getLeaveChatRoomValueEventListener != null) {
             chatRoomsRef.child(userUid).child(myUid).child(itemKey).child("leaveChatRoom").removeEventListener(getLeaveChatRoomValueEventListener);
         }
+    }
+
+    public void getChatUser(String uid) {
+        usersRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                chatUser.setValue(user);
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+
     }
 }
 

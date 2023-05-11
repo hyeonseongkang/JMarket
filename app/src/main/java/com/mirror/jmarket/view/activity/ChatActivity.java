@@ -24,6 +24,7 @@ import com.mirror.jmarket.model.Chat;
 import com.mirror.jmarket.model.CompleteUser;
 import com.mirror.jmarket.model.Item;
 import com.mirror.jmarket.databinding.ActivityChatBinding;
+import com.mirror.jmarket.model.User;
 import com.mirror.jmarket.viewmodel.ChatViewModel;
 import com.mirror.jmarket.viewmodel.ItemViewModel;
 
@@ -105,6 +106,7 @@ public class ChatActivity extends AppCompatActivity {
         chatViewModel = new ViewModelProvider(this).get(ChatViewModel.class);
         // chatViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ChatViewModel.class);
         chatViewModel.getMyChats(user.getUid(), uid, itemKey);
+        chatViewModel.getChatUser(uid);
 
         // 상대방이 채팅방을 나간경우
         chatViewModel.getLeaveChatRoom(uid, user.getUid(), itemKey);
@@ -200,6 +202,12 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        chatViewModel.getChatUser().observe(this, new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+
+            }
+        });
     }
 
     void initListener() {
