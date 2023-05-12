@@ -160,5 +160,9 @@ public class ChatViewModel extends AndroidViewModel {
         repository.getChatUser(uid);
     }
 
+    public void removeGetChatUserValueEventListener(String uid) {
+        repository.removeGetChatUserValueListener(uid);
+    }
+
 
 }

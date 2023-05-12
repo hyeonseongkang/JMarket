@@ -95,6 +95,8 @@ public class ChatRepository {
     private ValueEventListener getAllMessageCheckedValueEventListener1;
     private ValueEventListener getAllMessageCheckedValueEventListener2;
     private ValueEventListener getLeaveChatRoomValueEventListener;
+
+    private ValueEventListener getChatUserValueEventListener;
     private MutableLiveData<List<HashMap<List<String>, List<Chat>>>> myChats;
     private List<HashMap<List<String>, List<Chat>>> myChatList;
 
@@ -843,19 +845,26 @@ public class ChatRepository {
     }
 
     public void getChatUser(String uid) {
-        usersRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+
+        getChatUserValueEventListener = new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
                 chatUser.setValue(user);
             }
 
             @Override
-            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
+        };
 
+        usersRef.child(uid).addValueEventListener(getChatUserValueEventListener);
+    }
+
+    public void removeGetChatUserValueListener(String uid) {
+        if (getChatUserValueEventListener != null)
+            usersRef.child(uid).removeEventListener(getChatUserValueEventListener);
     }
 }
 

@@ -273,6 +273,7 @@ public class ChatActivity extends AppCompatActivity {
                 chatViewModel.removeGetVisitedValueEventListener(user.getUid(), uid, itemKey);
                 chatViewModel.removeGetAllMessageCheckedValueEventListener(user.getUid(), uid, itemKey);
                 chatViewModel.removeGetLeaveChatRoomValueEventListener(user.getUid(), uid, itemKey);
+                chatViewModel.removeGetChatUserValueEventListener(uid);
                 finish();
                 overridePendingTransition(R.anim.none, R.anim.fadeout_left);
             }
@@ -331,7 +332,6 @@ public class ChatActivity extends AppCompatActivity {
             chatViewModel.setVisited(user.getUid(), uid, itemKey, true);
             chatViewModel.getMyChats(user.getUid(), uid, itemKey);
         }
-
     }
 
 }
