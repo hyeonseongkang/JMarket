@@ -92,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(HashMap<List<String>, Integer> hashMap) {
                 int count = 0;
-                Log.d(TAG, "getUnReadChatCount");
                 for (List<String> keys : hashMap.keySet()) {
                     // keys.get(0) -> 상대 uid, keys.get(1) -> itemKey
                     // hashMap.get(keys) -> count
@@ -121,14 +120,17 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.home:
+                    Log.d(TAG, "MOVE HOME");
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, new HomeFragment()).commit();
                     return true;
 
                 case R.id.chat:
+                    Log.d(TAG, "MOVE CHAT");
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, new ChatFragment()).commit();
                     return true;
 
                 case R.id.mypage:
+                    Log.d(TAG, "MOVE MYPAGE");
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, new MyPageFragment()).commit();
                     return true;
             }
@@ -136,33 +138,4 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.d(TAG, "onStart");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d(TAG, "onStop");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d(TAG, "onPause");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(TAG, "onResume");
-    }
 }

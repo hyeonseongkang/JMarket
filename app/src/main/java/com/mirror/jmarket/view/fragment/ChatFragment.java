@@ -84,6 +84,8 @@ requireActivity()는 이와 달리 Fragment가 연결된 Activity가 없는 경�
         initObserve();
         initListener();
 
+        Log.d(TAG, "hello");
+
     }
 
     void init() {
@@ -105,6 +107,9 @@ requireActivity()는 이와 달리 Fragment가 연결된 Activity가 없는 경�
             @Override
             public void onChanged(List<ChatRoom> chatRooms) {
                 Log.d(TAG, "getMyChatRooms");
+                for (ChatRoom chatRoom: chatRooms) {
+                    Log.d(TAG, chatRoom.getUser().getPhotoUri());
+                }
                 adapter.setChatRooms(chatRooms);
             }
         });

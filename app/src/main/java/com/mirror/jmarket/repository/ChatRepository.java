@@ -397,8 +397,11 @@ public class ChatRepository {
      */
     public void setChatRoom(String uid, String sellerUid, String itemKey, ChatRoom chatRoom, User myUser, User otherUser) {
         // uid와 sellerUid가 같다면 return
-        if (uid.equals(sellerUid))
+        if (uid.equals(sellerUid)) {
+            Log.d(TAG, "uid: " + uid + " sellerUid: " + sellerUid);
             return;
+        }
+
 
         chatRoomsRef.child(uid).child(sellerUid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

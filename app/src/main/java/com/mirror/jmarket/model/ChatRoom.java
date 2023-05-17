@@ -2,7 +2,7 @@ package com.mirror.jmarket.model;
 
 public class ChatRoom {
     private String key;
-    private User user;
+    private String userUid; // 상대방 uid
     private Item item;
     private LastMessage lastMessage;
     private boolean visited;
@@ -12,9 +12,9 @@ public class ChatRoom {
 
     public ChatRoom() {}
 
-    public ChatRoom(String key,User user, Item item, LastMessage lastMessage, boolean visited, int unReadChatCount, boolean leaveChatRoom, boolean firstUp) {
+    public ChatRoom(String key, String userUid, Item item, LastMessage lastMessage, boolean visited, int unReadChatCount, boolean leaveChatRoom, boolean firstUp) {
         this.key = key;
-        this.user = user;
+        this.userUid = userUid;
         this.item = item;
         this.lastMessage = lastMessage;
         this.visited = visited;
@@ -31,9 +31,13 @@ public class ChatRoom {
         this.key = key;
     }
 
-    public User getUser() { return user; }
+    public String getUserUid() {
+        return userUid;
+    }
 
-    public void setUser(User user) { this.user = user;}
+    public void setUserUid(String userUid) {
+        this.userUid = userUid;
+    }
 
     public Item getItem() {
         return item;

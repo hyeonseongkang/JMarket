@@ -1,6 +1,7 @@
 package com.mirror.jmarket.adapter;
 
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +65,7 @@ public class ChatListItemAdapter extends RecyclerView.Adapter<ChatListItemAdapte
 
         String userPhoto = user.getPhotoUri();
 
+        Log.d("무야호", userPhoto);
         Glide.with(holder.itemView.getContext())
                 .load(userPhoto.length() > 0 ? Uri.parse(user.getPhotoUri()) : R.drawable.basic_profile_photo)
                 .into(holder.userPhoto);
