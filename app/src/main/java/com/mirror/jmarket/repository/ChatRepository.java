@@ -395,7 +395,7 @@ public class ChatRepository {
      위와 같이 db 구조를 설계한 이유는 상대가 여러 아이템을 판매할 수 있고 아이템 하나당 하나의 채팅방이 생성돼야 하기 때문에
      내 uid 하위에 상대 uid를 놓고 상대 uid 하위에 상대가 판매하는 itemKey들을 넣음
      */
-    public void setChatRoom(String uid, String sellerUid, String itemKey, ChatRoom chatRoom, User myUser, User otherUser) {
+    public void setChatRoom(String uid, String sellerUid, String itemKey, ChatRoom chatRoom) {
         // uid와 sellerUid가 같다면 return
         if (uid.equals(sellerUid)) {
             Log.d(TAG, "uid: " + uid + " sellerUid: " + sellerUid);
@@ -419,13 +419,11 @@ public class ChatRepository {
                     chatRoom1.setKey(itemKey);
                     chatRoom1.setItem(chatRoom.getItem());
                     chatRoom1.setLastMessage(chatRoom.getLastMessage());
-                    chatRoom1.setUser(otherUser);
                     chatRoom1.setVisited(true);
                     ChatRoom chatRoom2 = new ChatRoom();
                     chatRoom2.setKey(itemKey);
                     chatRoom2.setItem(chatRoom.getItem());
                     chatRoom2.setLastMessage(chatRoom.getLastMessage());
-                    chatRoom2.setUser(myUser);
 
                     // 채팅방 db에 저장
                     chatRoomsRef.child(uid).child(sellerUid).child(itemKey).setValue(chatRoom1).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -520,8 +518,11 @@ public class ChatRepository {
 
                     for (int i = 0; i < chatRoomList.size(); i++) {
                         // 채팅방 리스트에서 이번에 변경된 채팅방이 존재하는지 판별
-                        if (chatRoomList.get(i).getUser().getUid().equals(chatRoom.getUser().getUid()) &&
+                        if (chatRoomList.get(i).getUserUid().equals(chatRoom.getUserUid()) &&
                                 chatRoomList.get(i).getKey().equals(chatRoom.getKey())) {
+
+//                            if (chatRoomList.get(i).getUser().getUid().equals(chatRoom.getUser().getUid()) &&
+//                                    chatRoomList.get(i).getKey().equals(chatRoom.getKey())) {
 
                             // 만약 채팅방을 나갔다면
                             if (chatRoom.isLeaveChatRoom())
@@ -567,11 +568,28 @@ public class ChatRepository {
                         // 채팅방이 추가 되었다면 알림을 보냄
                         if (!chatRoom.getVisited()) {
                             // 내가 채팅방을 열고 있지 않을 경우에만 알림을 보냄
-                            String userName = chatRoom.getUser().getNickName().length() > 0 ? chatRoom.getUser().getNickName() : chatRoom.getUser().getEmail();
-                            if (!(chatRoom.getLastMessage().getChecked())) {
-                                snapshot1.getRef().child("lastMessage").child("checked").setValue(true);
-                                showChatNoti(userName, chatRoom.getLastMessage().getMessage());
-                            }
+
+                            usersRef.child(chatRoom.getUserUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    User user = snapshot.getValue(User.class);
+                                    String userName = user.getNickName().length() > 0 ? user.getNickName() : user.getEmail();
+                                    if (!(chatRoom.getLastMessage().getChecked())) {
+                                        snapshot1.getRef().child("lastMessage").child("checked").setValue(true);
+                                        showChatNoti(userName, chatRoom.getLastMessage().getMessage());
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+//                            String userName = chatRoom.getUser().getNickName().length() > 0 ? chatRoom.getUser().getNickName() : chatRoom.getUser().getEmail();
+//                            if (!(chatRoom.getLastMessage().getChecked())) {
+//                                snapshot1.getRef().child("lastMessage").child("checked").setValue(true);
+//                                showChatNoti(userName, chatRoom.getLastMessage().getMessage());
+//                            }
                         }
                     }
                 }
