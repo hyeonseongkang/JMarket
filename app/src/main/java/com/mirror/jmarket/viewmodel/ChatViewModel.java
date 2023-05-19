@@ -116,8 +116,8 @@ public class ChatViewModel extends AndroidViewModel {
 
      */
 
-    public void setChatRoom(String uid, String sellerUid, String itemKey, ChatRoom chatRoom, User myUser, User otherUser) {
-        repository.setChatRoom(uid, sellerUid, itemKey, chatRoom, myUser, otherUser);
+    public void setChatRoom(String uid, String sellerUid, String itemKey, ChatRoom chatRoom) {
+        repository.setChatRoom(uid, sellerUid, itemKey, chatRoom);
     }
 
     public void getMyChatRooms(String myUid) {
