@@ -531,7 +531,7 @@ public class ChatRepository {
 
                     String userUid = chatRoom.getUserUid(); // 상대방 uid
 
-                    usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    usersRef.child(userUid).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             User user = snapshot.getValue(User.class);
@@ -577,6 +577,20 @@ public class ChatRepository {
                 for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                     //Log.d("onChildChanged/", snapshot1.getRef().toString());
                     ChatRoom chatRoom = snapshot1.getValue(ChatRoom.class);
+
+                    String userUid = chatRoom.getUserUid(); // 상대방 uid
+                    usersRef.child(userUid).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            User user = snapshot.getValue(User.class);
+                            chatRoom.setUser(user);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
 
                     boolean leaveChatRoom = false;
                     // chatRoomList가 비어있으면 저장

@@ -47,6 +47,10 @@ public class HomeItemAdapter extends RecyclerView.Adapter<HomeItemAdapter.MyView
         Item item = items.get(position);
         holder.bind(item, interest);
 
+        Glide.with(holder.itemView.getContext())
+                .load(Uri.parse(items.get(position).getFirstPhotoUri()))
+                .into(holder.photo);
+
 
     }
 
