@@ -23,7 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeItemAdapter extends RecyclerView.Adapter<HomeItemAdapter.MyViewHolder>{
+public class HomeItemAdapter extends RecyclerView.Adapter<HomeItemAdapter.MyViewHolder> {
 
     private List<Item> items = new ArrayList<>();
     private onItemClickListener listener;
@@ -37,7 +37,7 @@ public class HomeItemAdapter extends RecyclerView.Adapter<HomeItemAdapter.MyView
         AdapterHomeItemBinding binding = AdapterHomeItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
 
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.adapter_home_item, parent,false);
+                .inflate(R.layout.adapter_home_item, parent, false);
 
         return new MyViewHolder(binding);
     }
@@ -47,15 +47,17 @@ public class HomeItemAdapter extends RecyclerView.Adapter<HomeItemAdapter.MyView
         Item item = items.get(position);
         holder.bind(item, interest);
 
-        Glide.with(holder.itemView.getContext())
-                .load(Uri.parse(items.get(position).getFirstPhotoUri()))
-                .into(holder.photo);
+//        Glide.with(holder.itemView.getContext())
+//                .load(Uri.parse(items.get(position).getFirstPhotoUri()))
+//                .into(holder.photo);
 
 
     }
 
     @Override
-    public int getItemCount() { return items == null ? 0 : items.size();}
+    public int getItemCount() {
+        return items == null ? 0 : items.size();
+    }
 
     public void setItems(List<Item> items, boolean interest) {
         if (items != null) {
@@ -119,12 +121,6 @@ public class HomeItemAdapter extends RecyclerView.Adapter<HomeItemAdapter.MyView
 
             binding.setVariable(BR.item, item);
 
-//            binding.title.setText(item.getTitle());
-//            binding.content.setText(item.getContent());
-//            binding.price.setText(item.getPrice() + "원");
-//            Glide.with(holder.itemView.getContext())
-//                    .load(Uri.parse(items.get(position).getFirstPhotoUri()))
-//                    .into(holder.photo);
         }
     }
 
@@ -132,5 +128,7 @@ public class HomeItemAdapter extends RecyclerView.Adapter<HomeItemAdapter.MyView
         void onItemClick(Item item);
     }
 
-    public void setOnItemClickListener(onItemClickListener listener ) {this.listener= listener;}
+    public void setOnItemClickListener(onItemClickListener listener) {
+        this.listener = listener;
+    }
 }

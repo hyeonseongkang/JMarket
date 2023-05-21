@@ -1,5 +1,12 @@
 package com.mirror.jmarket.model;
 
+import android.net.Uri;
+import android.widget.ImageView;
+
+import androidx.databinding.BindingAdapter;
+
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 public class Item {
@@ -96,5 +103,13 @@ public class Item {
 
     public void setPhotoUrls(ArrayList<String> photoUrls) {
         this.photoUrls = photoUrls;
+    }
+
+    @BindingAdapter("setImage")
+    public static void loadImage(ImageView imageView, String photoUri) {
+        Glide.with(imageView.getContext())
+                .load(Uri.parse(photoUri))
+                .into(imageView);
+
     }
 }
