@@ -12,7 +12,9 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.mirror.jmarket.BR;
 import com.mirror.jmarket.R;
+import com.mirror.jmarket.databinding.AdapterChatListItemBinding;
 import com.mirror.jmarket.model.ChatRoom;
 import com.mirror.jmarket.model.Item;
 import com.mirror.jmarket.model.LastMessage;
@@ -31,7 +33,10 @@ public class ChatListItemAdapter extends RecyclerView.Adapter<ChatListItemAdapte
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.adapter_chat_list_item, parent, false);
 
-        return new MyViewHolder(itemView);
+        AdapterChatListItemBinding binding = AdapterChatListItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+
+
+        return new MyViewHolder(binding);
     }
 
     @Override
@@ -41,34 +46,35 @@ public class ChatListItemAdapter extends RecyclerView.Adapter<ChatListItemAdapte
         LastMessage lastMessage = chatRoom.getLastMessage();
         User user = chatRoom.getUser();
 
-        holder.userNickName.setText(user.getNickName().length() <= 0 ? user.getEmail() : user.getNickName());
-        holder.lastMessage.setText(lastMessage.getMessage());
+        holder.bind(chatRoom);
 
-        if (lastMessage.getDate().length() > 0) {
-            String[] lastMessageDate = lastMessage.getDate().split("-");
-            String month = Integer.parseInt(lastMessageDate[1]) >= 10 ? lastMessageDate[1] : lastMessageDate[1].substring(1);
-            String day = lastMessageDate[2];
-            holder.lastMessageDate.setText(month + "월" + day + "일");
-        }
-
-        holder.unReadChatCountLayout.setVisibility(View.GONE);
-
-        if (chatRoom.getUnReadChatCount() > 0) {
-            holder.unReadChatCountLayout.setVisibility(View.VISIBLE);
-            holder.unReadChatCount.setText(String.valueOf(chatRoom.getUnReadChatCount()));
-        }
-
-
-        Glide.with(holder.itemView.getContext())
-                .load(Uri.parse(item.getFirstPhotoUri()))
-                .into(holder.photo);
-
-        String userPhoto = user.getPhotoUri();
-
-        Log.d("무야호", userPhoto);
-        Glide.with(holder.itemView.getContext())
-                .load(userPhoto.length() > 0 ? Uri.parse(user.getPhotoUri()) : R.drawable.basic_profile_photo)
-                .into(holder.userPhoto);
+//        holder.userNickName.setText(user.getNickName().length() <= 0 ? user.getEmail() : user.getNickName());
+//        holder.lastMessage.setText(lastMessage.getMessage());
+//
+//        if (lastMessage.getDate().length() > 0) {
+//            String[] lastMessageDate = lastMessage.getDate().split("-");
+//            String month = Integer.parseInt(lastMessageDate[1]) >= 10 ? lastMessageDate[1] : lastMessageDate[1].substring(1);
+//            String day = lastMessageDate[2];
+//            holder.lastMessageDate.setText(month + "월" + day + "일");
+//        }
+//
+//        holder.unReadChatCountLayout.setVisibility(View.GONE);
+//
+//        if (chatRoom.getUnReadChatCount() > 0) {
+//            holder.unReadChatCountLayout.setVisibility(View.VISIBLE);
+//            holder.unReadChatCount.setText(String.valueOf(chatRoom.getUnReadChatCount()));
+//        }
+//
+//
+//        Glide.with(holder.itemView.getContext())
+//                .load(Uri.parse(item.getFirstPhotoUri()))
+//                .into(holder.photo);
+//
+//        String userPhoto = user.getPhotoUri();
+//
+//        Glide.with(holder.itemView.getContext())
+//                .load(userPhoto.length() > 0 ? Uri.parse(user.getPhotoUri()) : R.drawable.basic_profile_photo)
+//                .into(holder.userPhoto);
 
     }
 
@@ -82,6 +88,8 @@ public class ChatListItemAdapter extends RecyclerView.Adapter<ChatListItemAdapte
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
+        AdapterChatListItemBinding binding;
+
         private ImageView photo;
         private ImageView userPhoto;
         private TextView userNickName;
@@ -91,8 +99,10 @@ public class ChatListItemAdapter extends RecyclerView.Adapter<ChatListItemAdapte
         private TextView unReadChatCount;
         private RelativeLayout unReadChatCountLayout;
 
-        public MyViewHolder(View itemView) {
-            super(itemView);
+        public MyViewHolder(AdapterChatListItemBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+           // super(itemView);
 
             photo = itemView.findViewById(R.id.photo);
             userPhoto = itemView.findViewById(R.id.userPhoto);
@@ -103,7 +113,7 @@ public class ChatListItemAdapter extends RecyclerView.Adapter<ChatListItemAdapte
             unReadChatCount = itemView.findViewById(R.id.unReadChatCount);
             unReadChatCountLayout = itemView.findViewById(R.id.unReadChatCountLayout);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+            binding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     int position = getAdapterPosition();
@@ -112,6 +122,10 @@ public class ChatListItemAdapter extends RecyclerView.Adapter<ChatListItemAdapte
                     }
                 }
             });
+        }
+
+        void bind(ChatRoom chatRoom) {
+            binding.setVariable(BR.chatRoom, chatRoom);
         }
     }
 

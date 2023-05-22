@@ -105,7 +105,7 @@ public class Item {
         this.photoUrls = photoUrls;
     }
 
-    @BindingAdapter("setImage")
+    @BindingAdapter("imageUri")
     public static void loadImage(ImageView imageView, String photoUri) {
         Glide.with(imageView.getContext())
                 .load(Uri.parse(photoUri))

@@ -1,5 +1,16 @@
 package com.mirror.jmarket.model;
 
+import android.net.Uri;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import androidx.databinding.BindingAdapter;
+
+import com.bumptech.glide.Glide;
+
 public class ChatRoom {
     private String key;
     private String userUid; // 상대방 uid
@@ -90,5 +101,35 @@ public class ChatRoom {
 
     public void setFirstUp(boolean firstUp) {
         this.firstUp = firstUp;
+    }
+
+    @BindingAdapter("unReadChatCount")
+    public static void setUnReadChatCount(TextView textView,  int unReadChatCount) {
+        textView.setText(String.valueOf(unReadChatCount));
+    }
+
+    @BindingAdapter("unReadChatCountBackground")
+    public static void setUnReadChatCountBackround(RelativeLayout relativeLayout, int unReadChatCount) {
+        if (unReadChatCount > 0) {
+            relativeLayout.setVisibility(View.VISIBLE);
+        } else {
+            relativeLayout.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    @BindingAdapter("itemImageUri")
+    public static void loadItemImage(ImageView imageView, String photoUri) {
+        Log.d("HEllO", photoUri);
+        Glide.with(imageView.getContext())
+                .load(Uri.parse(photoUri))
+                .into(imageView);
+    }
+
+    @BindingAdapter("profileImageUri")
+    public static void loadProfileImage(ImageView imageView, String photoUri) {
+        Log.d("ChatRoom", photoUri);
+        Glide.with(imageView.getContext())
+                .load(Uri.parse(photoUri))
+                .into(imageView);
     }
 }
