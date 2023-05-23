@@ -1,5 +1,13 @@
 package com.mirror.jmarket.model;
 
+import android.net.Uri;
+import android.util.Log;
+import android.widget.ImageView;
+
+import androidx.databinding.BindingAdapter;
+
+import com.bumptech.glide.Glide;
+
 public class Review {
     private Item item;
     private String review;
@@ -22,4 +30,11 @@ public class Review {
     }
 
     public String getWriter() { return writer; }
+
+    @BindingAdapter("itemImageUri")
+    public static void loadItemImage(ImageView imageView, String photoUri) {
+        Glide.with(imageView.getContext())
+                .load(Uri.parse(photoUri))
+                .into(imageView);
+    }
 }

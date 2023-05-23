@@ -11,7 +11,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.mirror.jmarket.BR;
 import com.mirror.jmarket.R;
+import com.mirror.jmarket.databinding.ActivityReviewBinding;
+import com.mirror.jmarket.databinding.AdapterChatListItemBinding;
+import com.mirror.jmarket.databinding.AdapterReivewItemBinding;
+import com.mirror.jmarket.model.ChatRoom;
 import com.mirror.jmarket.model.Item;
 import com.mirror.jmarket.model.Review;
 
@@ -29,19 +34,16 @@ public class ReviewItemAdapter extends RecyclerView.Adapter<ReviewItemAdapter.My
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.adapter_reivew_item, parent, false);
 
-        return new MyViewHolder(itemView);
+        AdapterReivewItemBinding binding = AdapterReivewItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+
+        return new MyViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull MyViewHolder holder, int position) {
         Review review = reviews.get(position);
-        Item item = review.getItem();
-        holder.review.setText(review.getReview());
-       // holder.userNickName.setText(item.getSellerName());
+        holder.bind(review);
 
-        Glide.with(holder.itemView.getContext())
-                .load(Uri.parse(item.getFirstPhotoUri()))
-                .into(holder.photo);
 
     }
 
@@ -55,16 +57,23 @@ public class ReviewItemAdapter extends RecyclerView.Adapter<ReviewItemAdapter.My
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
+
+        AdapterReivewItemBinding binding;
         private ImageView photo;
         private TextView review;
         private TextView userNickName;
 
-        public MyViewHolder(View itemView) {
-            super(itemView);
+        public MyViewHolder(AdapterReivewItemBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
 
             photo = itemView.findViewById(R.id.photo);
             review = itemView.findViewById(R.id.review);
             userNickName = itemView.findViewById(R.id.userNickName);
+        }
+
+        void bind(Review review) {
+            binding.setVariable(BR.review, review);
         }
     }
 
