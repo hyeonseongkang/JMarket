@@ -1,37 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="110dp"
-    android:layout_height="110dp"
-    android:layout_marginRight="10dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="loadImage"
+            type="com.mirror.jmarket.data.LoadImage" />
+    </data>
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <androidx.cardview.widget.CardView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            app:cardCornerRadius="10dp"
-            android:layout_marginTop="10dp">
+
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_marginRight="10dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="10dp">
+
+                <ImageView
+                    android:id="@+id/photo"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:scaleType="fitXY"
+                    app:imageUri="@{loadImage.photoUri}"/>
+
+            </androidx.cardview.widget.CardView>
+
+        </RelativeLayout>
+
 
         <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:id="@+id/photo"
-            android:scaleType="fitXY"
-           />
-
-        </androidx.cardview.widget.CardView>
+            android:id="@+id/deletePhoto"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/cancel" />
 
     </RelativeLayout>
+</layout>
 
 
-    <ImageView
-        android:id="@+id/deletePhoto"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:src="@drawable/cancel"
-        android:layout_alignParentRight="true"/>
-
-</RelativeLayout>

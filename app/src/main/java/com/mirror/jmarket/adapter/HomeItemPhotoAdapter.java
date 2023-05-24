@@ -9,7 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.mirror.jmarket.BR;
 import com.mirror.jmarket.R;
+import com.mirror.jmarket.data.LoadImage;
+import com.mirror.jmarket.databinding.AdapterHomePhotoItemBinding;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -28,14 +31,18 @@ public class HomeItemPhotoAdapter extends RecyclerView.Adapter<HomeItemPhotoAdap
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.adapter_home_photo_item, parent,false);
 
-        return new MyViewHolder(itemView);
+        AdapterHomePhotoItemBinding binding = AdapterHomePhotoItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+
+        return new MyViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull MyViewHolder holder, int position) {
-        Glide.with(holder.itemView.getContext())
-                .load(Uri.parse(photoUris.get(position)))
-                .into(holder.photo);
+        LoadImage loadImage = new LoadImage(photoUris.get(position));
+        holder.bind(loadImage);
+//        Glide.with(holder.itemView.getContext())
+//                .load(Uri.parse(photoUris.get(position)))
+//                .into(holder.photo);
     }
 
     @Override
@@ -48,15 +55,19 @@ public class HomeItemPhotoAdapter extends RecyclerView.Adapter<HomeItemPhotoAdap
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
+
+        AdapterHomePhotoItemBinding binding;
+
         private ImageView photo;
         private ImageView deletePhoto;
 
-        public MyViewHolder(View itemView) {
-            super(itemView);
-            photo = itemView.findViewById(R.id.photo);
-            deletePhoto = itemView.findViewById(R.id.deletePhoto);
+        public MyViewHolder(AdapterHomePhotoItemBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+//            photo = binding.findViewById(R.id.photo);
+//            deletePhoto = binding.findViewById(R.id.deletePhoto);
 
-            deletePhoto.setOnClickListener(new View.OnClickListener() {
+            binding.deletePhoto.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     int position = getAdapterPosition();
@@ -65,6 +76,10 @@ public class HomeItemPhotoAdapter extends RecyclerView.Adapter<HomeItemPhotoAdap
                     }
                 }
             });
+        }
+
+        void bind(LoadImage loadImage) {
+            binding.setVariable(BR.loadImage, loadImage);
         }
     }
 
