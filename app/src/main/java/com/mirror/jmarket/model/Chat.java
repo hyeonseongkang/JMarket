@@ -1,6 +1,11 @@
 package com.mirror.jmarket.model;
 
 import android.util.Log;
+import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import androidx.databinding.BindingAdapter;
 
 public class Chat {
     private String myNickName;
@@ -61,5 +66,23 @@ public class Chat {
 
     public void printChatData(String TAG) {
         Log.d(TAG, getSender() + " " + getReceiver() + " " + getMessage() + " " + getDate() + " " + getTime() + " " + getChecked());
+    }
+
+    @BindingAdapter("unReadChat")
+    public static void unReadChat(TextView textView, boolean condi) {
+        if (condi) {
+            textView.setText("1");
+        } else {
+            textView.setText("0");
+        }
+    }
+
+    @BindingAdapter("unReadChatCountBackground")
+    public static void setUnReadChatCountBackround(RelativeLayout relativeLayout, int unReadChatCount) {
+        if (unReadChatCount > 0) {
+            relativeLayout.setVisibility(View.VISIBLE);
+        } else {
+            relativeLayout.setVisibility(View.INVISIBLE);
+        }
     }
 }

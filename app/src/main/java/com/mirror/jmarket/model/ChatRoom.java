@@ -119,7 +119,6 @@ public class ChatRoom {
 
     @BindingAdapter("itemImageUri")
     public static void loadItemImage(ImageView imageView, String photoUri) {
-        Log.d("HEllO", photoUri);
         Glide.with(imageView.getContext())
                 .load(Uri.parse(photoUri))
                 .into(imageView);
@@ -127,7 +126,6 @@ public class ChatRoom {
 
     @BindingAdapter("profileImageUri")
     public static void loadProfileImage(ImageView imageView, String photoUri) {
-        Log.d("ChatRoom", photoUri);
         Glide.with(imageView.getContext())
                 .load(Uri.parse(photoUri))
                 .into(imageView);

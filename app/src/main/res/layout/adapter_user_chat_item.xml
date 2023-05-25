@@ -1,132 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="3dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable
+            name="chat"
+            type="com.mirror.jmarket.model.Chat" />
+    </data>
 
     <RelativeLayout
-        android:id="@+id/dateLayout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:visibility="gone"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/adapter_chat_date_layout"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:layout_marginBottom="3dp">
 
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/dateLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_centerVertical="true">
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/adapter_chat_date_layout"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:visibility="gone">
 
-            <ImageView
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:background="@drawable/calendar2"
-                android:backgroundTint="#FFFFFF"
-                android:layout_gravity="center_vertical"/>
-
-            <TextView
-                android:id="@+id/date"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
-                android:fontFamily="@font/scd5"
-                android:text="2020/09/18"
-                android:textColor="#FFFFFF"
-                android:textSize="12dp"
-                android:layout_gravity="center_vertical"/>
-        </LinearLayout>
-    </RelativeLayout>
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
 
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/calendar2"
+                    android:backgroundTint="#FFFFFF" />
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/dateLayout">
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="2dp"
+                    android:fontFamily="@font/scd5"
+                    android:text="2020/09/18"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12dp" />
+            </LinearLayout>
+        </RelativeLayout>
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/userPhoto"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/basic_profile_photo"
-            android:layout_marginTop="2dp"/>
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginLeft="55dp">
+            android:layout_below="@+id/dateLayout">
 
-            <TextView
-                android:id="@+id/userNickName"
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/userPhoto"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="2dp"
+                android:src="@drawable/basic_profile_photo" />
+
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="userNickName"
-                android:fontFamily="@font/scd5"
-                android:textColor="#000000"
-                android:textSize="13dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginBottom="2dp"/>
-
-            <LinearLayout
-                android:id="@+id/one"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/userNickName"
-                android:background="@drawable/adapter_user_chat_layout"
-                android:orientation="vertical"
-                android:padding="5dp">
+                android:layout_marginLeft="55dp"
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/message"
+                    android:id="@+id/userNickName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:fontFamily="@font/gmm"
-                    android:padding="5dp"
-                    android:text="message"
-                    android:textColor="#000000"
-                    android:textSize="16dp" />
-            </LinearLayout>
-
-            <View
-                android:id="@+id/bottomView"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_below="@+id/one"/>
-
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_toRightOf="@+id/one"
-                android:layout_marginLeft="3dp"
-                android:layout_above="@+id/bottomView">
-
-                <TextView
-                    android:id="@+id/messageChecked"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="12dp"
-                    android:textColor="#FBE62A"
-                    android:text="1"/>
-
-                <TextView
-                    android:id="@+id/time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="11:11"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginBottom="2dp"
                     android:fontFamily="@font/scd5"
-                    android:textSize="8dp" />
-            </LinearLayout>
+                    android:text="@{chat.myNickName}"
+                    android:textColor="#000000"
+                    android:textSize="13dp" />
+
+                <LinearLayout
+                    android:id="@+id/one"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/userNickName"
+                    android:background="@drawable/adapter_user_chat_layout"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/message"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:fontFamily="@font/gmm"
+                        android:padding="5dp"
+                        android:text="@{chat.message}"
+                        android:textColor="#000000"
+                        android:textSize="16dp" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/bottomView"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_below="@+id/one" />
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/bottomView"
+                    android:layout_marginLeft="3dp"
+                    android:layout_toRightOf="@+id/one"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/messageChecked"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:unReadChat="@{chat.checked}"
+                        android:textColor="#FBE62A"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:id="@+id/time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/scd5"
+                        android:text="@{chat.time}"
+                        android:textSize="8dp" />
+                </LinearLayout>
+            </RelativeLayout>
         </RelativeLayout>
-
     </RelativeLayout>
-
-</RelativeLayout>
+</layout>

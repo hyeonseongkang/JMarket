@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.mirror.jmarket.R;
+import com.mirror.jmarket.databinding.AdapterMyChatItemBinding;
+import com.mirror.jmarket.databinding.AdapterUserChatItemBinding;
 import com.mirror.jmarket.model.Chat;
 
 import org.jetbrains.annotations.NotNull;
@@ -56,15 +58,20 @@ public class ChatItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View itemView;
+
+        AdapterMyChatItemBinding myChatItemBinding;
+        AdapterUserChatItemBinding userChatItemBinding;
         // 채팅 보낸 사람에 따라 layout 나눔
         if (viewType == 1) {
             itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.adapter_my_chat_item, parent, false);
-            return new MyChatViewHolder(itemView);
+            myChatItemBinding = AdapterMyChatItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+            return new MyChatViewHolder(myChatItemBinding);
         } else {
             itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.adapter_user_chat_item, parent, false);
-            return new OtherChatViewHolder(itemView);
+            userChatItemBinding = AdapterUserChatItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+            return new OtherChatViewHolder(userChatItemBinding);
         }
 
     }
@@ -196,6 +203,8 @@ public class ChatItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     class MyChatViewHolder extends RecyclerView.ViewHolder {
 
+        AdapterMyChatItemBinding myChatItemBinding;
+
         private TextView message;
         private TextView time;
         private TextView messageChecked;
@@ -203,8 +212,9 @@ public class ChatItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         private RelativeLayout dateLayout;
         private TextView date;
 
-        public MyChatViewHolder(View itemView) {
-            super(itemView);
+        public MyChatViewHolder(AdapterMyChatItemBinding myChatItemBinding) {
+            super(myChatItemBinding.getRoot());
+            this.myChatItemBinding = myChatItemBinding;
 
             message = itemView.findViewById(R.id.message);
             time = itemView.findViewById(R.id.time);
@@ -218,6 +228,7 @@ public class ChatItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     class OtherChatViewHolder extends RecyclerView.ViewHolder {
 
+        AdapterUserChatItemBinding userChatItemBinding;
         private CircleImageView userPhoto;
         private TextView userNickName;
         private TextView message;
@@ -228,8 +239,9 @@ public class ChatItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         private TextView date;
 
 
-        public OtherChatViewHolder(View itemView) {
-            super(itemView);
+        public OtherChatViewHolder(AdapterUserChatItemBinding userChatItemBinding) {
+            super(userChatItemBinding.getRoot());
+            this.userChatItemBinding = userChatItemBinding;
 
             userPhoto = itemView.findViewById(R.id.userPhoto);
             userNickName = itemView.findViewById(R.id.userNickName);
