@@ -28,9 +28,6 @@ public class HomeItemPhotoAdapter extends RecyclerView.Adapter<HomeItemPhotoAdap
     @NotNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.adapter_home_photo_item, parent,false);
-
         AdapterHomePhotoItemBinding binding = AdapterHomePhotoItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
 
         return new MyViewHolder(binding);
@@ -40,9 +37,6 @@ public class HomeItemPhotoAdapter extends RecyclerView.Adapter<HomeItemPhotoAdap
     public void onBindViewHolder(@NonNull @NotNull MyViewHolder holder, int position) {
         LoadImage loadImage = new LoadImage(photoUris.get(position));
         holder.bind(loadImage);
-//        Glide.with(holder.itemView.getContext())
-//                .load(Uri.parse(photoUris.get(position)))
-//                .into(holder.photo);
     }
 
     @Override
@@ -58,15 +52,9 @@ public class HomeItemPhotoAdapter extends RecyclerView.Adapter<HomeItemPhotoAdap
 
         AdapterHomePhotoItemBinding binding;
 
-        private ImageView photo;
-        private ImageView deletePhoto;
-
         public MyViewHolder(AdapterHomePhotoItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
-//            photo = binding.findViewById(R.id.photo);
-//            deletePhoto = binding.findViewById(R.id.deletePhoto);
-
             binding.deletePhoto.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

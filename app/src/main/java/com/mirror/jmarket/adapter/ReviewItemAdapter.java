@@ -31,9 +31,6 @@ public class ReviewItemAdapter extends RecyclerView.Adapter<ReviewItemAdapter.My
 
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.adapter_reivew_item, parent, false);
-
         AdapterReivewItemBinding binding = AdapterReivewItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
 
         return new MyViewHolder(binding);
@@ -43,8 +40,6 @@ public class ReviewItemAdapter extends RecyclerView.Adapter<ReviewItemAdapter.My
     public void onBindViewHolder(@NonNull @NotNull MyViewHolder holder, int position) {
         Review review = reviews.get(position);
         holder.bind(review);
-
-
     }
 
     @Override
@@ -56,20 +51,11 @@ public class ReviewItemAdapter extends RecyclerView.Adapter<ReviewItemAdapter.My
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-
-
         AdapterReivewItemBinding binding;
-        private ImageView photo;
-        private TextView review;
-        private TextView userNickName;
 
         public MyViewHolder(AdapterReivewItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
-
-            photo = itemView.findViewById(R.id.photo);
-            review = itemView.findViewById(R.id.review);
-            userNickName = itemView.findViewById(R.id.userNickName);
         }
 
         void bind(Review review) {

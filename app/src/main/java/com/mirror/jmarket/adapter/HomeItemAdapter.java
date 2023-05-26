@@ -36,9 +36,6 @@ public class HomeItemAdapter extends RecyclerView.Adapter<HomeItemAdapter.MyView
     public MyViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         AdapterHomeItemBinding binding = AdapterHomeItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
 
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.adapter_home_item, parent, false);
-
         return new MyViewHolder(binding);
     }
 
@@ -46,12 +43,6 @@ public class HomeItemAdapter extends RecyclerView.Adapter<HomeItemAdapter.MyView
     public void onBindViewHolder(@NonNull @NotNull MyViewHolder holder, int position) {
         Item item = items.get(position);
         holder.bind(item, interest);
-
-//        Glide.with(holder.itemView.getContext())
-//                .load(Uri.parse(items.get(position).getFirstPhotoUri()))
-//                .into(holder.photo);
-
-
     }
 
     @Override
@@ -68,38 +59,14 @@ public class HomeItemAdapter extends RecyclerView.Adapter<HomeItemAdapter.MyView
         }
     }
 
-    @BindingAdapter("bind:item")
-    public static void bindItem(RecyclerView recyclerView, ObservableArrayList<Item> items) {
-        HomeItemAdapter adapter = (HomeItemAdapter) recyclerView.getAdapter();
-        if (adapter != null) {
-            if (items != null) {
-                adapter.setItems(items, false);
-            }
-        }
-    }
-
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
         AdapterHomeItemBinding binding;
-        private ImageView photo;
-        private ImageView interest;
-        private TextView title, content, price;
 
         public MyViewHolder(AdapterHomeItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
-
-            photo = itemView.findViewById(R.id.photo);
-            interest = itemView.findViewById(R.id.interest);
-
-            title = itemView.findViewById(R.id.title);
-            content = itemView.findViewById(R.id.content);
-            price = itemView.findViewById(R.id.price);
-
-            title.setSelected(true);
-            content.setSelected(true);
-            price.setSelected(true);
 
             binding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override

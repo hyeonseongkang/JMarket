@@ -23,11 +23,7 @@ public class DetailPhotoItemAdapter extends RecyclerView.Adapter<DetailPhotoItem
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.adapter_detail_photo_item, parent, false);
-
         AdapterDetailPhotoItemBinding binding = AdapterDetailPhotoItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-
         return new MyViewHolder(binding);
     }
 
@@ -35,9 +31,6 @@ public class DetailPhotoItemAdapter extends RecyclerView.Adapter<DetailPhotoItem
     public void onBindViewHolder(MyViewHolder holder, int position) {
         LoadImage loadImage = new LoadImage(photoUris.get(position));
         holder.bind(loadImage);
-//        Glide.with(holder.itemView.getContext())
-//                .load(Uri.parse(photoUris.get(position)))
-//                .into(holder.photo);
     }
 
     @Override
@@ -51,13 +44,10 @@ public class DetailPhotoItemAdapter extends RecyclerView.Adapter<DetailPhotoItem
     class MyViewHolder extends RecyclerView.ViewHolder {
 
         AdapterDetailPhotoItemBinding binding;
-        private ImageView photo;
 
         public MyViewHolder(AdapterDetailPhotoItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
-
-            photo = itemView.findViewById(R.id.photo);
         }
 
         void bind(LoadImage loadImage) {
