@@ -133,12 +133,10 @@ public class AdminRepository {
                         // 데이터 가져오기에 실패했을 때 처리할 로직 작성
                     }
                 });
-
     }
 
     @SuppressLint("CheckResult")
     public void getItems() {
-
         observeValueEvent(itemRef)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

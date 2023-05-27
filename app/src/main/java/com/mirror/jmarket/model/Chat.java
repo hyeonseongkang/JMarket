@@ -71,9 +71,9 @@ public class Chat {
     @BindingAdapter("unReadChat")
     public static void unReadChat(TextView textView, boolean condi) {
         if (condi) {
-            textView.setText("1");
+            textView.setText("");
         } else {
-            textView.setText("0");
+            textView.setText("1");
         }
     }
 

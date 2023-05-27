@@ -16,10 +16,12 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.mirror.jmarket.BR;
 import com.mirror.jmarket.R;
 import com.mirror.jmarket.databinding.AdapterMyChatItemBinding;
 import com.mirror.jmarket.databinding.AdapterUserChatItemBinding;
 import com.mirror.jmarket.model.Chat;
+import com.mirror.jmarket.model.ChatRoom;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -82,7 +84,6 @@ public class ChatItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         Chat chat = chats.get(position);
         Chat prevChat;
         Chat nextChat;
-
         // 날짜 표시 visible
         String[] date = chat.getDate().split("-");
 
@@ -96,6 +97,7 @@ public class ChatItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         if (holder.getItemViewType() == 1) {
             MyChatViewHolder myChatViewHolder = (MyChatViewHolder) holder;
+            myChatViewHolder.bind(chat);
             myChatViewHolder.dateLayout.setVisibility(View.VISIBLE);
             myChatViewHolder.date.setVisibility(View.VISIBLE);
             myChatViewHolder.time.setVisibility(View.VISIBLE);
@@ -128,6 +130,7 @@ public class ChatItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         } else {
             OtherChatViewHolder otherChatViewHolder = (OtherChatViewHolder) holder;
+            otherChatViewHolder.bind(chat);
             otherChatViewHolder.dateLayout.setVisibility(View.VISIBLE);
             otherChatViewHolder.date.setVisibility(View.VISIBLE);
             otherChatViewHolder.userNickName.setVisibility(View.VISIBLE);
@@ -224,6 +227,10 @@ public class ChatItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             date = itemView.findViewById(R.id.date);
 
         }
+
+        void bind(Chat chat) {
+            myChatItemBinding.setVariable(BR.chat, chat);
+        }
     }
 
     class OtherChatViewHolder extends RecyclerView.ViewHolder {
@@ -252,6 +259,10 @@ public class ChatItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             dateLayout = itemView.findViewById(R.id.dateLayout);
             date = itemView.findViewById(R.id.date);
 
+        }
+
+        void bind(Chat chat) {
+            userChatItemBinding.setVariable(BR.chat, chat);
         }
     }
 }

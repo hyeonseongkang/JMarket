@@ -334,4 +334,13 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (!leaveChatRoom){
+            chatViewModel.setVisited(user.getUid(), uid, itemKey, false);
+            chatViewModel.removeMyChatsValueEventListener(user.getUid(), uid, itemKey);
+        }
+    }
+
 }
