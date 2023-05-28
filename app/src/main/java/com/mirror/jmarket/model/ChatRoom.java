@@ -6,10 +6,15 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.databinding.BindingAdapter;
 
 import com.bumptech.glide.Glide;
+
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 public class ChatRoom {
     private String key;
@@ -103,15 +108,45 @@ public class ChatRoom {
         this.firstUp = firstUp;
     }
 
+    @BindingAdapter("date")
+    public static void setDate(TextView textView, LastMessage lastMessage) {
+        String getToday = getDate();
+        String[] getTodayString = getToday.split("-");
+        String[] getSaveDateString = lastMessage.getDate().split("-");
+
+
+        LocalDateTime today = null;
+        LocalDateTime saveData = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            today = LocalDateTime.of(Integer.parseInt(getTodayString[0]), Integer.parseInt(getTodayString[1]), Integer.parseInt(getTodayString[2]), 0, 0, 0);
+            saveData = LocalDateTime.of(Integer.parseInt(getSaveDateString[0]), Integer.parseInt(getSaveDateString[1]), Integer.parseInt(getSaveDateString[2]), 0, 0, 0);
+            if (today.isAfter(saveData)) {
+                textView.setText(lastMessage.getDate());
+            } else {
+                textView.setText(lastMessage.getTime());
+            }
+        } else {
+            textView.setText(lastMessage.getTime());
+        }
+    }
+
+    public static String getDate() {
+        Date now = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String date = formatter.format(now);
+        return date;
+    }
+
     @BindingAdapter("unReadChatCount")
     public static void setUnReadChatCount(TextView textView,  int unReadChatCount) {
         textView.setText(String.valueOf(unReadChatCount));
     }
 
     @BindingAdapter("unReadChatCountBackground")
-    public static void setUnReadChatCountBackround(RelativeLayout relativeLayout, int unReadChatCount) {
+    public static void setUnReadChatCountBackground(RelativeLayout relativeLayout, int unReadChatCount) {
         if (unReadChatCount > 0) {
             relativeLayout.setVisibility(View.VISIBLE);
+            System.out.println();
         } else {
             relativeLayout.setVisibility(View.INVISIBLE);
         }

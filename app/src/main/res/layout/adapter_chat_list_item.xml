@@ -104,7 +104,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/scd5"
                     android:gravity="center"
-                    android:text="@{chatRoom.lastMessage.time}"
+                    app:date="@{chatRoom.lastMessage}"
                     android:textSize="11dp"
                     android:textStyle="bold" />
 
@@ -114,6 +114,7 @@
                     android:layout_height="22dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="3dp"
+                    android:background="@drawable/activity_chat_list_unreadchatcount_layout"
                     app:unReadChatCountBackground="@{chatRoom.unReadChatCount}">
 
                     <TextView
