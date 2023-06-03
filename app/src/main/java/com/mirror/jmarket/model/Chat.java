@@ -1,11 +1,19 @@
 package com.mirror.jmarket.model;
 
+import android.annotation.SuppressLint;
+import android.os.Build;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.databinding.BindingAdapter;
+
+import com.mirror.jmarket.R;
+
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 
 public class Chat {
     private String myNickName;
@@ -66,6 +74,30 @@ public class Chat {
 
     public void printChatData(String TAG) {
         Log.d(TAG, getSender() + " " + getReceiver() + " " + getMessage() + " " + getDate() + " " + getTime() + " " + getChecked());
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @BindingAdapter("chatDate")
+    public static void setChatDate(TextView textView, String dateStr) {
+        String year = "년";
+        String month = "월";
+        String day = "일";
+        String[] date = dateStr.split("-");
+        LocalDate localDate = LocalDate.of(Integer.parseInt(date[0]), Integer.parseInt(date[1]), Integer.parseInt(date[2]));
+        DayOfWeek dayOfWeek = localDate.getDayOfWeek();
+        int dayOfWeekNum = dayOfWeek.getValue();
+
+        String[] days = new String[]{
+                "월요일",
+                "화요일",
+                "수요일",
+                "목요일",
+                "금요일",
+                "토요일",
+                "일요일"};
+
+        textView.setText(date[0] + year + " " + date[1] + month + " " + date[2] + day + " " + days[dayOfWeekNum - 1]);
     }
 
     @BindingAdapter("unReadChat")

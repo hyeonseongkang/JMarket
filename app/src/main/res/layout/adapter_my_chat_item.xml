@@ -45,7 +45,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="2dp"
                     android:fontFamily="@font/scd5"
-                    android:text="@{chat.date}"
+                    app:chatDate="@{chat.date}"
                     android:textColor="#FFFFFF"
                     android:textSize="12dp" />
             </LinearLayout>
