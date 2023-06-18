@@ -98,88 +98,12 @@ public class ChatItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (holder.getItemViewType() == 1) {
             MyChatViewHolder myChatViewHolder = (MyChatViewHolder) holder;
             myChatViewHolder.bind(chat);
-            myChatViewHolder.dateLayout.setVisibility(View.VISIBLE);
-            myChatViewHolder.date.setVisibility(View.VISIBLE);
-            myChatViewHolder.time.setVisibility(View.VISIBLE);
-            myChatViewHolder.date.setText(date[0] + year + " " + date[1] + month + " " + date[2] + day + " " + days[dayOfWeekNum - 1]);
 
-            // 채팅 데이터가 1개 이상일때
-            if (position > 0) {
-                // (position - 1)번째 채팅 데이터와 position번째 채팅 데이터를 비교해 같은 유저가 보낸 채팅일 경우
-                prevChat = chats.get(position - 1);
-
-                // position 채팅 데이터의 날짜와 이전 채팅 데이터의 날짜가 같다면 현재 position에 해당하는 view의 date는 숨김
-                if (chat.getDate().equals(prevChat.getDate())) {
-                    myChatViewHolder.dateLayout.setVisibility(View.GONE);
-                }
-            }
-
-            // 현재 position + 1가 전체 채팅 사이즈 보다 크다면 nextChat을 가져옴
-            if (chats.size() > position + 1) {
-                nextChat = chats.get(position + 1);
-                // 현재 position의 chat time과 다음 position의 chat time이 같으면서 보낸 사람이 같을 경우 현재 view에는 시간 표시 안함 -> 마지막 chat data의 시간만 표시
-                if (chat.getTime().equals(nextChat.getTime()) && chat.getSender().equals(nextChat.getSender())) {
-                    myChatViewHolder.time.setVisibility(View.GONE);
-                }
-            }
-
-            myChatViewHolder.message.setText(chat.getMessage());
-            myChatViewHolder.time.setText(chat.getTime());
-
-            myChatViewHolder.messageChecked.setText(chat.getChecked() == true ? "" : "1");
 
         } else {
             OtherChatViewHolder otherChatViewHolder = (OtherChatViewHolder) holder;
             otherChatViewHolder.bind(chat);
-            otherChatViewHolder.dateLayout.setVisibility(View.VISIBLE);
-            otherChatViewHolder.date.setVisibility(View.VISIBLE);
-            otherChatViewHolder.userNickName.setVisibility(View.VISIBLE);
-            otherChatViewHolder.time.setVisibility(View.VISIBLE);
-            otherChatViewHolder.date.setText(date[0] + year + " " + date[1] + month + " " + date[2] + day + " " + days[dayOfWeekNum - 1]);
 
-            otherChatViewHolder.userPhoto.setVisibility(View.VISIBLE);
-
-            Glide.with(holder.itemView.getContext())
-                    .load(R.drawable.basic_profile_photo)
-                    .into(otherChatViewHolder.userPhoto);
-
-            if (userPhoto.length() > 0 && !userPhoto.equals("null")) {
-                Glide.with(holder.itemView.getContext())
-                        .load(Uri.parse(userPhoto))
-                        .into(otherChatViewHolder.userPhoto);
-            }
-
-            // 채팅 데이터가 1개 이상일때
-            if (position > 0) {
-                // (position - 1)번째 채팅 데이터와 position번째 채팅 데이터를 비교해 같은 유저가 보낸 채팅일 경우
-                prevChat = chats.get(position - 1);
-                if (chat.getSender().equals(prevChat.getSender()) || chat.getReceiver().equals(prevChat.getReceiver())) {
-                    otherChatViewHolder.userNickName.setVisibility(View.GONE);
-                    otherChatViewHolder.userPhoto.setVisibility(View.GONE);
-                }
-
-                // position 채팅 데이터의 날짜와 이전 채팅 데이터의 날짜가 같다면 현재 position에 해당하는 view의 date는 숨김
-                if (chat.getDate().equals(prevChat.getDate())) {
-                    otherChatViewHolder.dateLayout.setVisibility(View.GONE);
-                }
-
-
-            }
-
-            // 현재 position + 1가 전체 채팅 사이즈 보다 크다면 nextChat을 가져옴
-            if (chats.size() > position + 1) {
-                nextChat = chats.get(position + 1);
-                // 현재 position의 chat time과 다음 position의 chat time이 같으면서 보낸 사람이 같을 경우 현재 view에는 시간 표시 안함 -> 마지막 chat data의 시간만 표시
-                if (chat.getTime().equals(nextChat.getTime()) && chat.getSender().equals(nextChat.getSender())) {
-                    otherChatViewHolder.time.setVisibility(View.GONE);
-                }
-            }
-
-            otherChatViewHolder.userNickName.setText(chat.getMyNickName());
-            otherChatViewHolder.message.setText(chat.getMessage());
-            otherChatViewHolder.time.setText(chat.getTime());
-
-            otherChatViewHolder.messageChecked.setText(chat.getChecked() == true ? "" : "1");
         }
     }
 
@@ -208,23 +132,13 @@ public class ChatItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         AdapterMyChatItemBinding myChatItemBinding;
 
-        private TextView message;
-        private TextView time;
-        private TextView messageChecked;
 
-        private RelativeLayout dateLayout;
-        private TextView date;
 
         public MyChatViewHolder(AdapterMyChatItemBinding myChatItemBinding) {
             super(myChatItemBinding.getRoot());
             this.myChatItemBinding = myChatItemBinding;
 
-            message = itemView.findViewById(R.id.message);
-            time = itemView.findViewById(R.id.time);
-            messageChecked = itemView.findViewById(R.id.messageChecked);
 
-            dateLayout = itemView.findViewById(R.id.dateLayout);
-            date = itemView.findViewById(R.id.date);
 
         }
 
@@ -236,28 +150,14 @@ public class ChatItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     class OtherChatViewHolder extends RecyclerView.ViewHolder {
 
         AdapterUserChatItemBinding userChatItemBinding;
-        private CircleImageView userPhoto;
-        private TextView userNickName;
-        private TextView message;
-        private TextView time;
-        private TextView messageChecked;
 
-        private RelativeLayout dateLayout;
-        private TextView date;
 
 
         public OtherChatViewHolder(AdapterUserChatItemBinding userChatItemBinding) {
             super(userChatItemBinding.getRoot());
             this.userChatItemBinding = userChatItemBinding;
 
-            userPhoto = itemView.findViewById(R.id.userPhoto);
-            userNickName = itemView.findViewById(R.id.userNickName);
-            message = itemView.findViewById(R.id.message);
-            time = itemView.findViewById(R.id.time);
-            messageChecked = itemView.findViewById(R.id.messageChecked);
 
-            dateLayout = itemView.findViewById(R.id.dateLayout);
-            date = itemView.findViewById(R.id.date);
 
         }
 
