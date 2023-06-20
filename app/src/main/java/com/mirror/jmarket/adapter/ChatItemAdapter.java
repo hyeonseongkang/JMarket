@@ -99,11 +99,9 @@ public class ChatItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             MyChatViewHolder myChatViewHolder = (MyChatViewHolder) holder;
             myChatViewHolder.bind(chat);
 
-
         } else {
             OtherChatViewHolder otherChatViewHolder = (OtherChatViewHolder) holder;
             otherChatViewHolder.bind(chat);
-
         }
     }
 
@@ -132,13 +130,9 @@ public class ChatItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         AdapterMyChatItemBinding myChatItemBinding;
 
-
-
         public MyChatViewHolder(AdapterMyChatItemBinding myChatItemBinding) {
             super(myChatItemBinding.getRoot());
             this.myChatItemBinding = myChatItemBinding;
-
-
 
         }
 
@@ -152,12 +146,9 @@ public class ChatItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         AdapterUserChatItemBinding userChatItemBinding;
 
 
-
         public OtherChatViewHolder(AdapterUserChatItemBinding userChatItemBinding) {
             super(userChatItemBinding.getRoot());
             this.userChatItemBinding = userChatItemBinding;
-
-
 
         }
 

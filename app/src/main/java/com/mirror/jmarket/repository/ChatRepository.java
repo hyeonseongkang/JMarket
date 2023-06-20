@@ -91,6 +91,7 @@ public class ChatRepository {
     private DatabaseReference chatRoomsRef;
     private DatabaseReference usersRef;
     private ValueEventListener myChatsValueEventListener;
+    private ChildEventListener myChatsChildEventListener;
     private ValueEventListener getVisitedValueEventListener;
     private ValueEventListener getAllMessageCheckedValueEventListener1;
     private ValueEventListener getAllMessageCheckedValueEventListener2;
@@ -800,6 +801,41 @@ public class ChatRepository {
             }
         });
 
+    }
+
+    public void getMyChat(String myUid, String userUid, String itemKey) {
+        chatList.clear();
+        chatsRef.child(myUid).child(userUid).child(itemKey).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                    Chat chat = snapshot1.getValue(Chat.class);
+                    Log.d(TAG, chat.getMessage().toString());
+                    chatList.add(chat);
+                }
+                chats.setValue(chatList);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     public void getMyChats(String myUid, String userUid, String itemKey) {
