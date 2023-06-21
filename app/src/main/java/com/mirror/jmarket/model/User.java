@@ -1,5 +1,14 @@
 package com.mirror.jmarket.model;
 
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.widget.ImageView;
+
+import androidx.databinding.BindingAdapter;
+
+import com.bumptech.glide.Glide;
+import com.mirror.jmarket.R;
+
 public class User {
     private String uid;
     private String email;
@@ -54,5 +63,20 @@ public class User {
 
     public String toString() {
         return uid + " " + email + " " + password + " " + nickName + " " + photoUri;
+    }
+
+    @BindingAdapter("imageUri")
+    public static void loadImage(ImageView imageView, String photoUri) {
+        if (photoUri.length() <= 0) {
+            Glide.with(imageView.getContext())
+                    .load(R.drawable.basic_profile_photo)
+                    .into(imageView);
+        } else {
+            Glide.with(imageView.getContext())
+                    .load(Uri.parse(photoUri))
+                    .into(imageView);
+        }
+
+
     }
 }
