@@ -768,6 +768,7 @@ public class ChatRepository {
         List<List<Chat>>을 LiveData에 넣고 ChatAcitivity에서 상대 uid와 LiveData에 있는 uid를 비교해서 List<Chat> 하나만을 adpater에 넘겨야함
          */
 
+    /*
     public void getMyChats(String myUid) {
         chatsRef.child(myUid).addValueEventListener(new ValueEventListener() {
             @Override
@@ -802,41 +803,50 @@ public class ChatRepository {
         });
 
     }
-
-    public void getMyChat(String myUid, String userUid, String itemKey) {
-        chatList.clear();
-        chatsRef.child(myUid).child(userUid).child(itemKey).addChildEventListener(new ChildEventListener() {
+*/
+    public void getMyChats(String myUid) {
+        chatsRef.child(myUid).addChildEventListener(new ChildEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-                    Chat chat = snapshot1.getValue(Chat.class);
-                    Log.d(TAG, chat.getMessage().toString());
-                    chatList.add(chat);
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String previousChildKey) {
+                HashMap<List<String>, List<Chat>> hashMap = new HashMap<>();
+                List<String> keys = new ArrayList<>();
+                keys.add(dataSnapshot.getRef().getParent().getKey()); // userUid
+                keys.add(dataSnapshot.getKey()); // itemKey
+
+                List<Chat> chats = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Chat chat = snapshot.getValue(Chat.class);
+                    chats.add(chat);
                 }
-                chats.setValue(chatList);
+
+                hashMap.put(keys, chats);
+                myChatList.add(hashMap);
+
+                myChats.setValue(myChatList);
             }
 
             @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String previousChildKey) {
+                // Handle child changed event if needed
             }
 
             @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                // Handle child removed event if needed
             }
 
             @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String previousChildKey) {
+                // Handle child moved event if needed
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle onCancelled event if needed
             }
         });
     }
+
 
     public void getMyChats(String myUid, String userUid, String itemKey) {
 
