@@ -16,6 +16,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -192,6 +193,43 @@ public class ItemRepository {
             }
         });
     }
+
+    public List<Item> getHomeItems2(String findText) {
+        List<Item> homeItems = new ArrayList<>();
+
+        DatabaseReference itemsRef = FirebaseDatabase.getInstance().getReference("Items");
+        Query query = itemsRef.orderByChild("completed").equalTo(false);
+
+        if (findText != null && !findText.isEmpty()) {
+            // 검색어가 제공된 경우, 필터링을 추가
+            String lowercaseFindText = findText.toLowerCase();
+
+            query = query.startAt(lowercaseFindText).endAt(lowercaseFindText + "\uf8ff");
+        }
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot itemSnapshot : snapshot.getChildren()) {
+                    Item item = itemSnapshot.getValue(Item.class);
+                    if (item != null) {
+                        homeItems.add(item);
+                    }
+                }
+
+                // 아이템 목록을 사용할 수 있는 콜백 메서드를 호출
+                // 예: onDataLoaded(homeItems);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // 에러 처리를 수행
+            }
+        });
+
+        return homeItems;
+    }
+
 
     // 아이템 좋아요
     public void setLike(String key, String uid) {
