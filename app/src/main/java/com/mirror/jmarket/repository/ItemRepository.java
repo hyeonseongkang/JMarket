@@ -301,6 +301,67 @@ public class ItemRepository {
         });
     }
 
+    public void setLike2(String key, String uid) {
+        DatabaseReference likesRef = itemRef.child(key).child("likes");
+
+        likesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                boolean isLiked = false;
+
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    String userUid = dataSnapshot.getValue(String.class);
+
+                    if (userUid != null && userUid.equals(uid)) {
+                        isLiked = true;
+                        break;
+                    }
+                }
+
+                if (isLiked) {
+                    likesRef.child(uid).removeValue();
+                    like.setValue(false);
+                } else {
+                    likesRef.child(uid).setValue(true);
+                    like.setValue(true);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // 처리 중단 시 호출되는 메서드
+            }
+        });
+    }
+
+    public void getLike2(String key, String uid) {
+        DatabaseReference likesRef = itemRef.child(key).child("likes");
+
+        likesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                boolean isLiked = false;
+
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    String userUid = dataSnapshot.getValue(String.class);
+
+                    if (userUid != null && userUid.equals(uid)) {
+                        isLiked = true;
+                        break;
+                    }
+                }
+
+                like.setValue(isLiked);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // 처리 중단 시 호출되는 메서드
+            }
+        });
+    }
+
+
 
     // 아이템 생성
     public void createItem(Item item) {
