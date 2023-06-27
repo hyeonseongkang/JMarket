@@ -524,6 +524,85 @@ public class ItemRepository {
         });
     }
 
+    public void setReview2(String myUid, String userUid, Review review) {
+        DatabaseReference userReviewsRef = reviewsRef.child(userUid);
+
+        userReviewsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                boolean alreadyReview = false;
+
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Review tempReview = dataSnapshot.getValue(Review.class);
+
+                    if (tempReview != null && tempReview.getItem().getKey().equals(review.getItem().getKey()) && tempReview.getWriter().equals(myUid)) {
+                        reviewComplete.setValue(false);
+                        alreadyReview = true;
+                        break;
+                    }
+                }
+
+                if (!alreadyReview) {
+                    DatabaseReference pushRef = userReviewsRef.push();
+                    pushRef.setValue(review).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                reviewComplete.setValue(true);
+                            }
+                        }
+                    });
+
+                    reviewsRef.child(myUid).push().setValue(review);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // 처리 중단 시 호출되는 메서드
+            }
+        });
+    }
+
+    public void getReviews2(String myUid, String state) {
+        DatabaseReference myReviewsRef = reviewsRef.child(myUid);
+
+        myReviewsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<Review> reviewList = new ArrayList<>();
+
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Review review = dataSnapshot.getValue(Review.class);
+
+                    if (review != null) {
+                        if (state.equals("Received")) {
+                            // 내가 받은 리뷰
+                            if (!review.getWriter().equals(myUid)) {
+                                reviewList.add(review);
+                                Log.d("Received", review.getReview());
+                            }
+                        } else {
+                            // 내가 작성한 리뷰
+                            if (review.getWriter().equals(myUid)) {
+                                reviewList.add(review);
+                                Log.d("Written", review.getReview());
+                            }
+                        }
+                    }
+                }
+
+                reviews.setValue(reviewList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // 처리 중단 시 호출되는 메서드
+            }
+        });
+    }
+
+
     // 내 관심목록 아이템 가져오기
     public void getMyInterestItems(String myUid) {
         ArrayList<Item> tempItems = new ArrayList<>();
