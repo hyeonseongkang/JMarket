@@ -649,6 +649,8 @@ public class ItemRepository {
         });
     }
 
+
+
     // 내가 판매완료한 아이템 리스트 가져오기
     public void getMyCompleteSalesItems(String myUid) {
         ArrayList<Item> tempItems = new ArrayList<>();
@@ -662,6 +664,69 @@ public class ItemRepository {
                     }
                     myCompleteSalesItems.setValue(tempItems);
                 }
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void getMyInterestItems2(String myUid) {
+        itemRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                ArrayList<Item> tempItems = new ArrayList<>();
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                    Item item = snapshot1.getValue(Item.class);
+                    if (item != null && item.getLikes() != null && item.getLikes().contains(myUid)) {
+                        tempItems.add(item);
+                    }
+                }
+                myInterestItems.setValue(tempItems);
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void getMyOnSalesItems2(String myUid) {
+        itemRef.orderByChild("id").equalTo(myUid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                ArrayList<Item> tempItems = new ArrayList<>();
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                    Item item = snapshot1.getValue(Item.class);
+                    if (item != null && !item.isSalesComplete()) {
+                        tempItems.add(item);
+                    }
+                }
+                myOnSalesItems.setValue(tempItems);
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void getMyCompleteSalesItems2(String myUid) {
+        itemRef.orderByChild("id").equalTo(myUid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                ArrayList<Item> tempItems = new ArrayList<>();
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                    Item item = snapshot1.getValue(Item.class);
+                    if (item != null && item.isSalesComplete()) {
+                        tempItems.add(item);
+                    }
+                }
+                myCompleteSalesItems.setValue(tempItems);
             }
 
             @Override
