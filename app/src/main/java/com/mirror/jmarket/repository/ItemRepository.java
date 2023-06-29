@@ -800,6 +800,68 @@ public class ItemRepository {
 
     }
 
+    public void getMyBuyItems2(String myUid) {
+        ArrayList<Item> tempItems = new ArrayList<>();
+        completeRef.child(myUid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                    for (DataSnapshot snapshot2 : snapshot1.getChildren()) {
+                        CompleteUser completeUser = snapshot2.getValue(CompleteUser.class);
+                        if (completeUser != null && completeUser.getSender().length() > 0 && completeUser.getReceiver().length() > 0 && !completeUser.getSeller().equals(myUid)) {
+                            tempItems.add(completeUser.getItem());
+                        }
+                    }
+                }
+                myBuyItems.setValue(tempItems);
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void deleteItem2(String itemKey) {
+        itemRef.child(itemKey).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                Item item = snapshot.getValue(Item.class);
+                if (item != null) {
+                    ArrayList<String> itemPhotokeys = item.getPhotoKeys();
+                    StorageReference storage;
+                    for (String itemPhotoKey : itemPhotokeys) {
+                        storage = FirebaseStorage.getInstance().getReference().child("items/" + itemPhotoKey + ".jpg");
+                        storage.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull @NotNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Log.d(TAG, "사진 삭제 성공!!");
+                                }
+                            }
+                        });
+                    }
+                }
+                itemRef.child(itemKey).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            deleteItemState.setValue(true);
+                        }
+                    }
+                });
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
+
+
     public void setDeleteItemState(boolean state) {
         deleteItemState.setValue(state);
     }
