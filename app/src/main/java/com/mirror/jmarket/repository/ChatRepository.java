@@ -374,6 +374,41 @@ public class ChatRepository {
         chatRoomsRef.child(myUid).child(userUid).child(itemKey).child("unReadChatCount").setValue(unReadChatCount);
     }
 
+    public void getUnReadChatCount2(String myUid) {
+        DatabaseReference userChatsRef = chatsRef.child(myUid);
+        userChatsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                HashMap<List<String>, Integer> hashMap = new LinkedHashMap<>();
+                for (DataSnapshot userUidSnapshot : snapshot.getChildren()) {
+                    String userUid = userUidSnapshot.getKey();
+                    for (DataSnapshot itemSnapshot : userUidSnapshot.getChildren()) {
+                        String itemKey = itemSnapshot.getKey();
+                        List<String> keyList = new ArrayList<>();
+                        keyList.add(userUid);
+                        keyList.add(itemKey);
+                        int count = 0;
+                        for (DataSnapshot chatSnapshot : itemSnapshot.getChildren()) {
+                            Chat chat = chatSnapshot.getValue(Chat.class);
+                            if (chat != null && !chat.getSender().equals(myUid) && !chat.getChecked()) {
+                                count++;
+                            }
+                        }
+                        hashMap.put(keyList, count);
+                    }
+                }
+                unReadChatCount.setValue(hashMap);
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
+
+
+
 
     // 채팅방 만들기
     /*
