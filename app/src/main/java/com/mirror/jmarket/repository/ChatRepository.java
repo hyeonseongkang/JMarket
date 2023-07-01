@@ -37,6 +37,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import durdinapps.rxfirebase2.RxFirebaseDatabase;
 import io.reactivex.rxjava3.android.MainThreadDisposable;
@@ -502,40 +503,6 @@ public class ChatRepository {
                         }
                     });
 
-
-                    // 채팅방 db에 저장
-                    /*
-                      usersRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            User user = snapshot.getValue(User.class);
-                            chatRoom2.setUser(user);
-                            chatRoomsRef.child(sellerUid).child(uid).child(itemKey).setValue(chatRoom2);
-
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-                    chatRoomsRef.child(uid).child(sellerUid).child(itemKey).setValue(chatRoom1).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull @NotNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                chatRoomsRef.child(sellerUid).child(uid).child(itemKey).setValue(chatRoom2).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull @NotNull Task<Void> task) {
-                                        if (task.isSuccessful()) createChatRoom.setValue(true);
-                                        else createChatRoom.setValue(false);
-                                    }
-                                });
-                            } else {
-                                chatRoomsRef.child(uid).child(sellerUid).child(itemKey).removeValue();
-                            }
-                        }
-                    });
-*/
                 } else {
                     createChatRoom.setValue(false);
                 }
@@ -547,6 +514,90 @@ public class ChatRepository {
             }
         });
     }
+
+    public void setChatRoom2(String uid, String sellerUid, String itemKey, ChatRoom chatRoom) {
+        // uid와 sellerUid가 같다면 return
+        if (uid.equals(sellerUid)) {
+            return;
+        }
+
+        DatabaseReference chatRoomRef = chatRoomsRef.child(uid).child(sellerUid);
+        chatRoomRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                // 인자 값으로 넘어온 itemKey로 채팅방이 이미 만들어져 있나 확인
+                boolean alreadyItemChatRoom = snapshot.hasChild(itemKey);
+
+                // itemKey에 해당하는 채팅방이 만들어져 있지 않다면
+                if (!alreadyItemChatRoom) {
+                    ChatRoom chatRoom1 = new ChatRoom();
+                    chatRoom1.setKey(itemKey);
+                    chatRoom1.setItem(chatRoom.getItem());
+                    chatRoom1.setLastMessage(chatRoom.getLastMessage());
+                    chatRoom1.setUserUid(sellerUid);
+                    chatRoom1.setVisited(true);
+
+                    ChatRoom chatRoom2 = new ChatRoom();
+                    chatRoom2.setKey(itemKey);
+                    chatRoom2.setItem(chatRoom.getItem());
+                    chatRoom2.setLastMessage(chatRoom.getLastMessage());
+                    chatRoom2.setUserUid(uid);
+
+                    DatabaseReference sellerUserRef = usersRef.child(sellerUid);
+                    sellerUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            User sellerUser = snapshot.getValue(User.class);
+                            chatRoom1.setUser(sellerUser);
+
+                            DatabaseReference uidUserRef = usersRef.child(uid);
+                            uidUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    User uidUser = snapshot.getValue(User.class);
+                                    chatRoom2.setUser(uidUser);
+
+                                    Map<String, Object> childUpdates = new HashMap<>();
+                                    childUpdates.put("/" + uid + "/" + sellerUid + "/" + itemKey, chatRoom1);
+                                    childUpdates.put("/" + sellerUid + "/" + uid + "/" + itemKey, chatRoom2);
+
+                                    chatRoomsRef.updateChildren(childUpdates, new DatabaseReference.CompletionListener() {
+                                        @Override
+                                        public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                                            if (error == null) {
+                                                createChatRoom.setValue(true);
+                                            } else {
+                                                chatRoomRef.child(itemKey).removeValue();
+                                                createChatRoom.setValue(false);
+                                            }
+                                        }
+                                    });
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                    createChatRoom.setValue(false);
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            createChatRoom.setValue(false);
+                        }
+                    });
+                } else {
+                    createChatRoom.setValue(false);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                createChatRoom.setValue(false);
+            }
+        });
+    }
+
 
     public void testDelete() {
         chatsRef.removeValue();
