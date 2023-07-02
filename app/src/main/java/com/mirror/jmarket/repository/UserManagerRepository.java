@@ -134,6 +134,45 @@ public class UserManagerRepository {
         }
     }
 
+    public void updateUserProfile2(@NotNull User user) {
+        String uid = user.getUid();
+
+        if (user.getPhotoUri().isEmpty()) {
+            // 사진이 없는 경우, nickName만 update하기 위해 uid에 해당하는 user 정보에서 photoUri만 가져와서 인자로 받은 user의 setPhotoUri로 update한 뒤 해당 user로 update함
+            myRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                    User localUser = snapshot.getValue(User.class);
+                    user.setPhotoUri(localUser.getPhotoUri());
+                    updateUserData(uid, user);
+                }
+
+                @Override
+                public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                    // 에러 처리
+                }
+            });
+        } else {
+            StorageReference storage = FirebaseStorage.getInstance().getReference().child("profiles/" + uid + ".jpg");
+            UploadTask uploadTask = storage.putFile(Uri.parse(user.getPhotoUri()));
+            uploadTask.addOnSuccessListener(taskSnapshot -> storage.getDownloadUrl().addOnSuccessListener(uri -> {
+                user.setPhotoUri(uri.toString());
+                updateUserData(uid, user);
+            }));
+        }
+    }
+
+    private void updateUserData(String uid, User user) {
+        myRef.child(uid).setValue(user).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                updateValid.setValue(true);
+            } else {
+                updateValid.setValue(false);
+            }
+        });
+    }
+
+
     // users Ref 아래에 인자값으로 넘어온 uid의 User 정보를 가져옴 (내 userProfile)
     public void getUserProfile(String uid) {
         myRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {

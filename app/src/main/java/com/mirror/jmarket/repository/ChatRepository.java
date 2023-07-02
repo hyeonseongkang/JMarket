@@ -227,25 +227,7 @@ public class ChatRepository {
             }
         };
         chatsRef.child(myUid).child(userUid).child(itemKey).addListenerForSingleValueEvent(getAllMessageCheckedValueEventListener1);
-        /*
-                chatsRef.child(myUid).child(userUid).child(itemKey).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-                    Chat chat = snapshot1.getValue(Chat.class);
 
-                    if (chat.getSender().equals(userUid)) {
-                        snapshot1.getRef().child("checked").setValue(true);
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull @NotNull DatabaseError error) {
-
-            }
-        });
-         */
 
         getAllMessageCheckedValueEventListener2 = new ValueEventListener() {
             @Override
@@ -265,26 +247,6 @@ public class ChatRepository {
             }
         };
         chatsRef.child(userUid).child(myUid).child(itemKey).addListenerForSingleValueEvent(getAllMessageCheckedValueEventListener2);
-        /*
-        chatsRef.child(userUid).child(myUid).child(itemKey).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-                    Chat chat = snapshot1.getValue(Chat.class);
-
-                    if (chat.getSender().equals(userUid)) {
-                        snapshot1.getRef().child("checked").setValue(true);
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull @NotNull DatabaseError error) {
-
-            }
-        });
-         */
-
     }
 
     public void removeGetAllMessageCheckedValueEventListener(String myUid, String userUid, String itemKey) {
