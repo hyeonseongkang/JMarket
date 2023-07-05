@@ -24,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class UserManagerRepository {
 
@@ -222,6 +223,61 @@ public class UserManagerRepository {
             });
         }
         usersProfile.setValue(users);
+    }
+
+    private void updateUserData2(String uid, User user) {
+        myRef.child(uid).setValue(user)
+                .addOnCompleteListener(task -> updateValid.setValue(task.isSuccessful()));
+    }
+
+    public void getUserProfile2(String uid) {
+        myRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                userProfile.setValue(user);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
+
+    public void getOtherUserProfile2(String uid) {
+        myRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                otherUserProfile.setValue(user);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
+
+    public void getUsersProfile2(List<String> uids) {
+        List<User> userList = new ArrayList<>();
+        AtomicInteger counter = new AtomicInteger(uids.size());
+
+        for (String uid : uids) {
+            myRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    User user = snapshot.getValue(User.class);
+                    userList.add(user);
+                    if (counter.decrementAndGet() == 0) {
+                        usersProfile.setValue(userList);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
+        }
     }
 
 }
