@@ -26,4 +26,5 @@ public class LoadImage {
               .load(Uri.parse(photoUri))
               .into(imageView);
    }
+
 }

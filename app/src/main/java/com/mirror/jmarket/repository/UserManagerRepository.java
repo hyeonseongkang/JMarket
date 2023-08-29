@@ -76,7 +76,6 @@ public class UserManagerRepository {
     public void updateUserProfile(@NotNull User user) {
         String uid = user.getUid();
 
-        Log.d(TAG, "1 " + user.getPhotoUri());
         if (user.getPhotoUri().length() == 0) {
             // 사진이 없는 경우, nickName만 update하기 위해 uid에 해당 하는 user정보에서 photoUri만 인자로 들어온 user의 setPhotoUri에 update하고
             // 해당 user로 update함
