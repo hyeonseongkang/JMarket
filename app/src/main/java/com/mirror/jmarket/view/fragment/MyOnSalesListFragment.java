@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseUser;
-import com.mirror.jmarket.adapter.HomeItemAdapter;
+import com.mirror.jmarket.adapter.recyclerview.HomeItemAdapter;
 import com.mirror.jmarket.model.Item;
 import com.mirror.jmarket.databinding.FragmentMyOnSalesListBinding;
 import com.mirror.jmarket.view.activity.MainActivity;

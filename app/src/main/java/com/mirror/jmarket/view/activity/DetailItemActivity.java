@@ -11,15 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseUser;
 import com.mirror.jmarket.R;
-import com.mirror.jmarket.adapter.DetailPhotoItemAdapter;
-import com.mirror.jmarket.databinding.ActivityMainBinding;
+import com.mirror.jmarket.adapter.recyclerview.DetailPhotoItemAdapter;
 import com.mirror.jmarket.model.ChatRoom;
 import com.mirror.jmarket.model.Item;
 import com.mirror.jmarket.model.LastMessage;

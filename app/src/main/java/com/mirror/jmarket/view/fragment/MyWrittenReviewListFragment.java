@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.firebase.auth.FirebaseUser;
-import com.mirror.jmarket.adapter.ReviewItemAdapter;
+import com.mirror.jmarket.adapter.recyclerview.ReviewItemAdapter;
 import com.mirror.jmarket.model.Review;
 import com.mirror.jmarket.databinding.FragmentMyWrittenReviewListBinding;
 import com.mirror.jmarket.view.activity.MainActivity;

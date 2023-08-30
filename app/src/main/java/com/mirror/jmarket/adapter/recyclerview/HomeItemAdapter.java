@@ -1,20 +1,13 @@
-package com.mirror.jmarket.adapter;
+package com.mirror.jmarket.adapter.recyclerview;
 
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.BindingAdapter;
-import androidx.databinding.ObservableArrayList;
 import androidx.databinding.library.baseAdapters.BR;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.mirror.jmarket.R;
 import com.mirror.jmarket.databinding.AdapterHomeItemBinding;
 import com.mirror.jmarket.model.Item;
 

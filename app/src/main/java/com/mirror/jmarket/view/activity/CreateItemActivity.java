@@ -22,7 +22,7 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.mirror.jmarket.R;
-import com.mirror.jmarket.adapter.HomeItemPhotoAdapter;
+import com.mirror.jmarket.adapter.recyclerview.HomeItemPhotoAdapter;
 import com.mirror.jmarket.model.Item;
 import com.mirror.jmarket.model.User;
 import com.mirror.jmarket.databinding.ActivityCreateItemBinding;

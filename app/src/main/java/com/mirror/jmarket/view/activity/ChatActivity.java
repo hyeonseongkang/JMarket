@@ -19,7 +19,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseUser;
 import com.mirror.jmarket.R;
-import com.mirror.jmarket.adapter.ChatItemAdapter;
+import com.mirror.jmarket.adapter.recyclerview.ChatItemAdapter;
 import com.mirror.jmarket.model.Chat;
 import com.mirror.jmarket.model.CompleteUser;
 import com.mirror.jmarket.model.Item;

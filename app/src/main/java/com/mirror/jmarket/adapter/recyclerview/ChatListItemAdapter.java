@@ -1,24 +1,14 @@
-package com.mirror.jmarket.adapter;
+package com.mirror.jmarket.adapter.recyclerview;
 
-import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.mirror.jmarket.BR;
-import com.mirror.jmarket.R;
 import com.mirror.jmarket.databinding.AdapterChatListItemBinding;
 import com.mirror.jmarket.model.ChatRoom;
-import com.mirror.jmarket.model.Item;
-import com.mirror.jmarket.model.LastMessage;
-import com.mirror.jmarket.model.User;
 
 import java.util.ArrayList;
 import java.util.List;

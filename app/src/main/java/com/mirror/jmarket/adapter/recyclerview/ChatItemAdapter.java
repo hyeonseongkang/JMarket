@@ -1,4 +1,4 @@
-package com.mirror.jmarket.adapter;
+package com.mirror.jmarket.adapter.recyclerview;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

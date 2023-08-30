@@ -16,7 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseUser;
-import com.mirror.jmarket.adapter.ChatListItemAdapter;
+import com.mirror.jmarket.adapter.recyclerview.ChatListItemAdapter;
 import com.mirror.jmarket.model.ChatRoom;
 import com.mirror.jmarket.model.User;
 import com.mirror.jmarket.databinding.FragmentChatBinding;

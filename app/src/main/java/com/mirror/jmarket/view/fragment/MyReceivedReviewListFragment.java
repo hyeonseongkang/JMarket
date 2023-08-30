@@ -1,7 +1,6 @@
 package com.mirror.jmarket.view.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.firebase.auth.FirebaseUser;
-import com.mirror.jmarket.adapter.ReviewItemAdapter;
+import com.mirror.jmarket.adapter.recyclerview.ReviewItemAdapter;
 import com.mirror.jmarket.model.Review;
 import com.mirror.jmarket.databinding.FragmentMyReceivedReviewListBinding;
 import com.mirror.jmarket.view.activity.MainActivity;
